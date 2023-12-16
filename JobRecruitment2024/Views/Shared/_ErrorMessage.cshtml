@@ -1,0 +1,10 @@
+﻿@{
+    string errorMessage = ViewData["ErrorMessage"] as string; // Hata mesajını alın
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="error-message">
+        <p>@errorMessage</p>
+    </div>
+}
