@@ -9,7 +9,7 @@ namespace JobRecruitment2024.Models
     public class User
     {
         [Key]
-        public int tc { get; set; }
+        public string tc { get; set; }
         public string name { get; set; }
         public string surname { get; set; }
         public string insurance_num { get; set; }

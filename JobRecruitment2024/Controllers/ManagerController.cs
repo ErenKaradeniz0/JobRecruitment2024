@@ -25,7 +25,7 @@ namespace JobRecruitment2024.Controllers
         [HttpPost]
         public ActionResult Login(string username, string password)
         {
-            var manager = _context.Managers.FirstOrDefault(u => u.username == username && u.password == password);
+            var manager = _context.Managers.FirstOrDefault(u => u.username == username && u.password.ToString() == password);
 
 
             if (manager != null)

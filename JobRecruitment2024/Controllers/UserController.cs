@@ -26,8 +26,11 @@ namespace JobRecruitment2024.Controllers
         public ActionResult Login(string email, string password)
         {
 
-            
-        var user  = _context.Users.FirstOrDefault(u => u.email == email && u.password == password);
+            var user = _context.Users.FirstOrDefault(u => u.email == email && u.password == password);
+
+
+
+
             if (user != null)
             {
                 // Redirect to the main page if authentication is successful

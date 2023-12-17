@@ -21,7 +21,7 @@ namespace JobRecruitment2024.Controllers
         {
             try
             {
-                var users = _context.Users.ToList();
+                var users = _context.Managers.ToList();
                 ViewBag.Message = "Bağlantı Başarılı!";
             }
             catch (Exception ex)
