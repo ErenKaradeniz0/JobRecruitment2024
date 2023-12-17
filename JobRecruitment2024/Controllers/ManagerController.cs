@@ -16,10 +16,6 @@ namespace JobRecruitment2024.Controllers
         {
             _context = new DbContextModel();
         }
-        public ActionResult Index()
-        {
-            return View();
-        }
 
         [HttpGet]
         public ActionResult Login()

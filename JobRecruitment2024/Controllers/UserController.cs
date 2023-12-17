@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JobRecruitment2024.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,13 +9,14 @@ namespace JobRecruitment2024.Controllers
 {
     public class UserController : Controller
     {
-        // GET: User
-        public ActionResult Index()
+        private readonly DbContextModel _context;
+
+        public UserController()
         {
-            return View();
+            _context = new DbContextModel();
         }
 
-
+        [HttpGet]
         public ActionResult Login()
         {
             return View();
@@ -23,17 +25,18 @@ namespace JobRecruitment2024.Controllers
         [HttpPost]
         public ActionResult Login(string email, string password)
         {
-            string emailAuth = "eren@gmail.com";
-            string passwordAuth = "test";
 
-            if (emailAuth == email && passwordAuth == password)
+            
+        var user  = _context.Users.FirstOrDefault(u => u.email == email && u.password == password);
+            if (user != null)
             {
+                // Redirect to the main page if authentication is successful
                 return RedirectToAction("UserMainPage");
             }
 
             string errorMessage = "Invalid email or password.";
             ViewData["ErrorMessage"] = errorMessage;
-            return View("Login");
+            return View();
         }
 
         public ActionResult Register()

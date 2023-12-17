@@ -12,7 +12,7 @@ namespace JobRecruitment2024.Models
         public int history_id { get; set; }
         public DateTime recruitment_date { get; set; }
         public DateTime? dismissal_date { get; set; }
-        public int user_id { get; set; }
+        public int tc { get; set; }
         public int job_id { get; set; }
 
         // Navigation properties for User and Job (if needed)
