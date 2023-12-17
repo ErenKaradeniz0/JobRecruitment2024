@@ -1,7 +1,57 @@
-﻿
+﻿@model JobRecruitment2024.Models.Users
 @{
     ViewBag.Title = "Register";
 }
 
-<h2>Register User</h2>
 
+
+<h2>User Registration</h2>
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <p>@ViewBag.SuccessMessage</p>
+    <script>
+        setTimeout(function () {
+            window.location.href = '@Url.Action("Login", "User")';
+        }, 5000); // Redirect after 5 seconds
+    </script>
+}
+@if (ViewBag.ErrorMessage != null)
+{
+    <p>@ViewBag.ErrorMessage</p>
+}
+
+@using (Html.BeginForm("Register", "User", FormMethod.Post, new { id = "registrationForm" }))
+{
+    <label for="tc">TC:</label>
+    @Html.TextBox("TC")
+    <br>
+    <br>
+
+    <label for="name">Name:</label>
+    @Html.TextBox("Name")
+    <br>
+    <br>
+
+    <label for="surname">Surname:</label>
+    @Html.TextBox("Surname")
+    <br>
+    <br>
+
+    <label for="email">Email:</label>
+    @Html.TextBox("Email", null, new { type = "email" })
+    <br>
+    <br>
+
+    <label for="password">Password:</label>
+    @Html.Password("Password")
+    <br>
+    <br>
+
+    <label for="phone_num">Phone Number:</label>
+    @Html.TextBox("PhoneNum")
+    <br>
+    <br>
+
+    <input type="submit" value="Register">
+}

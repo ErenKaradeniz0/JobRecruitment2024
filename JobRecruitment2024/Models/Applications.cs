@@ -6,17 +6,16 @@ using System.Web;
 
 namespace JobRecruitment2024.Models
 {
-    public class History
+    public class Applications
     {
         [Key]
-        public int history_id { get; set; }
-        public DateTime recruitment_date { get; set; }
-        public DateTime? dismissal_date { get; set; }
-        public int tc { get; set; }
+        public int application_id { get; set; }
+        public string app_status { get; set; }
         public int job_id { get; set; }
+        public int tc { get; set; }
 
         // Navigation properties for User and Job (if needed)
-        public User User { get; set; }
-        public Job Job { get; set; }
+        public Users User { get; set; }
+        public Jobs Job { get; set; }
     }
 }

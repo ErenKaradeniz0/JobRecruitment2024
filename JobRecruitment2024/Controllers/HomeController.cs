@@ -11,11 +11,11 @@ namespace JobRecruitment2024.Controllers
     public class HomeController : Controller
     {
 
-        private readonly DbContextModel _context;
+        private readonly DbContextViewModel _context;
 
         public HomeController()
         {
-            _context = new DbContextModel();
+            _context = new DbContextViewModel();
         }
         public ActionResult Index()
         {

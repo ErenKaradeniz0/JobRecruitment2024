@@ -6,7 +6,7 @@ using System.Web;
 
 namespace JobRecruitment2024.Models
 {
-    public class User
+    public class Users
     {
         [Key]
         public string tc { get; set; }

@@ -6,7 +6,7 @@ using System.Web;
 
 namespace JobRecruitment2024.Models
 {
-    public class Manager
+    public class Managers
     {
         [Key]
         public int manager_id { get; set; }
@@ -18,6 +18,6 @@ namespace JobRecruitment2024.Models
         public int dep_id { get; set; }
 
         // Navigation property for Department (if needed)
-        public Department Department { get; set; }
+        public Departments Department { get; set; }
     }
 }

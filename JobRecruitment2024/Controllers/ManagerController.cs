@@ -10,11 +10,11 @@ namespace JobRecruitment2024.Controllers
 {
     public class ManagerController : Controller
     {
-        private readonly DbContextModel _context;
+        private readonly DbContextViewModel _context;
 
         public ManagerController()
         {
-            _context = new DbContextModel();
+            _context = new DbContextViewModel();
         }
 
         [HttpGet]
