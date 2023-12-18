@@ -93,12 +93,12 @@ namespace JobRecruitment2024.Controllers
                 {
                         ViewBag.ErrorMessage = "An error occurred while processing your request.";
 
-                    return View(model); // Return to the view with the error message
+                    return View(model);
                 }
                 catch (InvalidOperationException ex)
                 {
                     ViewBag.ErrorMessage = ex.Message;
-                    return View(model); // Return to the view with the error message
+                    return View(model);
                 }
             }
 
@@ -106,11 +106,8 @@ namespace JobRecruitment2024.Controllers
             return View(model);
         }
 
-        // Helper method to check if it's a unique constraint violation
         private bool IsUniqueConstraintViolation(SqlException ex)
         {
-            // Unique constraint violation error numbers can vary based on the database
-            // You might need to replace 2601 and 2627 with the specific error numbers related to unique constraint violations in your database
             return ex.Number == 2601 || ex.Number == 2627;
         }
 
@@ -164,6 +161,7 @@ namespace JobRecruitment2024.Controllers
                     currentUser.surname = updatedUser.surname;
                     currentUser.email = updatedUser.email;
                     currentUser.phone_num = updatedUser.phone_num;
+                    currentUser.password= updatedUser.password;
 
                     _context.SaveChanges();
 

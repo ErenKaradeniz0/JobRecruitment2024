@@ -5,13 +5,15 @@
 
 <h2>@ViewBag.Title</h2>
 
+<div id="errorMessage" style="display: none; color: red;">Passwords do not match!</div>
+
 @if (ViewBag.SuccessMessage != null)
 {
     <p>@ViewBag.SuccessMessage</p>
     <script>
         setTimeout(function () {
             window.location.href = '@Url.Action("UserMainPage", "User")';
-        }, 5000); // Redirect after 5 seconds
+        }, 3000); // Redirect after 3 seconds
     </script>
 }
 
@@ -21,7 +23,7 @@
 <script>
         setTimeout(function () {
             window.location.href = '@Url.Action("Login", "User")';
-        }, 5000); // Redirect after 5 seconds
+        }, 3000); // Redirect after 3 seconds
 </script>
 }
 else
@@ -32,45 +34,42 @@ else
 
 @using (Html.BeginForm("UpdateAccount", "User", FormMethod.Post, new { id = "updateForm" }))
 {
-    @Html.LabelFor(model => model.name)
+    @Html.LabelFor(model => model.name, "Name:")
     @Html.TextBoxFor(model => model.name)
-    <br>
-    <br>
+    @Html.Raw("<br><br>")
 
-    @Html.LabelFor(model => model.surname)
+    @Html.LabelFor(model => model.surname, "Surname:")
     @Html.TextBoxFor(model => model.surname)
-    <br>
-    <br>
+    @Html.Raw("<br><br>")
 
-    @Html.LabelFor(model => model.email)
+    @Html.LabelFor(model => model.email, "Email:")
     @Html.TextBoxFor(model => model.email, new { type = "email" })
-    <br>
-    <br>
+    @Html.Raw("<br><br>")
 
-    @Html.LabelFor(model => model.phone_num)
+    @Html.LabelFor(model => model.phone_num, "Phone Number:")
     @Html.TextBoxFor(model => model.phone_num)
-    <br>
-    <br>
+    @Html.Raw("<br><br>")
 
     @Html.CheckBox("changePassword", new { id = "changePasswordCheckbox" })
     @Html.Label("changePassword", "Change Password")
+    @Html.Raw("<br><br>")
 
     <div id="newPasswordField" style="display: none;">
-        @Html.Label("newPassword", "New Password")
-        @Html.Password("newPassword")
-        <br><br>
+        @Html.LabelFor(model => model.password, "New Password:")
+        @Html.PasswordFor(model => model.password, new { id = "newPassword" })
+        @Html.Raw("<br><br>")
     </div>
+
 
     <div id="newPasswordAgainField" style="display: none;">
-        @Html.Label("newPasswordAgain", "New Password Again")
+        @Html.Label("newPasswordAgain", "New Password Again:")
         @Html.Password("newPasswordAgain")
-        <br><br>
+        @Html.Raw("<br><br>")
     </div>
 
-    <input type="submit" value="Update Account">
+    <button type="submit">Update Account</button>
 }
 
-<a href="UserMainPage">User Main Page</a>
 
 <script>
     document.getElementById('changePasswordCheckbox').addEventListener('change', function () {
@@ -83,6 +82,19 @@ else
         } else {
             newPasswordField.style.display = 'none';
             newPasswordAgainField.style.display = 'none';
+        }
+    });
+
+    document.getElementById('updateForm').addEventListener('submit', function (event) {
+        var password = document.getElementById('newPassword').value;
+        var passwordAgain = document.getElementById('newPasswordAgain').value;
+        var errorMessage = document.getElementById('errorMessage');
+
+        if (password !== passwordAgain) {
+            errorMessage.style.display = 'block';
+            event.preventDefault(); // Form gönderimini engelle
+        } else {
+            errorMessage.style.display = 'none';
         }
     });
 </script>

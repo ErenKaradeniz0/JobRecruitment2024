@@ -7,6 +7,8 @@
 
 <h2>@ViewBag.Title</h2>
 
+<div id="errorMessage" style="display: none; color: red;">Passwords do not match!</div>
+
 @if (ViewBag.SuccessMessage != null)
 {
     <p>@ViewBag.SuccessMessage</p>
@@ -23,35 +25,48 @@
 
 @using (Html.BeginForm("Register", "User", FormMethod.Post, new { id = "registrationForm" }))
 {
-    <label for="tc">TC:</label>
+    @Html.LabelFor(model => model.tc, "TC:")
     @Html.TextBoxFor(model => model.tc)
-    <br>
-    <br>
+    @Html.Raw("<br><br>")
 
-    <label for="name">Name:</label>
+    @Html.LabelFor(model => model.name, "Name:")
     @Html.TextBoxFor(model => model.name)
-    <br>
-    <br>
+    @Html.Raw("<br><br>")
 
-    <label for="surname">Surname:</label>
+    @Html.LabelFor(model => model.surname, "Surname:")
     @Html.TextBoxFor(model => model.surname)
-    <br>
-    <br>
+    @Html.Raw("<br><br>")
 
-    <label for="email">Email:</label>
+    @Html.LabelFor(model => model.email, "Email:")
     @Html.TextBoxFor(model => model.email, new { type = "email" })
-    <br>
-    <br>
+    @Html.Raw("<br><br>")
 
-    <label for="password">Password:</label>
-    @Html.Password("Password")
-    <br>
-    <br>
+    @Html.LabelFor(model => model.password, "Password:")
+    @Html.PasswordFor(model => model.password, new { id = "Password" })
+    @Html.Raw("<br><br>")
 
-    <label for="phone_num">Phone Number:</label>
+    @Html.Label("PasswordAgain", "Password Again:")
+    @Html.Password("PasswordAgain", null, new { id = "PasswordAgain" })
+    @Html.Raw("<br><br>")
+
+    @Html.Label("phone_num", "Phone:")
     @Html.TextBoxFor(model => model.phone_num)
-    <br>
-    <br>
+    @Html.Raw("<br><br>")
 
-    <input type="submit" value="Register">
+    <button type="submit">Update Account</button>
 }
+
+<script>
+    document.getElementById('registrationForm').addEventListener('submit', function (event) {
+        var password = document.getElementById('Password').value;
+        var passwordAgain = document.getElementById('PasswordAgain').value;
+        var errorMessage = document.getElementById('errorMessage');
+
+        if (password !== passwordAgain) {
+            errorMessage.style.display = 'block';
+            event.preventDefault(); // Form gönderimini engelle
+        } else {
+            errorMessage.style.display = 'none';
+        }
+    });
+</script>

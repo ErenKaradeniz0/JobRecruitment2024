@@ -15,8 +15,6 @@ namespace JobRecruitment2024.Models
         public string surname { get; set; }
 
         public string insurance_num { get; set; }
-
-        [Required(ErrorMessage = "Salary is required")]
         public decimal salary { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
