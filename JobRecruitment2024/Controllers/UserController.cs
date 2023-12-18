@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNet.Identity;
 using System.Web.Helpers;
+using System.Data.Entity.Infrastructure;
 
 namespace JobRecruitment2024.Controllers
 {
@@ -57,16 +58,30 @@ namespace JobRecruitment2024.Controllers
             {
                 try
                 {
+
                     var user = new Users
                     {
                         tc = model.tc,
                         name = model.name,
                         surname = model.surname,
+                        phone_num = model.phone_num,
                         email = model.email,
-                        password = model.password,
-                        phone_num = model.phone_num
                     };
+                    if (model.password != null)
+                        user.password = model.password;
 
+                    // Check if the email is already registered
+
+                    if (model.tc != null && _context.Users.Any(u => u.tc == model.tc))
+                    {
+                        throw new InvalidOperationException("This TC is registered before.");
+                    }
+
+
+                    if (model.email != null && _context.Users.Any(u => u.email == model.email))
+                    {
+                        throw new InvalidOperationException("This email is already registered.");
+                    }
                     _context.Users.Add(user);
                     _context.SaveChanges();
 
@@ -74,25 +89,32 @@ namespace JobRecruitment2024.Controllers
 
                     return View("Register", model);
                 }
-                catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
+                catch (DbUpdateException ex)
                 {
-                    if (ex.InnerException.InnerException is SqlException sqlException && sqlException.Number == 2627)
-                    {
-                        ViewBag.ErrorMessage = "You are already registered."; // Duplicate key error message
-                    }
-                    else
-                    {
-                        ViewBag.ErrorMessage = "Please write the data in appropriate format."; // Other database-related error message
-                    }
+                        ViewBag.ErrorMessage = "An error occurred while processing your request.";
 
                     return View(model); // Return to the view with the error message
                 }
+                catch (InvalidOperationException ex)
+                {
+                    ViewBag.ErrorMessage = ex.Message;
+                    return View(model); // Return to the view with the error message
+                }
             }
+
             ViewBag.ErrorMessage = "Please enter your information correctly.";
             return View(model);
         }
 
-        public ActionResult UserMainPage()
+        // Helper method to check if it's a unique constraint violation
+        private bool IsUniqueConstraintViolation(SqlException ex)
+        {
+            // Unique constraint violation error numbers can vary based on the database
+            // You might need to replace 2601 and 2627 with the specific error numbers related to unique constraint violations in your database
+            return ex.Number == 2601 || ex.Number == 2627;
+        }
+
+    public ActionResult UserMainPage()
         {
             return View();
         }
@@ -111,7 +133,7 @@ namespace JobRecruitment2024.Controllers
                 }
                 else
                 {
-                    ViewBag.ErrorMessage = "User not found.";
+                    ViewBag.ErrorMessage = "User not found. Redirecting Main Page";
                     return View();
                 }
             }
@@ -141,12 +163,11 @@ namespace JobRecruitment2024.Controllers
                     currentUser.name = updatedUser.name;
                     currentUser.surname = updatedUser.surname;
                     currentUser.email = updatedUser.email;
-                    currentUser.password = updatedUser.password;
                     currentUser.phone_num = updatedUser.phone_num;
 
                     _context.SaveChanges();
 
-                    ViewBag.SuccessMessage = "Account information updated successfully.";
+                    ViewBag.SuccessMessage = "Account information updated successfully.Redirecting mainpage...";
                 }
                 catch (Exception ex)
                 {

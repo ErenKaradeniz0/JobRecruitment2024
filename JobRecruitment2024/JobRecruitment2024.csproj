@@ -289,7 +289,6 @@
     <Content Include="Views\User\UpdateAccount.cshtml" />
     <Content Include="Views\User\ApplyJob.cshtml" />
     <Content Include="Views\User\MyApplications.cshtml" />
-    <Content Include="Views\User\RegistrationSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -22,8 +22,6 @@ namespace JobRecruitment2024.Models
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string email { get; set; }
-
-        [Required(ErrorMessage = "Password is required")]
         public string password { get; set; }
 
         public string emp_status { get; set; }

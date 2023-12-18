@@ -73,7 +73,7 @@ namespace JobRecruitment2024.Controllers
                 smtpClient.Port = 587;
                 smtpClient.EnableSsl = true;
                 smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new System.Net.NetworkCredential("jobrecruitmenteren@gmail.com", "xxxxxx");
+                smtpClient.Credentials = new System.Net.NetworkCredential("jobrecruitmenteren@gmail.com", "ysmeldaixamakcla");
 
 
                 smtpClient.Send(mail);

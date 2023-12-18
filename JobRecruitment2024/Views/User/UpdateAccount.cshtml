@@ -3,7 +3,7 @@
     ViewBag.Title = "UpdateAccount";
 }
 
-<h2>Update Account</h2>
+<h2>@ViewBag.Title</h2>
 
 @if (ViewBag.SuccessMessage != null)
 {
@@ -16,7 +16,7 @@
 }
 
 
-@if (ViewBag.ErrorMessage == "User not found.")
+@if (ViewBag.ErrorMessage == "User not found. Redirecting Main Page")
 {<p>@ViewBag.ErrorMessage</p>
 <script>
         setTimeout(function () {
@@ -28,6 +28,7 @@ else
 {
 <p>@ViewBag.ErrorMessage</p>
 }
+
 
 @using (Html.BeginForm("UpdateAccount", "User", FormMethod.Post, new { id = "updateForm" }))
 {
@@ -46,17 +47,42 @@ else
     <br>
     <br>
 
-    @Html.LabelFor(model => model.password)
-    @Html.PasswordFor(model => model.password)
-    <br>
-    <br>
-
     @Html.LabelFor(model => model.phone_num)
     @Html.TextBoxFor(model => model.phone_num)
     <br>
     <br>
 
+    @Html.CheckBox("changePassword", new { id = "changePasswordCheckbox" })
+    @Html.Label("changePassword", "Change Password")
+
+    <div id="newPasswordField" style="display: none;">
+        @Html.Label("newPassword", "New Password")
+        @Html.Password("newPassword")
+        <br><br>
+    </div>
+
+    <div id="newPasswordAgainField" style="display: none;">
+        @Html.Label("newPasswordAgain", "New Password Again")
+        @Html.Password("newPasswordAgain")
+        <br><br>
+    </div>
+
     <input type="submit" value="Update Account">
 }
 
 <a href="UserMainPage">User Main Page</a>
+
+<script>
+    document.getElementById('changePasswordCheckbox').addEventListener('change', function () {
+        var newPasswordField = document.getElementById('newPasswordField');
+        var newPasswordAgainField = document.getElementById('newPasswordAgainField');
+
+        if (this.checked) {
+            newPasswordField.style.display = 'block';
+            newPasswordAgainField.style.display = 'block';
+        } else {
+            newPasswordField.style.display = 'none';
+            newPasswordAgainField.style.display = 'none';
+        }
+    });
+</script>

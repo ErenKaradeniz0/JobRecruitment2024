@@ -1,11 +1,11 @@
 ﻿@model JobRecruitment2024.Models.Users
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "User Registration";
 }
 
 
 
-<h2>User Registration</h2>
+<h2>@ViewBag.Title</h2>
 
 @if (ViewBag.SuccessMessage != null)
 {
@@ -13,7 +13,7 @@
     <script>
         setTimeout(function () {
             window.location.href = '@Url.Action("Login", "User")';
-        }, 5000); // Redirect after 5 seconds
+        }, 3000); // Redirect after 3 seconds
     </script>
 }
 @if (ViewBag.ErrorMessage != null)
@@ -24,22 +24,22 @@
 @using (Html.BeginForm("Register", "User", FormMethod.Post, new { id = "registrationForm" }))
 {
     <label for="tc">TC:</label>
-    @Html.TextBox("TC")
+    @Html.TextBoxFor(model => model.tc)
     <br>
     <br>
 
     <label for="name">Name:</label>
-    @Html.TextBox("Name")
+    @Html.TextBoxFor(model => model.name)
     <br>
     <br>
 
     <label for="surname">Surname:</label>
-    @Html.TextBox("Surname")
+    @Html.TextBoxFor(model => model.surname)
     <br>
     <br>
 
     <label for="email">Email:</label>
-    @Html.TextBox("Email", null, new { type = "email" })
+    @Html.TextBoxFor(model => model.email, new { type = "email" })
     <br>
     <br>
 
@@ -49,7 +49,7 @@
     <br>
 
     <label for="phone_num">Phone Number:</label>
-    @Html.TextBox("PhoneNum")
+    @Html.TextBoxFor(model => model.phone_num)
     <br>
     <br>
 
