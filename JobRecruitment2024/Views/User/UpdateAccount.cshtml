@@ -1,8 +1,62 @@
-﻿
+﻿@model JobRecruitment2024.Models.Users
 @{
     ViewBag.Title = "UpdateAccount";
 }
 
-<h2>UpdateAccount</h2>
+<h2>Update Account</h2>
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <p>@ViewBag.SuccessMessage</p>
+    <script>
+        setTimeout(function () {
+            window.location.href = '@Url.Action("UserMainPage", "User")';
+        }, 5000); // Redirect after 5 seconds
+    </script>
+}
+
+
+@if (ViewBag.ErrorMessage == "User not found.")
+{<p>@ViewBag.ErrorMessage</p>
+<script>
+        setTimeout(function () {
+            window.location.href = '@Url.Action("Login", "User")';
+        }, 5000); // Redirect after 5 seconds
+</script>
+}
+else
+{
+<p>@ViewBag.ErrorMessage</p>
+}
+
+@using (Html.BeginForm("UpdateAccount", "User", FormMethod.Post, new { id = "updateForm" }))
+{
+    @Html.LabelFor(model => model.name)
+    @Html.TextBoxFor(model => model.name)
+    <br>
+    <br>
+
+    @Html.LabelFor(model => model.surname)
+    @Html.TextBoxFor(model => model.surname)
+    <br>
+    <br>
+
+    @Html.LabelFor(model => model.email)
+    @Html.TextBoxFor(model => model.email, new { type = "email" })
+    <br>
+    <br>
+
+    @Html.LabelFor(model => model.password)
+    @Html.PasswordFor(model => model.password)
+    <br>
+    <br>
+
+    @Html.LabelFor(model => model.phone_num)
+    @Html.TextBoxFor(model => model.phone_num)
+    <br>
+    <br>
+
+    <input type="submit" value="Update Account">
+}
 
 <a href="UserMainPage">User Main Page</a>
