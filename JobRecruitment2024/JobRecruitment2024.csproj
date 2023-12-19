@@ -284,9 +284,9 @@
     <Content Include="Views\User\UserMainPage.cshtml" />
     <Content Include="Views\Manager\ManageApplications.cshtml" />
     <Content Include="Views\Manager\ManageJobPosting.cshtml" />
-    <Content Include="Views\Manager\UpdateAccount.cshtml" />
+    <Content Include="Views\Manager\ManagerUpdateAccount.cshtml" />
     <Content Include="Views\Manager\ManageEmployees.cshtml" />
-    <Content Include="Views\User\UpdateAccount.cshtml" />
+    <Content Include="Views\User\UserUpdateAccount.cshtml" />
     <Content Include="Views\User\ApplyJob.cshtml" />
     <Content Include="Views\User\MyApplications.cshtml" />
   </ItemGroup>

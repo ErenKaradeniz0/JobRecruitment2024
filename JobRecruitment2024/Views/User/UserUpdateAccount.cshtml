@@ -1,6 +1,6 @@
 ﻿@model JobRecruitment2024.Models.Users
 @{
-    ViewBag.Title = "UpdateAccount";
+    ViewBag.Title = "User Update Account";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -32,7 +32,7 @@ else
 }
 
 
-@using (Html.BeginForm("UpdateAccount", "User", FormMethod.Post, new { id = "updateForm" }))
+@using (Html.BeginForm("UserUpdateAccount", "User", FormMethod.Post, new { id = "updateForm" }))
 {
     @Html.LabelFor(model => model.name, "Name:")
     @Html.TextBoxFor(model => model.name)
@@ -60,10 +60,9 @@ else
         @Html.Raw("<br><br>")
     </div>
 
-
     <div id="newPasswordAgainField" style="display: none;">
         @Html.Label("newPasswordAgain", "New Password Again:")
-        @Html.Password("newPasswordAgain")
+        @Html.Password("newPasswordAgain", null)
         @Html.Raw("<br><br>")
     </div>
 
@@ -79,22 +78,47 @@ else
         if (this.checked) {
             newPasswordField.style.display = 'block';
             newPasswordAgainField.style.display = 'block';
+            // Make password fields required
+            document.getElementById('newPassword').setAttribute('required', 'required');
+            document.getElementById('newPasswordAgain').setAttribute('required', 'required');
         } else {
             newPasswordField.style.display = 'none';
             newPasswordAgainField.style.display = 'none';
+            // Remove required attribute when checkbox is unchecked
+            document.getElementById('newPassword').removeAttribute('required');
+            document.getElementById('newPasswordAgain').removeAttribute('required');
         }
     });
 
     document.getElementById('updateForm').addEventListener('submit', function (event) {
-        var password = document.getElementById('newPassword').value;
-        var passwordAgain = document.getElementById('newPasswordAgain').value;
+        var password = document.getElementById('newPassword');
+        var passwordAgain = document.getElementById('newPasswordAgain');
         var errorMessage = document.getElementById('errorMessage');
 
-        if (password !== passwordAgain) {
-            errorMessage.style.display = 'block';
-            event.preventDefault(); // Form gönderimini engelle
+        var changePasswordCheckbox = document.getElementById('changePasswordCheckbox');
+        if (changePasswordCheckbox.checked) {
+            if (password.value === '' || passwordAgain.value === '') {
+                errorMessage.textContent = 'Please fill in both password fields';
+                errorMessage.style.display = 'block';
+                password.setAttribute('required', 'required');
+                passwordAgain.setAttribute('required', 'required');
+                event.preventDefault(); // Prevent form submission
+            } else if (password.value !== passwordAgain.value) {
+                errorMessage.textContent = 'Passwords do not match';
+                errorMessage.style.display = 'block';
+                password.removeAttribute('required');
+                passwordAgain.removeAttribute('required');
+                event.preventDefault(); // Prevent form submission
+            } else {
+                errorMessage.style.display = 'none';
+                password.setAttribute('required', 'required');
+                passwordAgain.setAttribute('required', 'required');
+            }
         } else {
             errorMessage.style.display = 'none';
+            password.removeAttribute('required');
+            passwordAgain.removeAttribute('required');
         }
     });
+
 </script>

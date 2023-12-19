@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace JobRecruitment2024.Controllers
@@ -25,6 +26,7 @@ namespace JobRecruitment2024.Controllers
         [HttpPost]
         public ActionResult Login(string username, string password)
         {
+            Session["ManagerUsername"] = username;
             var manager = _context.Managers.FirstOrDefault(u => u.username == username && u.password == password);
 
 
@@ -48,10 +50,81 @@ namespace JobRecruitment2024.Controllers
         {
             return View();
         }
-
-        public ActionResult UpdateAccount()
+        [HttpGet]
+        public ActionResult ManagerUpdateAccount()
         {
-            return View();
+            string ManagerUsername = Session["ManagerUsername"] as string;
+            try
+            {
+                Managers manager = _context.Managers.FirstOrDefault(m => m.username == ManagerUsername);
+
+
+                if (manager != null)
+                {
+                    return View(manager);
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Manager not found. Redirecting Main Page";
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "An error occurred while processing your request.";
+
+                if (ex.InnerException != null)
+                {
+                    ViewBag.InnerErrorMessage = ex.InnerException.Message;
+                }
+
+                return View();
+            }
+        }
+        [HttpPost]
+        public ActionResult ManagerUpdateAccount(Managers updatedManager)
+        {
+            string ManagerUsername = Session["ManagerUsername"] as string;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Managers currentManager = _context.Managers.FirstOrDefault(m => m.username == ManagerUsername);
+
+                    currentManager.username = updatedManager.username;
+                    currentManager.name = updatedManager.name;
+                    currentManager.surname = updatedManager.surname;
+                    currentManager.email = updatedManager.email;
+
+                    if (updatedManager.password != null)
+                    {
+                        currentManager.password = updatedManager.password;
+                    }
+
+                    _context.SaveChanges();
+
+                    ViewBag.SuccessMessage = "Account information updated successfully.Redirecting mainpage...";
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.ErrorMessage = ex + "Failed to update account information. Please try again.";
+                }
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var error in errors)
+                {
+                    var errorMessage = error.ErrorMessage;
+
+                    // Log or debug these error messages to understand the validation failures
+                }
+
+                // Return to the view with the model to display the errors
+                ViewBag.ErrorMessage = "Invalid data. Please check your inputs.";
+            }
+
+            return View(updatedManager);
         }
 
         public ActionResult ManageJobPosting()

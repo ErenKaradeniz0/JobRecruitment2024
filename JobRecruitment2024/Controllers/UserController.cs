@@ -117,7 +117,7 @@ namespace JobRecruitment2024.Controllers
         }
 
         [HttpGet]
-        public ActionResult UpdateAccount()
+        public ActionResult UserUpdateAccount()
         {
             string userEmail = Session["UserEmail"] as string;
             try
@@ -148,7 +148,7 @@ namespace JobRecruitment2024.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateAccount(Users updatedUser)
+        public ActionResult UserUpdateAccount(Users updatedUser)
         {
             string userEmail = Session["UserEmail"] as string;
             if (ModelState.IsValid)
@@ -161,7 +161,11 @@ namespace JobRecruitment2024.Controllers
                     currentUser.surname = updatedUser.surname;
                     currentUser.email = updatedUser.email;
                     currentUser.phone_num = updatedUser.phone_num;
-                    currentUser.password= updatedUser.password;
+
+                    if (updatedUser.password != null)
+                    {
+                        currentUser.password = updatedUser.password;
+                    }
 
                     _context.SaveChanges();
 
