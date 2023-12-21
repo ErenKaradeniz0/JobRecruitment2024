@@ -1,8 +1,40 @@
-﻿
+﻿@model IEnumerable<JobRecruitment2024.Models.Jobs> 
+
 @{
     ViewBag.Title = "ManageJobPosting";
 }
 
-<h2>ManageJobPosting</h2>
+<h2>@ViewBag.Title</h2>
+
+
+
+
+<!-- Display the list of jobs -->
+@foreach (var job in Model)
+{
+    <div>
+        <h3>@job.job_name</h3>
+        <p>Employee Limit: @job.employee_limit</p>
+        <!-- Add buttons for Edit and Delete -->
+        <form method="post" action="@Url.Action("Edit", "Job")">
+            <input type="hidden" name="job_id" value="@job.job_id" />
+            <input type="submit" value="Edit" />
+        </form>
+        <form method="post" action="@Url.Action("Delete", "Job")">
+            <input type="hidden" name="id" value="@job.job_id" />
+            <input type="submit" value="Delete" />
+        </form>
+    </div>
+}
+
+<!-- Form for creating a new job -->
+<form method="post" action="@Url.Action("Create", "Job")">
+    <label for="job_name">Job Name:</label>
+    <input type="text" name="job_name" /><br />
+    <label for="employee_limit">Employee Limit:</label>
+    <input type="number" name="employee_limit" /><br />
+    <input type="submit" value="Create Job" />
+</form>
+
 
 <a href="ManagerMainPage">Manager Main Page</a>

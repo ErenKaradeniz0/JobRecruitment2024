@@ -58,6 +58,16 @@ namespace JobRecruitment2024.Controllers
             {
                 try
                 {
+                    if (model.tc != null && _context.Users.Any(u => u.tc == model.tc))
+                    {
+                        throw new InvalidOperationException("This TC is registered.");
+                    }
+
+
+                    if (model.email != null && _context.Users.Any(u => u.email == model.email))
+                    {
+                        throw new InvalidOperationException("This email is already registered.");
+                    }
 
                     var user = new Users
                     {
@@ -66,22 +76,9 @@ namespace JobRecruitment2024.Controllers
                         surname = model.surname,
                         phone_num = model.phone_num,
                         email = model.email,
+                        password = model.password
                     };
-                    if (model.password != null)
-                        user.password = model.password;
 
-                    // Check if the email is already registered
-
-                    if (model.tc != null && _context.Users.Any(u => u.tc == model.tc))
-                    {
-                        throw new InvalidOperationException("This TC is registered before.");
-                    }
-
-
-                    if (model.email != null && _context.Users.Any(u => u.email == model.email))
-                    {
-                        throw new InvalidOperationException("This email is already registered.");
-                    }
                     _context.Users.Add(user);
                     _context.SaveChanges();
 
@@ -162,14 +159,13 @@ namespace JobRecruitment2024.Controllers
                     currentUser.email = updatedUser.email;
                     currentUser.phone_num = updatedUser.phone_num;
 
-                    if (updatedUser.password != null)
-                    {
-                        currentUser.password = updatedUser.password;
-                    }
+                    if (updatedUser.password != null) currentUser.password = updatedUser.password;
+
 
                     _context.SaveChanges();
 
                     ViewBag.SuccessMessage = "Account information updated successfully.Redirecting mainpage...";
+                    Session["UserEmail"] = currentUser.email;
                 }
                 catch (Exception ex)
                 {

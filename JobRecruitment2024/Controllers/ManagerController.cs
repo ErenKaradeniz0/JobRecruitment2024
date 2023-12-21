@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Helpers;
 using System.Web.Mvc;
 
@@ -41,10 +42,6 @@ namespace JobRecruitment2024.Controllers
             return View();
         }
 
-
-        public ActionResult Register() {
-            return View();
-        }
 
         public ActionResult ManagerMainPage()
         {
@@ -95,12 +92,11 @@ namespace JobRecruitment2024.Controllers
                     currentManager.name = updatedManager.name;
                     currentManager.surname = updatedManager.surname;
                     currentManager.email = updatedManager.email;
+                    currentManager.phone_num = updatedManager.phone_num;
 
-                    if (updatedManager.password != null)
-                    {
-                        currentManager.password = updatedManager.password;
-                    }
-
+                    if (updatedManager.password != null) currentManager.password = updatedManager.password;
+               
+           
                     _context.SaveChanges();
 
                     ViewBag.SuccessMessage = "Account information updated successfully.Redirecting mainpage...";
@@ -127,11 +123,21 @@ namespace JobRecruitment2024.Controllers
             return View(updatedManager);
         }
 
+
+
         public ActionResult ManageJobPosting()
         {
-            return View();
-        }
+            var jobs = _context.Jobs.ToList();
 
+            if (jobs == null || !jobs.Any())
+            {
+                // Handle the case where 'jobs' is null or empty
+                // For example, redirect to an error page or provide a message
+                return View("NoJobsFound");
+            }
+
+            return View(jobs); // Pass the 'jobs' model to the view
+        }
         public ActionResult ManageApplications()
         {
             return View();
@@ -141,5 +147,9 @@ namespace JobRecruitment2024.Controllers
         {
             return View();
         }
+
+        private readonly JobController _jobController = new JobController();
+
+
     }
 }

@@ -189,6 +189,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JobController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -197,7 +198,7 @@
     <Compile Include="Models\Applications.cs" />
     <Compile Include="Models\DbContextViewModel.cs" />
     <Compile Include="Models\Departments.cs" />
-    <Compile Include="Models\Historys.cs" />
+    <Compile Include="Models\Histories.cs" />
     <Compile Include="Models\Jobs.cs" />
     <Compile Include="Models\Users.cs" />
     <Compile Include="Models\Managers.cs" />
@@ -289,6 +290,7 @@
     <Content Include="Views\User\UserUpdateAccount.cshtml" />
     <Content Include="Views\User\ApplyJob.cshtml" />
     <Content Include="Views\User\MyApplications.cshtml" />
+    <Content Include="Views\Job\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

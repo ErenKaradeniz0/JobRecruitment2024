@@ -12,9 +12,8 @@ namespace JobRecruitment2024.Models
         public int job_id { get; set; }
         public string job_name { get; set; }
         public int employee_limit { get; set; }
+        public int vacancy {  get; set; }
         public int dep_id { get; set; }
 
-        // Navigation property for Department (if needed)
-        public Departments Department { get; set; }
     }
 }

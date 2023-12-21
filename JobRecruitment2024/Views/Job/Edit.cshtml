@@ -1,0 +1,27 @@
+﻿@model JobRecruitment2024.Models.Jobs
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<h2>Edit Job</h2>
+
+@using (Html.BeginForm("Edit", "Job"))
+{
+
+    @Html.HiddenFor(model => model.job_id) <!-- Hidden field for job_id -->
+
+    <label for="job_name">Job Name:</label>
+    <input type="text" id="job_name" name="job_name" value="@Model.job_name" />
+    <br />
+
+    <label for="employee_limit">Employee Limit:</label>
+    <input type="number" id="employee_limit" name="employee_limit" value="@Model.employee_limit" />
+    <br />
+
+    <input type="submit" value="Save Changes" />
+}
+

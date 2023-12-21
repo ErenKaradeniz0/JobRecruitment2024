@@ -13,9 +13,5 @@ namespace JobRecruitment2024.Models
         public string app_status { get; set; }
         public int job_id { get; set; }
         public int tc { get; set; }
-
-        // Navigation properties for User and Job (if needed)
-        public Users User { get; set; }
-        public Jobs Job { get; set; }
     }
 }

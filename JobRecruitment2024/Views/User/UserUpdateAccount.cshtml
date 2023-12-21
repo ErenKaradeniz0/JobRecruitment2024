@@ -35,32 +35,31 @@ else
 @using (Html.BeginForm("UserUpdateAccount", "User", FormMethod.Post, new { id = "updateForm" }))
 {
     @Html.LabelFor(model => model.name, "Name:")
-    @Html.TextBoxFor(model => model.name)
+    @Html.TextBoxFor(model => model.name, new { required = "required" })
     @Html.Raw("<br><br>")
 
     @Html.LabelFor(model => model.surname, "Surname:")
-    @Html.TextBoxFor(model => model.surname)
+    @Html.TextBoxFor(model => model.surname, new { required = "required" })
     @Html.Raw("<br><br>")
 
     @Html.LabelFor(model => model.email, "Email:")
-    @Html.TextBoxFor(model => model.email, new { type = "email" })
+    @Html.TextBoxFor(model => model.email, new { type = "email", required = "required" })
     @Html.Raw("<br><br>")
 
     @Html.LabelFor(model => model.phone_num, "Phone Number:")
     @Html.TextBoxFor(model => model.phone_num)
+    @Html.ValidationMessageFor(model => model.phone_num)
     @Html.Raw("<br><br>")
 
     @Html.CheckBox("changePassword", new { id = "changePasswordCheckbox" })
     @Html.Label("changePassword", "Change Password")
     @Html.Raw("<br><br>")
 
-    <div id="newPasswordField" style="display: none;">
+    <div id="passwordField" style="display: none;">
         @Html.LabelFor(model => model.password, "New Password:")
         @Html.PasswordFor(model => model.password, new { id = "newPassword" })
         @Html.Raw("<br><br>")
-    </div>
 
-    <div id="newPasswordAgainField" style="display: none;">
         @Html.Label("newPasswordAgain", "New Password Again:")
         @Html.Password("newPasswordAgain", null)
         @Html.Raw("<br><br>")
@@ -71,54 +70,40 @@ else
 
 
 <script>
+    var passwordField = document.getElementById('passwordField');
+    var newPasswordInput = document.getElementById('newPassword');
+    var newPasswordAgainInput = document.getElementById('newPasswordAgain');
+    var errorMessage = document.getElementById('errorMessage');
+
     document.getElementById('changePasswordCheckbox').addEventListener('change', function () {
-        var newPasswordField = document.getElementById('newPasswordField');
-        var newPasswordAgainField = document.getElementById('newPasswordAgainField');
 
         if (this.checked) {
-            newPasswordField.style.display = 'block';
-            newPasswordAgainField.style.display = 'block';
+            passwordField.style.display = 'block';
             // Make password fields required
-            document.getElementById('newPassword').setAttribute('required', 'required');
-            document.getElementById('newPasswordAgain').setAttribute('required', 'required');
+            newPasswordInput.setAttribute('required', 'required');
+            newPasswordAgainInput.setAttribute('required', 'required');
+
         } else {
-            newPasswordField.style.display = 'none';
-            newPasswordAgainField.style.display = 'none';
+            passwordField.style.display = 'none';
+            errorMessage.style.display = 'none';
             // Remove required attribute when checkbox is unchecked
-            document.getElementById('newPassword').removeAttribute('required');
-            document.getElementById('newPasswordAgain').removeAttribute('required');
+            newPasswordInput.removeAttribute('required');
+            newPasswordAgainInput.removeAttribute('required');
         }
     });
 
     document.getElementById('updateForm').addEventListener('submit', function (event) {
-        var password = document.getElementById('newPassword');
-        var passwordAgain = document.getElementById('newPasswordAgain');
-        var errorMessage = document.getElementById('errorMessage');
 
-        var changePasswordCheckbox = document.getElementById('changePasswordCheckbox');
-        if (changePasswordCheckbox.checked) {
-            if (password.value === '' || passwordAgain.value === '') {
-                errorMessage.textContent = 'Please fill in both password fields';
-                errorMessage.style.display = 'block';
-                password.setAttribute('required', 'required');
-                passwordAgain.setAttribute('required', 'required');
-                event.preventDefault(); // Prevent form submission
-            } else if (password.value !== passwordAgain.value) {
+
+            if (newPasswordInput.value !== newPasswordAgainInput.value) {
+                // Display error message and prevent form submission
                 errorMessage.textContent = 'Passwords do not match';
                 errorMessage.style.display = 'block';
-                password.removeAttribute('required');
-                passwordAgain.removeAttribute('required');
-                event.preventDefault(); // Prevent form submission
+                event.preventDefault(); // Prevent default action
             } else {
                 errorMessage.style.display = 'none';
-                password.setAttribute('required', 'required');
-                passwordAgain.setAttribute('required', 'required');
             }
-        } else {
-            errorMessage.style.display = 'none';
-            password.removeAttribute('required');
-            passwordAgain.removeAttribute('required');
-        }
+        
     });
 
 </script>
