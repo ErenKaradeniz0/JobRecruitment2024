@@ -33,6 +33,10 @@
         @Html.TextBoxFor(model => model.Job.job_name, new { required = "required" })
         @Html.Raw("<br><br>")
 
+        @Html.LabelFor(model => model.Job.job_description, "Job Descrition:")
+        @Html.TextBoxFor(model => model.Job.job_description, new { required = "required" })
+        @Html.Raw("<br><br>")
+
         @Html.LabelFor(model => model.Job.employee_limit, "Employee Limit:")
         @Html.TextBoxFor(model => model.Job.employee_limit, new { required = "required" })
         @Html.Raw("<br><br>")
@@ -52,19 +56,26 @@
                     <h3>@job.job_name</h3>
                     <p>Employee Limit: @job.employee_limit</p>
                     <button class="editButton" data-jobid="@job.job_id">Edit</button>
-                    <form id="editForm_@job.job_id" class="editForm" style="display: none;" method="post" action="@Url.Action("Edit", "Job", new { id = job.job_id })">
-                        @Html.LabelFor(model => job.job_name, "Job Name:")
-                        @Html.TextBoxFor(model => job.job_name)
-                        @Html.ValidationMessageFor(model => job.job_name)
-                        <br />
+<!-- Update in View -->
+<form id="editForm_@job.job_id" class="editForm" style="display: none;" method="post" action="@Url.Action("Edit", "Job")">
+    @Html.HiddenFor(model => model.Job.job_id) <!-- Use the model properties to bind the fields -->
+    @Html.HiddenFor(model => model.Job.dep_id)
 
-                        @Html.LabelFor(model => job.employee_limit, "Employee Limit:")
-                        @Html.TextBoxFor(model => job.employee_limit)
-                        @Html.ValidationMessageFor(model => job.employee_limit)
-                        <br />
+    @Html.LabelFor(model => model.Job.job_name, "Job Name:")
+    @Html.TextBoxFor(model => model.Job.job_name)
+    <br />
 
-                        @*<input type="submit" value="Update" />*@
-                    </form>
+        @Html.LabelFor(model => model.Job.job_description, "Job Descrition:")
+    @Html.TextBoxFor(model => model.Job.job_description, new { required = "required" })
+    <br />
+
+    @Html.LabelFor(model => model.Job.employee_limit, "Employee Limit:")
+    @Html.TextBoxFor(model => model.Job.employee_limit)
+    <br />
+
+    <input type="submit" value="Update" />
+</form>
+
 
                     <form method="post" action="@Url.Action("Delete", "Job")">
                         <input type="hidden" name="id" value="@job.job_id" />

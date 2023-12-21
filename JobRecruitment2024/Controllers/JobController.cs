@@ -26,7 +26,7 @@ namespace JobRecruitment2024.Controllers
         public void Create(Jobs job)
         {
             if (ModelState.IsValid)
-            {   
+            {
                 _context.Jobs.Add(job);
                 _context.SaveChanges();
             }
@@ -43,29 +43,37 @@ namespace JobRecruitment2024.Controllers
 
             _context.Jobs.Remove(job);
             _context.SaveChanges();
-            return RedirectToAction("ManageJobPosting", "Manager"); 
+            return RedirectToAction("ManageJobPosting", "Manager");
         }
 
         [HttpGet]
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int job_id)
         {
-            var job = _context.Jobs.Find(id);
+            var jobtest = job_id;
 
-            return View("ManageJobPosting","Manager");
+            return View("ManageJobPosting", "Manager");
         }
 
         [HttpPost]
-        public ActionResult Edit(Jobs job)
+        public ActionResult Edit(Jobs model)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Entry(job).State = EntityState.Modified;
-                _context.SaveChanges();
-                return RedirectToAction("Index"); // Redirect to job listing or another appropriate action
-            }
-            return View(job);
-    
-        }
 
+                var job = _context.Jobs.Find(model.job_id);
+
+                if (job != null && ModelState.IsValid)
+                {
+
+                    job.job_name = model.job_name;
+                    job.employee_limit = model.employee_limit;
+
+                    // Save changes to the database
+                    _context.SaveChanges();
+
+                    return RedirectToAction("ManageJobPosting", "Manager");
+                }
+
+                // If the job was not found or the model state is invalid, return to the view with the job
+                return View(job);
+            }
+        }
     }
-}

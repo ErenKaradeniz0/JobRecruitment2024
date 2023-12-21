@@ -1,8 +1,48 @@
-﻿
+﻿@model List<JobRecruitment2024.Models.Jobs>
+
 @{
     ViewBag.Title = "ApplyJob";
 }
 
+@if (ViewBag.SuccessMessage != null)
+{
+    <p>@ViewBag.SuccessMessage</p>
+}
+
+
+@if (ViewBag.ErrorMessage == "User not found. Redirecting Log in...")
+{
+    <p>@ViewBag.ErrorMessage</p>
+    <script>
+    setTimeout(function () {
+        window.location.href = '@Url.Action("UserLoginPage", "User")';
+    }, 3000); // Redirect after 3 seconds
+    </script>
+}
+
 <h2>ApplyJob</h2>
+
+<!-- Display available jobs -->
+<h2>Available Jobs</h2>
+@if (Model != null && Model.Any())
+{
+    <ul>
+        @foreach (var job in Model)
+        {
+            <li>
+                <h3>@job.job_name</h3>
+                <p>@job.job_description</p>
+                <form method="post" action="@Url.Action("ApplyJob", "User")">
+                    @Html.Hidden("job_id_apply", job.job_id) <!-- Pass the JobId -->
+                    <input type="submit" value="Apply" />
+                </form>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No jobs available</p>
+}
 
 <a href="UserMainPage">User Main Page</a>

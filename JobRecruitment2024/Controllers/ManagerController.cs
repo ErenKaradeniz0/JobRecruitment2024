@@ -164,6 +164,7 @@ namespace JobRecruitment2024.Controllers
             try
             { var job = new Jobs {
                 job_name = model.Job.job_name,
+                job_description = model.Job.job_description,
                 employee_limit = model.Job.employee_limit,
                 vacancy = model.Job.employee_limit,
                 dep_id = currentManager.dep_id,
@@ -178,7 +179,7 @@ namespace JobRecruitment2024.Controllers
             catch (Exception ex)
             {
 
-                ViewBag.ErrorMessage = "An error occurred while processing your request.";
+                ViewBag.ErrorMessage = "An error occurred while processing your request." +ex;
 
                 return View(model);
 

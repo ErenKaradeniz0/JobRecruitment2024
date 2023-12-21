@@ -12,6 +12,6 @@ namespace JobRecruitment2024.Models
         public int application_id { get; set; }
         public string app_status { get; set; }
         public int job_id { get; set; }
-        public int tc { get; set; }
+        public string tc { get; set; }
     }
 }

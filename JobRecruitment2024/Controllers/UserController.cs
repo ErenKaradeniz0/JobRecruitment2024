@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNet.Identity;
 using System.Web.Helpers;
 using System.Data.Entity.Infrastructure;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace JobRecruitment2024.Controllers
 {
@@ -88,7 +89,7 @@ namespace JobRecruitment2024.Controllers
                 }
                 catch (DbUpdateException ex)
                 {
-                        ViewBag.ErrorMessage = "An error occurred while processing your request.";
+                        ViewBag.ErrorMessage = "An error occurred while processing your request."+ex;
 
                     return View(model);
                 }
@@ -189,9 +190,70 @@ namespace JobRecruitment2024.Controllers
             return View(updatedUser);
         }
 
+        // Action to display available jobs
+
+
+        [HttpGet]
         public ActionResult ApplyJob()
         {
-            return View();
+            try
+            {
+                string userEmail = Session["UserEmail"] as string;
+                var currentUser = _context.Users.FirstOrDefault(u => u.email == userEmail);
+
+                if (currentUser != null)
+                {
+                    var appliedJobsForUser = _context.Applications
+                       .Where(a => a.tc == currentUser.tc)
+                       .Select(a => a.job_id)
+                       .ToList();
+
+                    var availableJobs = _context.Jobs.Where(j => !appliedJobsForUser.Contains(j.job_id)).ToList();
+                    return View(availableJobs);
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "User not found. Redirecting Log in...";
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "An error occurred while processing your request. "+ex;
+                                                                                          
+                return View();
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult ApplyJob(int job_id_apply)
+        {
+            string userEmail = Session["UserEmail"] as string;
+            var user = _context.Users.FirstOrDefault(u => u.email == userEmail);
+
+            var existingApplication = _context.Applications
+                    .FirstOrDefault(a => a.tc == user.tc && a.job_id == job_id_apply);
+
+
+            if (existingApplication != null)
+            {
+                ViewBag.ErrorMessage = "You've already applied for this job.";
+                return View();
+            }
+
+            var application = new Applications
+            {
+                tc = user.tc,
+                job_id = job_id_apply,
+                app_status ="Pending",
+
+            };
+
+            _context.Applications.Add(application);
+            _context.SaveChanges();
+
+            return RedirectToAction("ApplyJob");
         }
 
         public ActionResult MyApplications()
