@@ -185,6 +185,10 @@ namespace JobRecruitment2024.Controllers
             return View(updatedUser);
         }
 
+        public ActionResult UserDeleteAccount()
+        {
+            return View();
+        }
     }
 }
 

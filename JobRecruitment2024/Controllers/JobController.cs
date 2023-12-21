@@ -16,14 +16,9 @@ namespace JobRecruitment2024.Controllers
         {
             _context = new DbContextViewModel();
         }
-        public ActionResult Index()
-        {
-            return View();
-        }
-
 
         [HttpPost]
-        public void Create(Jobs job)
+        public void JobCreate(Jobs job)
         {
             if (ModelState.IsValid)
             {
@@ -33,7 +28,7 @@ namespace JobRecruitment2024.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(int id)
+        public ActionResult JobDelete(int id)
         {
             var job = _context.Jobs.Find(id);
             if (job == null)
@@ -47,7 +42,7 @@ namespace JobRecruitment2024.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(int job_id)
+        public ActionResult JobUpdate(int job_id)
         {
             var jobtest = job_id;
 

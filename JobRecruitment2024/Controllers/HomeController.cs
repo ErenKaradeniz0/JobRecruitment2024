@@ -43,7 +43,7 @@ namespace JobRecruitment2024.Controllers
             if (referrerUrl.Contains("Manager"))
                 Session["userType"] = "Manager";
 
-            else if (referrerUrl.Contains("User"));
+            else if (referrerUrl.Contains("User"))
                Session["userType"] = "User";
 
             return View();

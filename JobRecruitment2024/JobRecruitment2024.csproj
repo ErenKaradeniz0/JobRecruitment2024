@@ -294,6 +294,7 @@
     <Content Include="Views\Application\ApplyJob.cshtml" />
     <Content Include="Views\Application\MyApplications.cshtml" />
     <Content Include="Views\Job\Edit.cshtml" />
+    <Content Include="Views\User\UserDeleteAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -170,7 +170,7 @@ namespace JobRecruitment2024.Controllers
                 dep_id = currentManager.dep_id,
                 //fix vacany
             };
-                _jobController.Create(job);
+                _jobController.JobCreate(job);
                 var jobs = _context.Jobs.ToList();
                 model.JobsList = jobs;
                 ViewBag.SuccessMessage = "Registration successful.";
