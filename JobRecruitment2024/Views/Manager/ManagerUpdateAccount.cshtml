@@ -73,29 +73,34 @@ else
 
 
 <script>
+    var newPasswordInput = document.getElementById('newPassword');
+    var newPasswordAgainInput = document.getElementById('newPasswordAgain');
+    var errorMessage = document.getElementById('errorMessage');
+
     document.getElementById('changePasswordCheckbox').addEventListener('change', function () {
         var passwordField = document.getElementById('passwordField');
 
         if (this.checked) {
             passwordField.style.display = 'block';
             // Make password fields required
-            document.getElementById('newPassword').setAttribute('required', 'required');
-            document.getElementById('newPasswordAgain').setAttribute('required', 'required');
+            newPasswordInput.setAttribute('required', 'required');
+            newPasswordAgainInput.setAttribute('required', 'required');
+
         } else {
             passwordField.style.display = 'none';
             errorMessage.style.display = 'none';
             // Remove required attribute when checkbox is unchecked
-            document.getElementById('newPassword').removeAttribute('required');
-            document.getElementById('newPasswordAgain').removeAttribute('required');
+            newPasswordInput.removeAttribute('required');
+            newPasswordAgainInput.removeAttribute('required');
         }
     });
 
     document.getElementById('updateForm').addEventListener('submit', function (event) {
         var newPasswordInput = document.getElementById('newPassword');
         var newPasswordAgainInput = document.getElementById('newPasswordAgain');
-        var errorMessage = document.getElementById('errorMessage');
 
-        if (newPasswordInput.value == null && newPasswordAgainInput.value == null && newPasswordInput.value !== newPasswordAgainInput.value) {
+
+        if (newPasswordInput.value !== newPasswordAgainInput.value) {
             // Display error message and prevent form submission
             errorMessage.textContent = 'Passwords do not match';
             errorMessage.style.display = 'block';

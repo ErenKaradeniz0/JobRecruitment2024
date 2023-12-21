@@ -23,16 +23,13 @@ namespace JobRecruitment2024.Controllers
 
 
         [HttpPost]
-        public ActionResult Create(Jobs job)
+        public void Create(Jobs job)
         {
             if (ModelState.IsValid)
-            {
+            {   
                 _context.Jobs.Add(job);
                 _context.SaveChanges();
-                return RedirectToAction("ManageJobPosting", "Manager"); // Redirect to home or other appropriate action
             }
-
-            return View(job);
         }
 
         [HttpPost]
@@ -46,18 +43,15 @@ namespace JobRecruitment2024.Controllers
 
             _context.Jobs.Remove(job);
             _context.SaveChanges();
-            return RedirectToAction("ManageJobPosting", "Manager"); // Redirect to home or other appropriate action
+            return RedirectToAction("ManageJobPosting", "Manager"); 
         }
 
         [HttpGet]
         public ActionResult Edit(int id)
         {
             var job = _context.Jobs.Find(id);
-            if (job == null)
-            {
-                return HttpNotFound(); // Handle job not found
-            }
-            return View(job);
+
+            return View("ManageJobPosting","Manager");
         }
 
         [HttpPost]

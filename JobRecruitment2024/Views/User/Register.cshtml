@@ -41,16 +41,16 @@
     @Html.TextBoxFor(model => model.email, new { type = "email", required = "required" })
     @Html.Raw("<br><br>")
 
-    @Html.LabelFor(model => model.phone_num, "Phone Number:")
-    @Html.TextBoxFor(model => model.phone_num, new { required = "required" })
-    @Html.Raw("<br><br>")
-
     @Html.LabelFor(model => model.password, "Password:")
     @Html.PasswordFor(model => model.password, new { id = "Password", required = "required" })
     @Html.Raw("<br><br>")
 
     @Html.Label("PasswordAgain", "Password Again:")
     @Html.Password("PasswordAgain", null, new { id = "PasswordAgain", required = "required" })
+    @Html.Raw("<br><br>")
+
+    @Html.LabelFor(model => model.phone_num, "Phone Number:")
+    @Html.TextBoxFor(model => model.phone_num, new { required = "required" })
     @Html.Raw("<br><br>")
 
 

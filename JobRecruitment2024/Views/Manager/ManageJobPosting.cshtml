@@ -1,40 +1,120 @@
-﻿@model IEnumerable<JobRecruitment2024.Models.Jobs> 
+﻿@model JobRecruitment2024.Models.JobViewModel
 
 @{
     ViewBag.Title = "ManageJobPosting";
 }
 
 <h2>@ViewBag.Title</h2>
+<h1>@ViewBag.Status</h1>
 
-
-
-
-<!-- Display the list of jobs -->
-@foreach (var job in Model)
+@if (ViewBag.SuccessMessage != null)
 {
-    <div>
-        <h3>@job.job_name</h3>
-        <p>Employee Limit: @job.employee_limit</p>
-        <!-- Add buttons for Edit and Delete -->
-        <form method="post" action="@Url.Action("Edit", "Job")">
-            <input type="hidden" name="job_id" value="@job.job_id" />
-            <input type="submit" value="Edit" />
-        </form>
-        <form method="post" action="@Url.Action("Delete", "Job")">
-            <input type="hidden" name="id" value="@job.job_id" />
-            <input type="submit" value="Delete" />
-        </form>
-    </div>
+    <p>@ViewBag.SuccessMessage</p>
 }
 
-<!-- Form for creating a new job -->
-<form method="post" action="@Url.Action("Create", "Job")">
-    <label for="job_name">Job Name:</label>
-    <input type="text" name="job_name" /><br />
-    <label for="employee_limit">Employee Limit:</label>
-    <input type="number" name="employee_limit" /><br />
-    <input type="submit" value="Create Job" />
-</form>
+
+@if (ViewBag.ErrorMessage == "Manager not found. Redirecting Login Page...")
+{
+    <p>@ViewBag.ErrorMessage</p>
+    <script>
+        setTimeout(function () {
+            window.location.href = '@Url.Action("ManagerLoginPage", "Manager")';
+        }, 3000); // Redirect after 3 seconds
+    </script>
+}
+
+<button id="createButton">Create</button>
+
+@Html.Raw("<br><br>")
+
+<div id="Create" style="display:none">
+    <form method="post">
+        @Html.LabelFor(model => model.Job.job_name, "Job Name:")
+        @Html.TextBoxFor(model => model.Job.job_name, new { required = "required" })
+        @Html.Raw("<br><br>")
+
+        @Html.LabelFor(model => model.Job.employee_limit, "Employee Limit:")
+        @Html.TextBoxFor(model => model.Job.employee_limit, new { required = "required" })
+        @Html.Raw("<br><br>")
+
+        <input type="submit" value="Create Job" />
+    </form>
+</div>
+
+<div id="Read">
+    @if (Model != null && Model.JobsList != null)
+    {
+        if (Model.JobsList.Any())
+        {
+            foreach (var job in Model.JobsList)
+            {
+                <div>
+                    <h3>@job.job_name</h3>
+                    <p>Employee Limit: @job.employee_limit</p>
+                    <button class="editButton" data-jobid="@job.job_id">Edit</button>
+                    <form id="editForm_@job.job_id" class="editForm" style="display: none;" method="post" action="@Url.Action("Edit", "Job", new { id = job.job_id })">
+                        @Html.LabelFor(model => job.job_name, "Job Name:")
+                        @Html.TextBoxFor(model => job.job_name)
+                        @Html.ValidationMessageFor(model => job.job_name)
+                        <br />
+
+                        @Html.LabelFor(model => job.employee_limit, "Employee Limit:")
+                        @Html.TextBoxFor(model => job.employee_limit)
+                        @Html.ValidationMessageFor(model => job.employee_limit)
+                        <br />
+
+                        @*<input type="submit" value="Update" />*@
+                    </form>
+
+                    <form method="post" action="@Url.Action("Delete", "Job")">
+                        <input type="hidden" name="id" value="@job.job_id" />
+                        <input type="submit" value="Delete" />
+                    </form>
+                </div>
+            }
+        }
+        else
+        {
+            <div id="errorMessage" style="color: red;">No Jobs Found.</div>
+        }
+    }
+</div>
+
 
 
 <a href="ManagerMainPage">Manager Main Page</a>
+
+
+<script>
+    document.getElementById('createButton').addEventListener('click', function () {
+        var createDiv = document.getElementById('Create');
+        if (createDiv.style.display === 'none') {
+            createDiv.style.display = 'block';
+            document.getElementById("errorMessage").style.display = "block";
+        }
+        else {
+            createDiv.style.display = 'none';
+            document.getElementById("errorMessage").style.display = "none";
+        }
+    });
+
+</script>
+
+@section scripts {
+<script>
+    // Toggle the edit form display for each job
+    var editButtons = document.getElementsByClassName('editButton');
+    for (var i = 0; i < editButtons.length; i++) {
+        editButtons[i].addEventListener('click', function () {
+            var jobId = this.getAttribute('data-jobid');
+            var editForm = document.getElementById('editForm_' + jobId);
+
+            if (editForm.style.display === 'none') {
+                editForm.style.display = 'block';
+            } else {
+                editForm.style.display = 'none';
+            }
+        });
+    }
+</script>
+}

@@ -46,11 +46,6 @@ else
     @Html.TextBoxFor(model => model.email, new { type = "email", required = "required" })
     @Html.Raw("<br><br>")
 
-    @Html.LabelFor(model => model.phone_num, "Phone Number:")
-    @Html.TextBoxFor(model => model.phone_num)
-    @Html.ValidationMessageFor(model => model.phone_num)
-    @Html.Raw("<br><br>")
-
     @Html.CheckBox("changePassword", new { id = "changePasswordCheckbox" })
     @Html.Label("changePassword", "Change Password")
     @Html.Raw("<br><br>")
@@ -65,17 +60,22 @@ else
         @Html.Raw("<br><br>")
     </div>
 
+    @Html.LabelFor(model => model.phone_num, "Phone Number:")
+    @Html.TextBoxFor(model => model.phone_num)
+    @Html.ValidationMessageFor(model => model.phone_num)
+    @Html.Raw("<br><br>")
     <button type="submit">Update Account</button>
 }
 
 
 <script>
-    var passwordField = document.getElementById('passwordField');
+
     var newPasswordInput = document.getElementById('newPassword');
     var newPasswordAgainInput = document.getElementById('newPasswordAgain');
     var errorMessage = document.getElementById('errorMessage');
 
     document.getElementById('changePasswordCheckbox').addEventListener('change', function () {
+        var passwordField = document.getElementById('passwordField');
 
         if (this.checked) {
             passwordField.style.display = 'block';
@@ -95,15 +95,15 @@ else
     document.getElementById('updateForm').addEventListener('submit', function (event) {
 
 
-            if (newPasswordInput.value !== newPasswordAgainInput.value) {
-                // Display error message and prevent form submission
-                errorMessage.textContent = 'Passwords do not match';
-                errorMessage.style.display = 'block';
-                event.preventDefault(); // Prevent default action
-            } else {
-                errorMessage.style.display = 'none';
-            }
-        
+        if (newPasswordInput.value !== newPasswordAgainInput.value) {
+            // Display error message and prevent form submission
+            errorMessage.textContent = 'Passwords do not match';
+            errorMessage.style.display = 'block';
+            event.preventDefault(); // Prevent default action
+        } else {
+            errorMessage.style.display = 'none';
+        }
+
     });
 
 </script>

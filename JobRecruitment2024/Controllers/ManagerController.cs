@@ -20,12 +20,12 @@ namespace JobRecruitment2024.Controllers
         }
 
         [HttpGet]
-        public ActionResult Login()
+        public ActionResult ManagerLoginPage()
         {
             return View();
         }
         [HttpPost]
-        public ActionResult Login(string username, string password)
+        public ActionResult ManagerLoginPage(string username, string password)
         {
             Session["ManagerUsername"] = username;
             var manager = _context.Managers.FirstOrDefault(u => u.username == username && u.password == password);
@@ -37,7 +37,7 @@ namespace JobRecruitment2024.Controllers
                 return RedirectToAction("ManagerMainPage");
             }
 
-            string errorMessage = "Invalid email or password.";
+            string errorMessage = "Invalid username or password.";
             ViewData["ErrorMessage"] = errorMessage;
             return View();
         }
@@ -99,7 +99,7 @@ namespace JobRecruitment2024.Controllers
            
                     _context.SaveChanges();
 
-                    ViewBag.SuccessMessage = "Account information updated successfully.Redirecting mainpage...";
+                    ViewBag.SuccessMessage = "Account information updated successfully. Redirecting mainpage...";
                 }
                 catch (Exception ex)
                 {
@@ -124,19 +124,66 @@ namespace JobRecruitment2024.Controllers
         }
 
 
+        
+        private readonly JobController _jobController = new JobController();
 
+        [HttpGet]
         public ActionResult ManageJobPosting()
         {
+            string ManagerUsername = Session["ManagerUsername"] as string;
+            Managers currentManager = _context.Managers.FirstOrDefault(m => m.username == ManagerUsername);
+            if (currentManager == null)
+            {
+                ViewBag.ErrorMessage = "Manager not found. Redirecting Login Page...";
+                return View();
+            }
             var jobs = _context.Jobs.ToList();
 
             if (jobs == null || !jobs.Any())
             {
-                // Handle the case where 'jobs' is null or empty
-                // For example, redirect to an error page or provide a message
-                return View("NoJobsFound");
+                ViewBag.ErrorMessage = "No Jobs Found. Redirecting mainpage...";
             }
 
-            return View(jobs); // Pass the 'jobs' model to the view
+            var jobViewModel = new JobViewModel
+            {
+                JobsList = jobs,
+                Job = null
+            };
+
+            return View(jobViewModel); // Pass the 'jobViewModel' to the view
+        }
+ 
+
+        [HttpPost]
+        public ActionResult ManageJobPosting(JobViewModel model)
+        {
+            string ManagerUsername = Session["ManagerUsername"] as string;
+            Managers currentManager = _context.Managers.FirstOrDefault(m => m.username == ManagerUsername);
+
+
+            try
+            { var job = new Jobs {
+                job_name = model.Job.job_name,
+                employee_limit = model.Job.employee_limit,
+                vacancy = model.Job.employee_limit,
+                dep_id = currentManager.dep_id,
+                //fix vacany
+            };
+                _jobController.Create(job);
+                var jobs = _context.Jobs.ToList();
+                model.JobsList = jobs;
+                ViewBag.SuccessMessage = "Registration successful.";
+                return View("ManageJobPosting", model);
+            }
+            catch (Exception ex)
+            {
+
+                ViewBag.ErrorMessage = "An error occurred while processing your request.";
+
+                return View(model);
+
+
+            }
         }
         public ActionResult ManageApplications()
         {
@@ -148,7 +195,7 @@ namespace JobRecruitment2024.Controllers
             return View();
         }
 
-        private readonly JobController _jobController = new JobController();
+
 
 
     }

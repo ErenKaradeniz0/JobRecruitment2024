@@ -23,13 +23,13 @@ namespace JobRecruitment2024.Controllers
         }
 
         [HttpGet]
-        public ActionResult Login()
+        public ActionResult UserLoginPage()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Login(string email, string password)
+        public ActionResult UserLoginPage(string email, string password)
         {
             Session["UserEmail"] = email;
             var user = _context.Users.FirstOrDefault(u => u.email == email && u.password == password);
