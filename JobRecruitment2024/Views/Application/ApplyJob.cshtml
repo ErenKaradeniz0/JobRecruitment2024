@@ -32,7 +32,7 @@
             <li>
                 <h3>@job.job_name</h3>
                 <p>@job.job_description</p>
-                <form method="post" action="@Url.Action("ApplyJob", "User")">
+                <form method="post" action="@Url.Action("ApplyJob")">
                     @Html.Hidden("job_id_apply", job.job_id) <!-- Pass the JobId -->
                     <input type="submit" value="Apply" />
                 </form>
@@ -45,4 +45,4 @@ else
     <p>No jobs available</p>
 }
 
-<a href="UserMainPage">User Main Page</a>
+<a href="@Url.Action("UserMainPage", "User")">User Main Page</a>

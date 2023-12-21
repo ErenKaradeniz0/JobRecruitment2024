@@ -16,5 +16,6 @@ namespace JobRecruitment2024.Models
         public int vacancy {  get; set; }
         public int dep_id { get; set; }
 
+    
     }
 }

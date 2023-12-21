@@ -22,13 +22,13 @@ namespace JobRecruitment2024.Controllers
             try
             {
                 var users = _context.Managers.ToList();
-                ViewBag.Message = "Bağlantı Başarılı!";
+                ViewBag.Message = "Connection successful!!";
             }
             catch (Exception ex)
             {
                 while (ex != null)
                 {
-                    ViewBag.Message = "Bağlantı Başarısız" +ex.Message;
+                    ViewBag.Message = "Connection unsuccessful! " + ex.Message;
                     Console.WriteLine(ex.Message);
                     ex = ex.InnerException;
                 }
@@ -39,6 +39,13 @@ namespace JobRecruitment2024.Controllers
         [HttpGet]
         public ActionResult Forgot_Password()
         {
+            string referrerUrl = Request.UrlReferrer?.ToString();
+            if (referrerUrl.Contains("Manager"))
+                Session["userType"] = "Manager";
+
+            else if (referrerUrl.Contains("User"));
+               Session["userType"] = "User";
+
             return View();
         }
 
@@ -46,10 +53,23 @@ namespace JobRecruitment2024.Controllers
         public ActionResult Forgot_Password(string email)
         {
             string newPassword = GenerateRandomPassword();
-
+            string userType = Session["userType"] as string;
+            if (userType == "Manager")
+            {
+                var client = _context.Managers.FirstOrDefault(m => m.email == email);
+                client.password = newPassword;
+            }
+            else if (userType == "User")
+            {
+                var client = _context.Users.FirstOrDefault(u => u.email == email);
+                client.password = newPassword;
+            }
+             
+     
             if (SendPasswordResetEmail(email, newPassword))
             {
                 ViewBag.SuccessMessage = "A new password has been sent to your email.";
+                _context.SaveChanges();
             }
             else
             {
