@@ -6,75 +6,85 @@
 
 <h2>ManageApplications</h2>
 
-@if (Model != null && Model.Any())
+@if (Model != null)
 {
-    <table border="1" id="pendingTable">
-        <tr>
-            <th>Application ID</th>
-            <th>Applicant TC</th>
-            <th>Job ID</th>
-            <th>Application Status</th>
-            <th>Action</th>
-        </tr>
-        @foreach (var application in Model)
-        {
-            if (application.app_status == "Pending")
+    if (Model.Any())
+    {
+        <table border="1" id="pendingTable">
+            <tr>
+                <th>Application ID</th>
+                <th>Applicant TC</th>
+                <th>Job ID</th>
+                <th>Application Status</th>
+                <th>Action</th>
+            </tr>
+            @foreach (var application in Model)
             {
-                <tr>
-                    <td>@application.application_id</td>
-                    <td>@application.tc</td>
-                    <td>@application.job_id</td>
-                    <td>@application.app_status</td>
+                if (application.app_status == "Pending")
+                {
+                    <tr>
+                        <td>@application.application_id</td>
+                        <td>@application.tc</td>
+                        <td>@application.job_id</td>
+                        <td>@application.app_status</td>
 
-                    <td>
-                        @using (Html.BeginForm("AcceptApplication", "Application", FormMethod.Post))
-                        {
-                            @Html.Hidden("application_id", application.application_id)
-                            <input type="submit" value="Accept">
-                        }
+                        <td>
+                            @using (Html.BeginForm("AcceptApplication", "Application", FormMethod.Post))
+                            {
+                                @Html.Hidden("application_id", application.application_id)
+                                <input type="submit" value="Accept">
+                            }
 
-                        @using (Html.BeginForm("RejectApplication", "Application", FormMethod.Post))
-                        {
-                            @Html.Hidden("application_id", application.application_id)
-                            <input type="submit" value="Reject">
-                        }
-                    </td>
-                </tr>
+                            @using (Html.BeginForm("RejectApplication", "Application", FormMethod.Post))
+                            {
+                                @Html.Hidden("application_id", application.application_id)
+                                <input type="submit" value="Reject">
+                            }
+                        </td>
+                    </tr>
+                }
             }
-        }
-    </table>
+        </table>
 
 
-    <table border="1" id="processedTable" style="display:none">
-        <tr>
-            <th>Application ID</th>
-            <th>Applicant TC</th>
-            <th>Job ID</th>
-            <th>Application Status</th>
-        </tr>
+        <table border="1" id="processedTable" style="display:none">
+            <tr>
+                <th>Application ID</th>
+                <th>Applicant TC</th>
+                <th>Job ID</th>
+                <th>Application Status</th>
+            </tr>
 
-        @foreach (var application in Model)
-        {
-            if (application.app_status != "Pending")
+            @foreach (var application in Model)
             {
-                <tr>
-                    <td>@application.application_id</td>
-                    <td>@application.tc</td>
-                    <td>@application.job_id</td>
-                    <td>@application.app_status</td>
-                </tr>
+                if (application.app_status != "Pending")
+                {
+                    <tr>
+                        <td>@application.application_id</td>
+                        <td>@application.tc</td>
+                        <td>@application.job_id</td>
+                        <td>@application.app_status</td>
+                    </tr>
+                }
             }
-        }
-    </table>
+        </table>
 
-    <button onclick="toggleTables()" id="toggleButton">Show Processed Applications</button>
+        <button onclick="toggleTables()" id="toggleButton">Show Processed Applications</button>
+    }
+    else
+    {
+        <p> You don't received any applications for your job postings</p>
+    }
 }
 else
-{
-<p> You don't received any applications for your job postings</p>
+{<p>@ViewBag.ErrorMessage</p>
+<script>
+        setTimeout(function () {
+            window.location.href = '@Url.Action("ManagerLoginPage", "Manager")';
+        }, 3000); // Redirect after 3 seconds
+</script>
 }
 
-<br />
 <a href="@Url.Action("ManagerMainPage", "Manager")">Manager Main Page</a>
 
 <script>

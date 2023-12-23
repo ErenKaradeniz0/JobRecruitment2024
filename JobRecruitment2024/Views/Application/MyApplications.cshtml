@@ -6,7 +6,7 @@
 
 <h2>My Applications</h2>
 
-@if (ViewBag.SuccessMessage != null)
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
 {
     <p>@ViewBag.SuccessMessage</p>
 }

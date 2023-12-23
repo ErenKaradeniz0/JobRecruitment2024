@@ -7,70 +7,68 @@
 
 <div id="errorMessage" style="display: none; color: red;">Passwords do not match!</div>
 
-@if (ViewBag.SuccessMessage != null)
+@if (Model != null)
 {
-    <p>@ViewBag.SuccessMessage</p>
-    <script>
+    if (ViewBag.SuccessMessage != null)
+    {
+        <p>@ViewBag.SuccessMessage</p>
+        <script>
         setTimeout(function () {
             window.location.href = '@Url.Action("ManagerMainPage", "Manager")';
         }, 3000); // Redirect after 3 seconds
-    </script>
+        </script>
+    }
+    else if (ViewBag.ErrorMessage != null)
+    {
+        <p>@ViewBag.ErrorMessage </p>
+    }
+    using (Html.BeginForm("ManagerUpdateAccount", "Manager", FormMethod.Post, new { id = "updateForm" }))
+    {
+        @Html.LabelFor(model => model.username, "Username:")
+        @Html.TextBoxFor(model => model.username, new { required = "required" })
+        @Html.Raw("<br><br>")
+
+        @Html.LabelFor(model => model.name, "Name:")
+        @Html.TextBoxFor(model => model.name, new { required = "required" })
+        @Html.Raw("<br><br>")
+
+        @Html.LabelFor(model => model.surname, "Surname:")
+        @Html.TextBoxFor(model => model.surname, new { required = "required" })
+        @Html.Raw("<br><br>")
+
+        @Html.LabelFor(model => model.email, "Email:")
+        @Html.TextBoxFor(model => model.email, new { type = "email" })
+        @Html.Raw("<br><br>")
+
+        @Html.CheckBox("changePassword", new { id = "changePasswordCheckbox" })
+        @Html.Label("changePassword", "Change Password")
+        @Html.Raw("<br><br>")
+
+        <div id="passwordField" style="display: none;">
+            @Html.LabelFor(model => model.password, "New Password:")
+            @Html.PasswordFor(model => model.password, new { id = "newPassword" })
+            @Html.Raw("<br><br>")
+
+            @Html.Label("newPasswordAgain", "New Password Again:")
+            @Html.Password("newPasswordAgain", null)
+            @Html.Raw("<br><br>")
+        </div>
+
+        @Html.LabelFor(model => model.phone_num, "Phone:")
+        @Html.TextBoxFor(model => model.phone_num, new { required = "required" })
+        @Html.Raw("<br><br>")
+
+        <button type="submit">Update Account</button>
+    }
 }
-
-
-@if (ViewBag.ErrorMessage == "Manager not found. Redirecting Main Page")
+else
 {<p>@ViewBag.ErrorMessage</p>
 <script>
         setTimeout(function () {
-            window.location.href = '@Url.Action("Login", "Manager")';
+            window.location.href = '@Url.Action("ManagerLoginPage", "Manager")';
         }, 3000); // Redirect after 3 seconds
 </script>
 }
-else
-{
-<p>@ViewBag.ErrorMessage</p>
-}
-
-
-@using (Html.BeginForm("ManagerUpdateAccount", "Manager", FormMethod.Post, new { id = "updateForm" }))
-{
-    @Html.LabelFor(model => model.username, "Username:")
-    @Html.TextBoxFor(model => model.username, new { required = "required" })
-    @Html.Raw("<br><br>")
-
-    @Html.LabelFor(model => model.name, "Name:")
-    @Html.TextBoxFor(model => model.name, new { required = "required" })
-    @Html.Raw("<br><br>")
-
-    @Html.LabelFor(model => model.surname, "Surname:")
-    @Html.TextBoxFor(model => model.surname, new { required = "required" })
-    @Html.Raw("<br><br>")
-
-    @Html.LabelFor(model => model.email, "Email:")
-    @Html.TextBoxFor(model => model.email, new { type = "email" })
-    @Html.Raw("<br><br>")
-
-    @Html.CheckBox("changePassword", new { id = "changePasswordCheckbox" })
-    @Html.Label("changePassword", "Change Password")
-    @Html.Raw("<br><br>")
-
-    <div id="passwordField" style="display: none;">
-        @Html.LabelFor(model => model.password, "New Password:")
-        @Html.PasswordFor(model => model.password, new { id = "newPassword" })
-        @Html.Raw("<br><br>")
-
-        @Html.Label("newPasswordAgain", "New Password Again:")
-        @Html.Password("newPasswordAgain", null)
-        @Html.Raw("<br><br>")
-    </div>
-
-    @Html.LabelFor(model => model.phone_num, "Phone:")
-    @Html.TextBoxFor(model => model.phone_num, new { required = "required" })
-    @Html.Raw("<br><br>")
-
-    <button type="submit">Update Account</button>
-}
-
 
 <script>
     var newPasswordInput = document.getElementById('newPassword');

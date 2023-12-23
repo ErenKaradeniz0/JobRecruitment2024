@@ -5,7 +5,6 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<h1>@ViewBag.Status</h1>
 
 @if (ViewBag.SuccessMessage != null)
 {
@@ -13,45 +12,36 @@
 }
 
 
-@if (ViewBag.ErrorMessage == "Manager not found. Redirecting Login Page...")
+@if (Model != null && Model.JobsList != null)
 {
-    <p>@ViewBag.ErrorMessage</p>
-    <script>
-        setTimeout(function () {
-            window.location.href = '@Url.Action("ManagerLoginPage", "Manager")';
-        }, 3000); // Redirect after 3 seconds
-    </script>
-}
+    <button id="createButton">Create</button>
 
-<button id="createButton">Create</button>
-
-@Html.Raw("<br><br>")
-
-<div id="Create" style="display:none">
-    <form method="post">
-        @Html.LabelFor(model => model.job_name, "Job Name:")
-        @Html.TextBoxFor(model => model.job_name, new { required = "required" })
+    <div id="Create" style="display:none">
         @Html.Raw("<br><br>")
 
-        @Html.LabelFor(model => model.job_description, "Job Descrition:")
-        @Html.TextBoxFor(model => model.job_description, new { required = "required" })
-        @Html.Raw("<br><br>")
+        <form method="post">
+            @Html.LabelFor(model => model.job_name, "Job Name:")
+            @Html.TextBoxFor(model => model.job_name, new { required = "required" })
+            @Html.Raw("<br><br>")
 
-        @Html.LabelFor(model => model.employee_limit, "Employee Limit:")
-        @Html.TextBoxFor(model => model.employee_limit, new { required = "required" })
-        @Html.Raw("<br><br>")
+            @Html.LabelFor(model => model.job_description, "Job Descrition:")
+            @Html.TextBoxFor(model => model.job_description, new { required = "required" })
+            @Html.Raw("<br><br>")
 
-        <input type="submit" value="Create Job" />
-    </form>
-</div>
+            @Html.LabelFor(model => model.employee_limit, "Employee Limit:")
+            @Html.TextBoxFor(model => model.employee_limit, new { required = "required" })
+            @Html.Raw("<br><br>")
 
-<div id="Read">
-    @if (Model != null && Model.JobsList != null)
-    {
-        if (Model.JobsList.Any())
+            <input type="submit" value="Create Job" />
+        </form>
+    </div>
+
+    <div id="Read">
+
+        @if (Model.JobsList.Any())
         {
             foreach (var job in Model.JobsList)
-            {  
+            {
                 <div>
                     <h3>Name: @job.job_name</h3>
                     <p>Description: @job.job_description</p>
@@ -93,10 +83,18 @@
         {
             <div id="errorMessage" style="color: red;">No Jobs Found.</div>
         }
-    }
-</div>
 
-<a href="ManagerMainPage">Manager Main Page</a>
+    </div>
+}
+else
+{<p>@ViewBag.ErrorMessage</p>
+<script>
+        setTimeout(function () {
+            window.location.href = '@Url.Action("ManagerLoginPage", "Manager")';
+        }, 3000); // Redirect after 3 seconds
+</script>
+}
+<a href="@Url.Action("ManagerMainPage", "Manager")">Manager Main Page</a>
 
 
 <script>

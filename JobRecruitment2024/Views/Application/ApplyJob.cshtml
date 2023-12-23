@@ -4,6 +4,8 @@
     ViewBag.Title = "ApplyJob";
 }
 
+<h2>@ViewBag.Title</h2>
+
 @if (ViewBag.SuccessMessage != null)
 {
     <p>@ViewBag.SuccessMessage</p>
@@ -19,8 +21,6 @@
     }, 3000); // Redirect after 3 seconds
     </script>
 }
-
-<h2>ApplyJob</h2>
 
 <!-- Display available jobs -->
 <h2>Available Jobs</h2>

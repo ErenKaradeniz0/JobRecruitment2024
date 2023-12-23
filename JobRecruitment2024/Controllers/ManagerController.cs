@@ -45,6 +45,9 @@ namespace JobRecruitment2024.Controllers
 
         public ActionResult ManagerMainPage()
         {
+            if(Session["ManagerUsername"] == null)
+                ViewBag.ErrorMessage = "Manager not found. Redirecting Main Page...";
+            
             return View();
         }
 
@@ -63,7 +66,7 @@ namespace JobRecruitment2024.Controllers
                 }
                 else
                 {
-                    ViewBag.ErrorMessage = "Manager not found. Redirecting Main Page";
+                    ViewBag.ErrorMessage = "Manager not found. Redirecting Login Page...";
                     return View();
                 }
             }
@@ -125,75 +128,6 @@ namespace JobRecruitment2024.Controllers
         }
 
 
-        private readonly JobController _jobController = new JobController();
-
-        [HttpGet]
-        public ActionResult ManageJobPosting()
-        {
-            string ManagerUsername = Session["ManagerUsername"] as string;
-            Managers currentManager = _context.Managers.FirstOrDefault(m => m.username == ManagerUsername);
-            if (currentManager == null)
-            {
-                ViewBag.ErrorMessage = "Manager not found. Redirecting Login Page...";
-                return View();
-            }
-            var jobs = _context.Jobs.ToList();
-
-            if (jobs == null || !jobs.Any())
-            {
-                ViewBag.ErrorMessage = "No Jobs Found. Redirecting mainpage...";
-            }
-
-            var jobViewModel = new JobViewModel
-            {
-                JobsList = jobs
-            };
-
-            return View(jobViewModel); // Pass the 'jobViewModel' to the view
-        }
-
-
-        [HttpPost]
-        public ActionResult ManageJobPosting(JobViewModel model)
-        {
-            string ManagerUsername = Session["ManagerUsername"] as string;
-            Managers currentManager = _context.Managers.FirstOrDefault(m => m.username == ManagerUsername);
-
-
-            try
-            {
-                var job = new Jobs
-                {
-                    job_name = model.job_name,
-                    job_description = model.job_description,
-                    employee_limit = model.employee_limit,
-                    vacancy = model.employee_limit,
-                    dep_id = currentManager.dep_id,
-                    //fix vacany
-                };
-                _jobController.JobCreate(job);
-                var jobs = _context.Jobs.ToList();
-                model.JobsList = jobs;
-                ViewBag.SuccessMessage = "Registration successful.";
-                return View("ManageJobPosting", model);
-            }
-            catch (Exception ex)
-            {
-
-                ViewBag.ErrorMessage = "An error occurred while processing your request." + ex;
-
-                return View(model);
-
-
-            }
-        }
-      
-
-
-        public ActionResult ManageEmployees()
-        {
-            return View();
-        }
 
 
     }

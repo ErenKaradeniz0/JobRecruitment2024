@@ -100,6 +100,11 @@ namespace JobRecruitment2024.Controllers
                                                                 dep_id = job.dep_id,
                                                                 application_id = app.application_id
                                                             }).ToList();
+                    if (TempData["SuccessMessage"] != null)
+                    {
+                        ViewBag.SuccessMessage = TempData["SuccessMessage"];
+                    }
+
                     return View(userApplications);
                 }
                 else
@@ -126,11 +131,13 @@ namespace JobRecruitment2024.Controllers
 
             _context.Applications.Remove(application);
             _context.SaveChanges();
+            TempData["SuccessMessage"] = "You've deleted the selected job application.";
+
 
             // Redirect to the action that displays the updated application list
             return RedirectToAction("MyApplications");
         }
-
+        [HttpGet]
         public ActionResult ManageApplications()
         {
             string ManagerUsername = Session["ManagerUsername"] as string;
@@ -145,6 +152,7 @@ namespace JobRecruitment2024.Controllers
 
                 return View(applications); // Pass the list of applications to the view
             }
+            ViewBag.ErrorMessage = "Manager not found. Redirecting Main Page...";
 
             return View();
         }

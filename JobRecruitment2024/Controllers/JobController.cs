@@ -16,15 +16,75 @@ namespace JobRecruitment2024.Controllers
         {
             _context = new DbContextViewModel();
         }
+        [HttpGet]
+        public ActionResult ManageJobPosting()
+        {
+            string ManagerUsername = Session["ManagerUsername"] as string;
+            Managers currentManager = _context.Managers.FirstOrDefault(m => m.username == ManagerUsername);
+            if (currentManager == null)
+            {
+                ViewBag.ErrorMessage = "Manager not found. Redirecting Login Page...";
+                return View();
+            }
+            var jobs = _context.Jobs.ToList();
+
+            if (jobs == null || !jobs.Any())
+            {
+                ViewBag.ErrorMessage = "No Jobs Found. Redirecting mainpage...";
+            }
+
+            var jobViewModel = new JobViewModel
+            {
+                JobsList = jobs
+            };
+
+            return View(jobViewModel); // Pass the 'jobViewModel' to the view
+        }
+
 
         [HttpPost]
-        public void JobCreate(Jobs job)
+        public ActionResult ManageJobPosting(JobViewModel model)
+        {
+            string ManagerUsername = Session["ManagerUsername"] as string;
+            Managers currentManager = _context.Managers.FirstOrDefault(m => m.username == ManagerUsername);
+
+            try
+            {
+                var job = new Jobs
+                {
+                    job_name = model.job_name,
+                    job_description = model.job_description,
+                    employee_limit = model.employee_limit,
+                    vacancy = model.employee_limit,
+                    dep_id = currentManager.dep_id,
+                    //fix vacany
+                };
+                model.JobsList = JobCreate(job);
+
+                ViewBag.SuccessMessage = "Job created successfully.";
+                return View("ManageJobPosting", model);
+            }
+            catch (Exception ex)
+            {
+
+                ViewBag.ErrorMessage = "An error occurred while processing your request." + ex;
+
+                return View(model);
+            }
+        }
+        [HttpPost]
+        public List<Jobs> JobCreate(Jobs job)
         {
             if (ModelState.IsValid)
             {
                 _context.Jobs.Add(job);
                 _context.SaveChanges();
+
+                var jobs = _context.Jobs.ToList();
+                return jobs;
             }
+            else
+                return null;
         }
 
         [HttpPost]
@@ -48,30 +108,39 @@ namespace JobRecruitment2024.Controllers
             _context.Jobs.Remove(job);
             _context.SaveChanges();
 
-            return RedirectToAction("ManageJobPosting", "Manager");
+            return RedirectToAction("ManageJobPosting", "Job");
         }
 
         [HttpPost]
         public ActionResult JobUpdate(Jobs model)
         {
 
-                var job = _context.Jobs.Find(model.job_id);
+            var job = _context.Jobs.Find(model.job_id);
 
-                if (job != null && ModelState.IsValid)
-                {
+            if (job != null && ModelState.IsValid)
+            {
 
-                    job.job_name = model.job_name;
-                    job.job_description = model.job_description;
-                    job.employee_limit = model.employee_limit;
-                    job.vacancy = model.employee_limit;
-                    //vacancy
+                job.job_name = model.job_name;
+                job.job_description = model.job_description;
+                job.employee_limit = model.employee_limit;
+                job.vacancy = model.employee_limit;
+                //vacancy
 
-                    _context.SaveChanges();
+                _context.SaveChanges();
 
-                    return RedirectToAction("ManageJobPosting", "Manager");
-                }
-
-                return RedirectToAction("ManageJobPosting","Manager");
             }
+            return RedirectToAction("ManageJobPosting", "Job");
         }
+
+        [HttpGet]
+        public ActionResult ManageEmployees()
+        {
+            if (Session["ManagerUsername"] == null)
+                ViewBag.ErrorMessage = "Manager not found. Redirecting Main Page...";
+
+            return View();
+        }
+
     }
+
+}
