@@ -1,8 +1,97 @@
-﻿
+﻿@model List<JobRecruitment2024.Models.Applications>
+
 @{
     ViewBag.Title = "ManageApplications";
 }
 
 <h2>ManageApplications</h2>
 
+@if (Model != null && Model.Any())
+{
+    <table border="1" id="pendingTable">
+        <tr>
+            <th>Application ID</th>
+            <th>Applicant TC</th>
+            <th>Job ID</th>
+            <th>Application Status</th>
+            <th>Action</th>
+        </tr>
+        @foreach (var application in Model)
+        {
+            if (application.app_status == "Pending")
+            {
+                <tr>
+                    <td>@application.application_id</td>
+                    <td>@application.tc</td>
+                    <td>@application.job_id</td>
+                    <td>@application.app_status</td>
+
+                    <td>
+                        @using (Html.BeginForm("AcceptApplication", "Manager", FormMethod.Post))
+                        {
+                            @Html.Hidden("application_id", application.application_id)
+                            <input type="submit" value="Accept">
+                        }
+
+                        @using (Html.BeginForm("RejectApplication", "Manager", FormMethod.Post))
+                        {
+                            @Html.Hidden("application_id", application.application_id)
+                            <input type="submit" value="Reject">
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+
+
+    <table border="1" id="processedTable" style="display:none">
+        <tr>
+            <th>Application ID</th>
+            <th>Applicant TC</th>
+            <th>Job ID</th>
+            <th>Application Status</th>
+        </tr>
+
+        @foreach (var application in Model)
+        {
+            if (application.app_status != "Pending")
+            {
+                <tr>
+                    <td>@application.application_id</td>
+                    <td>@application.tc</td>
+                    <td>@application.job_id</td>
+                    <td>@application.app_status</td>
+                </tr>
+            }
+        }
+    </table>
+
+    <button onclick="toggleTables()" id="toggleButton">Show Processed Applications</button>
+}
+else
+{
+<p> You don't received any applications for your job postings</p>
+}
+
+<br />
 <a href="ManagerMainPage">Manager Main Page</a>
+
+<script>
+    function toggleTables() {
+        var processedTable = document.getElementById('processedTable');
+        var pendingTable = document.getElementById('pendingTable');
+
+
+        if (processedTable.style.display === 'none') {
+            processedTable.style.display = 'block';
+            pendingTable.style.display = 'none';
+            toggleButton.textContent = 'Show Pending Applications';
+        } else {
+            processedTable.style.display = 'none';
+            pendingTable.style.display = 'block';
+            toggleButton.textContent = 'Show Processed Applications';
+        }
+    }
+
+</script>

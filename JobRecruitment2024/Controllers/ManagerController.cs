@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace JobRecruitment2024.Controllers
 {
@@ -95,8 +96,8 @@ namespace JobRecruitment2024.Controllers
                     currentManager.phone_num = updatedManager.phone_num;
 
                     if (updatedManager.password != null) currentManager.password = updatedManager.password;
-               
-           
+
+
                     _context.SaveChanges();
 
                     ViewBag.SuccessMessage = "Account information updated successfully. Redirecting mainpage...";
@@ -124,7 +125,7 @@ namespace JobRecruitment2024.Controllers
         }
 
 
-        
+
         private readonly JobController _jobController = new JobController();
 
         [HttpGet]
@@ -152,7 +153,7 @@ namespace JobRecruitment2024.Controllers
 
             return View(jobViewModel); // Pass the 'jobViewModel' to the view
         }
- 
+
 
         [HttpPost]
         public ActionResult ManageJobPosting(JobViewModel model)
@@ -162,14 +163,16 @@ namespace JobRecruitment2024.Controllers
 
 
             try
-            { var job = new Jobs {
-                job_name = model.Job.job_name,
-                job_description = model.Job.job_description,
-                employee_limit = model.Job.employee_limit,
-                vacancy = model.Job.employee_limit,
-                dep_id = currentManager.dep_id,
-                //fix vacany
-            };
+            {
+                var job = new Jobs
+                {
+                    job_name = model.Job.job_name,
+                    job_description = model.Job.job_description,
+                    employee_limit = model.Job.employee_limit,
+                    vacancy = model.Job.employee_limit,
+                    dep_id = currentManager.dep_id,
+                    //fix vacany
+                };
                 _jobController.JobCreate(job);
                 var jobs = _context.Jobs.ToList();
                 model.JobsList = jobs;
@@ -179,7 +182,7 @@ namespace JobRecruitment2024.Controllers
             catch (Exception ex)
             {
 
-                ViewBag.ErrorMessage = "An error occurred while processing your request." +ex;
+                ViewBag.ErrorMessage = "An error occurred while processing your request." + ex;
 
                 return View(model);
 
@@ -188,15 +191,52 @@ namespace JobRecruitment2024.Controllers
         }
         public ActionResult ManageApplications()
         {
+            string ManagerUsername = Session["ManagerUsername"] as string;
+            var manager  = _context.Managers.FirstOrDefault(m =>m.username == ManagerUsername);
+            if (manager != null)
+            {
+
+                var applications = (from app in _context.Applications
+                                    join job in _context.Jobs on app.job_id equals job.job_id
+                                    where job.dep_id == manager.dep_id
+                                    select app).ToList();
+
+                return View(applications); // Pass the list of applications to the view
+            }
+
             return View();
         }
+
+        // Action method to accept an application
+        [HttpPost]
+        public ActionResult AcceptApplication(int application_id)
+        {
+            var application = _context.Applications.FirstOrDefault(a => a.application_id == application_id);
+            if (application != null)
+            {
+                application.app_status = "Accepted";
+                _context.SaveChanges();
+            }
+            return RedirectToAction("ManageApplications");
+        }
+
+        [HttpPost]
+        public ActionResult RejectApplication(int application_id)
+        {
+            var application = _context.Applications.Find(application_id);
+            if (application != null)
+            {
+                application.app_status = "Rejected";
+                _context.SaveChanges();
+            }
+            return RedirectToAction("ManageApplications");
+        }
+
 
         public ActionResult ManageEmployees()
         {
             return View();
         }
-
-
 
 
     }
