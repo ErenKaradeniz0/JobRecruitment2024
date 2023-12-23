@@ -27,13 +27,13 @@
                     <td>@application.app_status</td>
 
                     <td>
-                        @using (Html.BeginForm("AcceptApplication", "Manager", FormMethod.Post))
+                        @using (Html.BeginForm("AcceptApplication", "Application", FormMethod.Post))
                         {
                             @Html.Hidden("application_id", application.application_id)
                             <input type="submit" value="Accept">
                         }
 
-                        @using (Html.BeginForm("RejectApplication", "Manager", FormMethod.Post))
+                        @using (Html.BeginForm("RejectApplication", "Application", FormMethod.Post))
                         {
                             @Html.Hidden("application_id", application.application_id)
                             <input type="submit" value="Reject">
@@ -75,7 +75,7 @@ else
 }
 
 <br />
-<a href="ManagerMainPage">Manager Main Page</a>
+<a href="@Url.Action("ManagerMainPage", "Manager")">Manager Main Page</a>
 
 <script>
     function toggleTables() {

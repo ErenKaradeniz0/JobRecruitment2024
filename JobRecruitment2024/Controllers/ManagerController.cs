@@ -43,11 +43,11 @@ namespace JobRecruitment2024.Controllers
             return View();
         }
 
-
         public ActionResult ManagerMainPage()
         {
             return View();
         }
+
         [HttpGet]
         public ActionResult ManagerUpdateAccount()
         {
@@ -125,7 +125,6 @@ namespace JobRecruitment2024.Controllers
         }
 
 
-
         private readonly JobController _jobController = new JobController();
 
         [HttpGet]
@@ -189,48 +188,7 @@ namespace JobRecruitment2024.Controllers
 
             }
         }
-        public ActionResult ManageApplications()
-        {
-            string ManagerUsername = Session["ManagerUsername"] as string;
-            var manager  = _context.Managers.FirstOrDefault(m =>m.username == ManagerUsername);
-            if (manager != null)
-            {
-
-                var applications = (from app in _context.Applications
-                                    join job in _context.Jobs on app.job_id equals job.job_id
-                                    where job.dep_id == manager.dep_id
-                                    select app).ToList();
-
-                return View(applications); // Pass the list of applications to the view
-            }
-
-            return View();
-        }
-
-        // Action method to accept an application
-        [HttpPost]
-        public ActionResult AcceptApplication(int application_id)
-        {
-            var application = _context.Applications.FirstOrDefault(a => a.application_id == application_id);
-            if (application != null)
-            {
-                application.app_status = "Accepted";
-                _context.SaveChanges();
-            }
-            return RedirectToAction("ManageApplications");
-        }
-
-        [HttpPost]
-        public ActionResult RejectApplication(int application_id)
-        {
-            var application = _context.Applications.Find(application_id);
-            if (application != null)
-            {
-                application.app_status = "Rejected";
-                _context.SaveChanges();
-            }
-            return RedirectToAction("ManageApplications");
-        }
+      
 
 
         public ActionResult ManageEmployees()

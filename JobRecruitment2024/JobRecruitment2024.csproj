@@ -286,7 +286,7 @@
     <Content Include="Views\Home\Forgot_Password.cshtml" />
     <Content Include="Views\Manager\ManagerMainPage.cshtml" />
     <Content Include="Views\User\UserMainPage.cshtml" />
-    <Content Include="Views\Manager\ManageApplications.cshtml" />
+    <Content Include="Views\Application\ManageApplications.cshtml" />
     <Content Include="Views\Manager\ManageJobPosting.cshtml" />
     <Content Include="Views\Manager\ManagerUpdateAccount.cshtml" />
     <Content Include="Views\Manager\ManageEmployees.cshtml" />
