@@ -29,16 +29,16 @@
 
 <div id="Create" style="display:none">
     <form method="post">
-        @Html.LabelFor(model => model.Job.job_name, "Job Name:")
-        @Html.TextBoxFor(model => model.Job.job_name, new { required = "required" })
+        @Html.LabelFor(model => model.job_name, "Job Name:")
+        @Html.TextBoxFor(model => model.job_name, new { required = "required" })
         @Html.Raw("<br><br>")
 
-        @Html.LabelFor(model => model.Job.job_description, "Job Descrition:")
-        @Html.TextBoxFor(model => model.Job.job_description, new { required = "required" })
+        @Html.LabelFor(model => model.job_description, "Job Descrition:")
+        @Html.TextBoxFor(model => model.job_description, new { required = "required" })
         @Html.Raw("<br><br>")
 
-        @Html.LabelFor(model => model.Job.employee_limit, "Employee Limit:")
-        @Html.TextBoxFor(model => model.Job.employee_limit, new { required = "required" })
+        @Html.LabelFor(model => model.employee_limit, "Employee Limit:")
+        @Html.TextBoxFor(model => model.employee_limit, new { required = "required" })
         @Html.Raw("<br><br>")
 
         <input type="submit" value="Create Job" />
@@ -51,34 +51,39 @@
         if (Model.JobsList.Any())
         {
             foreach (var job in Model.JobsList)
-            {
+            {  
                 <div>
-                    <h3>@job.job_name</h3>
-                    <p>Employee Limit: @job.employee_limit</p>
-                    <button class="editButton" data-jobid="@job.job_id">Edit</button>
-<!-- Update in View -->
-<form id="editForm_@job.job_id" class="editForm" style="display: none;" method="post" action="@Url.Action("Edit", "Job")">
-    @Html.HiddenFor(model => model.Job.job_id) <!-- Use the model properties to bind the fields -->
-    @Html.HiddenFor(model => model.Job.dep_id)
+                    <h3>Name: @job.job_name</h3>
+                    <p>Description: @job.job_description</p>
+                    <p>Vacancy: @job.vacancy</p>
+                    <button class="updateButton" data-jobid="@job.job_id">Edit</button>
 
-    @Html.LabelFor(model => model.Job.job_name, "Job Name:")
-    @Html.TextBoxFor(model => model.Job.job_name)
-    <br />
+                    <form id="updateForm_@job.job_id" style="display: none;" method="post" action="@Url.Action("JobUpdate", "Job")">
 
-        @Html.LabelFor(model => model.Job.job_description, "Job Descrition:")
-    @Html.TextBoxFor(model => model.Job.job_description, new { required = "required" })
-    <br />
-
-    @Html.LabelFor(model => model.Job.employee_limit, "Employee Limit:")
-    @Html.TextBoxFor(model => model.Job.employee_limit)
-    <br />
-
-    <input type="submit" value="Update" />
-</form>
+                        @Html.HiddenFor(model => job.job_id, new { Name = "job_id" })
+                        @Html.HiddenFor(model => job.dep_id, new { Name = "dep_id" })
+                        @Html.HiddenFor(model => job.vacancy, new { Name = "vacancy" })
 
 
-                    <form method="post" action="@Url.Action("Delete", "Job")">
-                        <input type="hidden" name="id" value="@job.job_id" />
+                        @Html.LabelFor(model => model.job_name, "Job Name:")
+                        @Html.TextBoxFor(model => model.job_name, new { @Value = job.job_name, required = "required" })
+                        <br />
+
+                        @Html.LabelFor(model => model.job_description, "Job Descrition:")
+                        @Html.TextBoxFor(model => model.job_description, new { @Value = job.job_description, required = "required" })
+                        <br />
+
+                        @Html.LabelFor(model => model.employee_limit, "Employee Limit:")
+                        @Html.TextBoxFor(model => model.employee_limit, new { @Value = job.employee_limit, required = "required" })
+
+                        <br />
+
+                        <input type="submit" value="Update" />
+                    </form>
+
+
+                    <form method="post" action="@Url.Action("JobDelete", "Job")">
+                        <input type="hidden" name="job_id" value="@job.job_id" />
                         <input type="submit" value="Delete" />
                     </form>
                 </div>
@@ -90,8 +95,6 @@
         }
     }
 </div>
-
-
 
 <a href="ManagerMainPage">Manager Main Page</a>
 
@@ -109,23 +112,17 @@
         }
     });
 
-</script>
-
-@section scripts {
-<script>
-    // Toggle the edit form display for each job
-    var editButtons = document.getElementsByClassName('editButton');
-    for (var i = 0; i < editButtons.length; i++) {
-        editButtons[i].addEventListener('click', function () {
+    var updateButtons = document.getElementsByClassName('updateButton');
+    for (var i = 0; i < updateButtons.length; i++) {
+        updateButtons[i].addEventListener('click', function () {
             var jobId = this.getAttribute('data-jobid');
-            var editForm = document.getElementById('editForm_' + jobId);
+            var updateForm = document.getElementById('updateForm_' + jobId);
 
-            if (editForm.style.display === 'none') {
-                editForm.style.display = 'block';
+            if (updateForm.style.display === 'none') {
+                updateForm.style.display = 'block';
             } else {
-                editForm.style.display = 'none';
+                updateForm.style.display = 'none';
             }
         });
     }
 </script>
-}

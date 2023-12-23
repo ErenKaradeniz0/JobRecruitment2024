@@ -28,29 +28,31 @@ namespace JobRecruitment2024.Controllers
         }
 
         [HttpPost]
-        public ActionResult JobDelete(int id)
+        public ActionResult JobDelete(int job_id)
         {
-            var job = _context.Jobs.Find(id);
+            var job = _context.Jobs.Find(job_id);
             if (job == null)
             {
                 return HttpNotFound();
             }
 
+            var applications = _context.Applications.Where(a => a.job_id == job.job_id).ToList();
+            if (applications.Any())
+            {
+                foreach (var application in applications)
+                {
+                    _context.Applications.Remove(application);
+                }
+            }
+
             _context.Jobs.Remove(job);
             _context.SaveChanges();
+
             return RedirectToAction("ManageJobPosting", "Manager");
         }
 
-        [HttpGet]
-        public ActionResult JobUpdate(int job_id)
-        {
-            var jobtest = job_id;
-
-            return View("ManageJobPosting", "Manager");
-        }
-
         [HttpPost]
-        public ActionResult Edit(Jobs model)
+        public ActionResult JobUpdate(Jobs model)
         {
 
                 var job = _context.Jobs.Find(model.job_id);
@@ -59,16 +61,17 @@ namespace JobRecruitment2024.Controllers
                 {
 
                     job.job_name = model.job_name;
+                    job.job_description = model.job_description;
                     job.employee_limit = model.employee_limit;
+                    job.vacancy = model.employee_limit;
+                    //vacancy
 
-                    // Save changes to the database
                     _context.SaveChanges();
 
                     return RedirectToAction("ManageJobPosting", "Manager");
                 }
 
-                // If the job was not found or the model state is invalid, return to the view with the job
-                return View(job);
+                return RedirectToAction("ManageJobPosting","Manager");
             }
         }
     }

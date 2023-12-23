@@ -146,8 +146,7 @@ namespace JobRecruitment2024.Controllers
 
             var jobViewModel = new JobViewModel
             {
-                JobsList = jobs,
-                Job = null
+                JobsList = jobs
             };
 
             return View(jobViewModel); // Pass the 'jobViewModel' to the view
@@ -165,10 +164,10 @@ namespace JobRecruitment2024.Controllers
             {
                 var job = new Jobs
                 {
-                    job_name = model.Job.job_name,
-                    job_description = model.Job.job_description,
-                    employee_limit = model.Job.employee_limit,
-                    vacancy = model.Job.employee_limit,
+                    job_name = model.job_name,
+                    job_description = model.job_description,
+                    employee_limit = model.employee_limit,
+                    vacancy = model.employee_limit,
                     dep_id = currentManager.dep_id,
                     //fix vacany
                 };
