@@ -14,7 +14,7 @@
         <p>@ViewBag.SuccessMessage</p>
         <script>
         setTimeout(function () {
-            window.location.href = '@Url.Action("ManagerMainPage", "Manager")';
+            window.location.href = '@Url.Action("ManagerMainPage")';
         }, 3000); // Redirect after 3 seconds
         </script>
     }
@@ -65,10 +65,12 @@ else
 {<p>@ViewBag.ErrorMessage</p>
 <script>
         setTimeout(function () {
-            window.location.href = '@Url.Action("ManagerLoginPage", "Manager")';
+            window.location.href = '@Url.Action("ManagerLoginPage")';
         }, 3000); // Redirect after 3 seconds
 </script>
 }
+
+<a href="ManagerMainPage">Manager Main Page</a>
 
 <script>
     var newPasswordInput = document.getElementById('newPassword');
@@ -94,9 +96,6 @@ else
     });
 
     document.getElementById('updateForm').addEventListener('submit', function (event) {
-        var newPasswordInput = document.getElementById('newPassword');
-        var newPasswordAgainInput = document.getElementById('newPasswordAgain');
-
 
         if (newPasswordInput.value !== newPasswordAgainInput.value) {
             // Display error message and prevent form submission
@@ -107,7 +106,4 @@ else
             errorMessage.style.display = 'none';
         }
     });
-
 </script>
-
-<a href="ManagerMainPage">Manager Main Page</a>

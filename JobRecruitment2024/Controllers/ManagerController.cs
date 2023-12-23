@@ -46,9 +46,15 @@ namespace JobRecruitment2024.Controllers
         public ActionResult ManagerMainPage()
         {
             if(Session["ManagerUsername"] == null)
-                ViewBag.ErrorMessage = "Manager not found. Redirecting Main Page...";
+                ViewBag.ErrorMessage = "Manager not found. Redirecting Login Page...";
             
             return View();
+        }
+
+        public ActionResult Logout()
+        {
+            Session.Remove("ManagerUsername");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]

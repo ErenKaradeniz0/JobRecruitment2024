@@ -6,13 +6,38 @@
 
 <h2>@ViewBag.Title</h2>
 
-@if (ViewBag.SuccessMessage != null)
+@if (Model != null)
 {
-    <p>@ViewBag.SuccessMessage</p>
+    if (ViewBag.SuccessMessage != null)
+    {
+        <p>@ViewBag.SuccessMessage</p>
+    }
+
+    <!-- Display available jobs -->
+    <h2>Available Jobs</h2>
+    if (Model != null && Model.Any())
+    {
+        <ul>
+            @foreach (var job in Model)
+            {
+                <li>
+                    <h3>@job.job_name</h3>
+                    <p>@job.job_description</p>
+                    <form method="post" action="@Url.Action("ApplyJob")">
+                        @Html.Hidden("job_id_apply", job.job_id) <!-- Pass the JobId -->
+                        <input type="submit" value="Apply" />
+                    </form>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No jobs available</p>
+    }
 }
 
-
-@if (ViewBag.ErrorMessage == "User not found. Redirecting Log in...")
+else
 {
     <p>@ViewBag.ErrorMessage</p>
     <script>
@@ -20,29 +45,6 @@
         window.location.href = '@Url.Action("UserLoginPage", "User")';
     }, 3000); // Redirect after 3 seconds
     </script>
-}
-
-<!-- Display available jobs -->
-<h2>Available Jobs</h2>
-@if (Model != null && Model.Any())
-{
-    <ul>
-        @foreach (var job in Model)
-        {
-            <li>
-                <h3>@job.job_name</h3>
-                <p>@job.job_description</p>
-                <form method="post" action="@Url.Action("ApplyJob")">
-                    @Html.Hidden("job_id_apply", job.job_id) <!-- Pass the JobId -->
-                    <input type="submit" value="Apply" />
-                </form>
-            </li>
-        }
-    </ul>
-}
-else
-{
-    <p>No jobs available</p>
 }
 
 <a href="@Url.Action("UserMainPage", "User")">User Main Page</a>

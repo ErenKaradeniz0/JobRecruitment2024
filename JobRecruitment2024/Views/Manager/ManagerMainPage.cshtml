@@ -10,18 +10,20 @@
     <p>@ViewBag.ErrorMessage</p>
     <script>
         setTimeout(function () {
-            window.location.href = '@Url.Action("ManagerLoginPage", "Manager")';
+            window.location.href = '@Url.Action("ManagerLoginPage")';
         }, 3000); // Redirect after 3 seconds
     </script>
 }
 else
 {
-<ul>
-    <li><a href="ManagerUpdateAccount">Update Account Information</a></li>
-    <li><a href="@Url.Action("ManageJobPosting", "Job")">Manage Job Posting</li>
-    <li><a href="@Url.Action("ManageApplications", "Job")">Manage Employees</a></li>
-    <li><a href="@Url.Action("ManageEmployees", "Application")">Manage Received Applications</a></li>
-</ul>
-    <a href="@Url.Action("Index", "Home")">Log Out</a>
+    <ul>
+        <li><a href="ManagerUpdateAccount">Update Account Information</a></li>
+        <li><a href="@Url.Action("ManageJobPosting", "Job")">Manage Job Posting</li>
+        <li><a href="@Url.Action("ManageApplications", "Job")">Manage Employees</a></li>
+        <li><a href="@Url.Action("ManageEmployees", "Application")">Manage Received Applications</a></li>
+    </ul>
+
+    <a href="@Url.Action("Logout", "Manager")">Log Out</a>
+
 
 }

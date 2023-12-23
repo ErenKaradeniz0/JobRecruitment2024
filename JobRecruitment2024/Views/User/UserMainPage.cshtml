@@ -3,12 +3,24 @@
 }
 
 <h2>User Main Page</h2>
+@if (ViewBag.ErrorMessage != null)
+{
+    <p>@ViewBag.ErrorMessage</p>
+    <script>
+        setTimeout(function () {
+            window.location.href = '@Url.Action("UserLoginPage")';
+        }, 3000); // Redirect after 3 seconds
+    </script>
+}
+else
+{
+    <ul>
+        <li><a href="@Url.Action("UserUpdateAccount")">Update Account Information</a></li>
+        <li><a href="@Url.Action("ApplyJob", "Application")">Apply jobs</a></li>
+        <li><a href="@Url.Action("MyApplications", "Application")">My Applications</a></li>
 
-<ul>
-    <li><a href="@Url.Action("UserUpdateAccount")">Update Account Information</a></li>
-    <li><a href="@Url.Action("ApplyJob", "Application")">Apply jobs</a></li>
-    <li><a href="@Url.Action("MyApplications", "Application")">My Applications</a></li>
+    </ul>
 
-</ul>
+    <a href="@Url.Action("Logout", "User")">Log Out</a>
 
-<a href="@Url.Action("Index", "Home")">Log Out</a>
+}

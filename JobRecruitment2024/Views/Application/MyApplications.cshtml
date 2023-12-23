@@ -6,45 +6,46 @@
 
 <h2>My Applications</h2>
 
-@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
-{
-    <p>@ViewBag.SuccessMessage</p>
-}
-
-
-@if (ViewBag.ErrorMessage == "User not found. Redirecting Login Page...")
-{
-    <p>@ViewBag.ErrorMessage</p>
-    <script>
-        setTimeout(function () {
-            window.location.href = '@Url.Action("UserLoginPage", "User")';
-        }, 3000); // Redirect after 3 seconds
-    </script>
-}
-
-
 @if (Model != null)
 {
-    foreach (var job in Model)
+
+   if (ViewBag.SuccessMessage != null)
     {
-        <div>
-            <p>Job Name: @job.job_name</p>
-            <p>Job Description: @job.job_description</p>
-            <p>Vacancy: @job.vacancy</p>
-            @using (Html.BeginForm("DeleteApplication", "Application", FormMethod.Post))
-            {
-                @Html.Hidden("applicationId", job.application_id)
-                <input type="submit" value="Delete" />
-            }
-            <!-- Display other relevant application information -->
-        </div>
+        <p>@ViewBag.SuccessMessage</p>
     }
 
+    if (Model != null)
+    {
+        foreach (var job in Model)
+        {
+            <div>
+                <p>Job Name: @job.job_name</p>
+                <p>Job Description: @job.job_description</p>
+                <p>Vacancy: @job.vacancy</p>
+                @using (Html.BeginForm("DeleteApplication", "Application", FormMethod.Post))
+                {
+                    @Html.Hidden("applicationId", job.application_id)
+                    <input type="submit" value="Delete" />
+                }
+                <!-- Display other relevant application information -->
+            </div>
+        }
+
+    }
+    else
+    {
+        <p>You don't applied any job</p>
+    }
 }
 else
 {
-    <p>You don't applied any job</p>
-}
+        <p>@ViewBag.ErrorMessage</p>
+        <script>
+        setTimeout(function () {
+            window.location.href = '@Url.Action("UserLoginPage","User")';
+        }, 3000); // Redirect after 3 seconds
+        </script>
 
+}
 <a href="@Url.Action("UserMainPage", "User")">User Main Page</a>
 

@@ -104,11 +104,20 @@ namespace JobRecruitment2024.Controllers
             return View(model);
         }
 
+
         public ActionResult UserMainPage()
         {
+            if (Session["UserEmail"] == null)
+                ViewBag.ErrorMessage = "User not found. Redirecting Login Page...";
+
             return View();
         }
 
+        public ActionResult Logout()
+        {
+            Session.Remove("UserEmail");
+            return RedirectToAction("Index", "Home");
+        }
         [HttpGet]
         public ActionResult UserUpdateAccount()
         {
