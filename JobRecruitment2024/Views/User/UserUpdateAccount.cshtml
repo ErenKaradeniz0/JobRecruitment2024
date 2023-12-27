@@ -15,7 +15,7 @@
         <script>
         setTimeout(function () {
             window.location.href = '@Url.Action("UserMainPage")';
-        }, 3000); // Redirect after 3 seconds
+        }, 3000);
         </script>
     }
     else if (ViewBag.ErrorMessage != null)
@@ -26,15 +26,15 @@
     using (Html.BeginForm("UserUpdateAccount", "User", FormMethod.Post, new { id = "updateForm" }))
     {
         @Html.LabelFor(model => model.name, "Name:")
-        @Html.TextBoxFor(model => model.name, new { required = "required" })
+        @Html.TextBoxFor(model => model.name, new { maxlength = 15, required = "required" })
         @Html.Raw("<br><br>")
 
         @Html.LabelFor(model => model.surname, "Surname:")
-        @Html.TextBoxFor(model => model.surname, new { required = "required" })
+        @Html.TextBoxFor(model => model.surname, new { maxlength = 15, required = "required" })
         @Html.Raw("<br><br>")
 
         @Html.LabelFor(model => model.email, "Email:")
-        @Html.TextBoxFor(model => model.email, new { type = "email", required = "required" })
+        @Html.TextBoxFor(model => model.email, new { maxlength = 50, type = "email" })
         @Html.Raw("<br><br>")
 
         @Html.CheckBox("changePassword", new { id = "changePasswordCheckbox" })
@@ -43,18 +43,18 @@
 
         <div id="passwordField" style="display: none;">
             @Html.LabelFor(model => model.password, "New Password:")
-            @Html.PasswordFor(model => model.password, new { id = "newPassword" })
+            @Html.PasswordFor(model => model.password, new { maxlength = 10, id = "newPassword" })
             @Html.Raw("<br><br>")
 
             @Html.Label("newPasswordAgain", "New Password Again:")
-            @Html.Password("newPasswordAgain", null)
+            @Html.Password("newPasswordAgain", null, new { maxlength = 10 })
             @Html.Raw("<br><br>")
         </div>
 
-        @Html.LabelFor(model => model.phone_num, "Phone Number:")
-        @Html.TextBoxFor(model => model.phone_num)
-        @Html.ValidationMessageFor(model => model.phone_num)
+        @Html.LabelFor(model => model.phone_num, "Phone:")
+        @Html.TextBoxFor(model => model.phone_num, new { maxlength = 11, required = "required" })
         @Html.Raw("<br><br>")
+
         <button type="submit">Update Account</button>
     }
 }
@@ -63,7 +63,7 @@ else
 <script>
         setTimeout(function () {
             window.location.href = '@Url.Action("UserLoginPage")';
-        }, 3000); // Redirect after 3 seconds
+        }, 3000);
 </script>
 }
 

@@ -21,11 +21,16 @@
 
         <form method="post">
             @Html.LabelFor(model => model.job_name, "Job Name:")
-            @Html.TextBoxFor(model => model.job_name, new { required = "required" })
+            @Html.TextBoxFor(model => model.job_name, new { maxlength = 50, required = "required" })
             @Html.Raw("<br><br>")
 
             @Html.LabelFor(model => model.job_description, "Job Descrition:")
-            @Html.TextBoxFor(model => model.job_description, new { required = "required" })
+            @Html.TextBoxFor(model => model.job_description, new { maxlength = 100, required = "required" })
+            @Html.Raw("<br><br>")
+
+
+            @Html.LabelFor(model => model.salary, "Salary:")
+            @Html.TextBoxFor(model => model.salary, new { required = "required" })
             @Html.Raw("<br><br>")
 
             @Html.LabelFor(model => model.employee_limit, "Employee Limit:")
@@ -36,7 +41,7 @@
         </form>
     </div>
 
-    <div id="Read">
+    <div id="Update">
 
         @if (Model.JobsList.Any())
         {
@@ -45,7 +50,7 @@
                 <div>
                     <h3>Name: @job.job_name</h3>
                     <p>Description: @job.job_description</p>
-                    
+                    <p>Salary: @job.salary</p>
                     <p>Vacancy/Employee Limit: @job.vacancy/@job.employee_limit </p>
                     <button class="updateButton" data-jobid="@job.job_id">Edit</button>
 
@@ -57,11 +62,16 @@
 
 
                         @Html.LabelFor(model => model.job_name, "Job Name:")
-                        @Html.TextBoxFor(model => model.job_name, new { @Value = job.job_name, required = "required" })
+                        @Html.TextBoxFor(model => model.job_name, new { maxlength = 50, @Value = job.job_name, required = "required" })
                         <br />
 
                         @Html.LabelFor(model => model.job_description, "Job Descrition:")
-                        @Html.TextBoxFor(model => model.job_description, new { @Value = job.job_description, required = "required" })
+                        @Html.TextBoxFor(model => model.job_description, new { maxlength = 100, @Value = job.job_description, required = "required" })
+                        <br />
+
+                        @Html.LabelFor(model => model.salary, "Salary:")
+                        @Html.TextBoxFor(model => model.salary, new { @Value = job.salary, required = "required" })
+
                         <br />
 
                         @Html.LabelFor(model => model.employee_limit, "Employee Limit:")
@@ -92,7 +102,7 @@ else
 <script>
         setTimeout(function () {
             window.location.href = '@Url.Action("ManagerLoginPage", "Manager")';
-        }, 3000); // Redirect after 3 seconds
+        }, 3000);
 </script>
 }
 <a href="@Url.Action("ManagerMainPage", "Manager")">Manager Main Page</a>

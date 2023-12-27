@@ -15,7 +15,7 @@
     <script>
         setTimeout(function () {
             window.location.href = '@Url.Action("UserLoginPage", "User")';
-        }, 3000); // Redirect after 3 seconds
+        }, 3000);
     </script>
 }
 @if (ViewBag.ErrorMessage != null)
@@ -30,27 +30,27 @@
     @Html.Raw("<br><br>")
 
     @Html.LabelFor(model => model.name, "Name:")
-    @Html.TextBoxFor(model => model.name, new { required = "required" })
+    @Html.TextBoxFor(model => model.name, new { maxlength = "15", required = "required" })
     @Html.Raw("<br><br>")
 
     @Html.LabelFor(model => model.surname, "Surname:")
-    @Html.TextBoxFor(model => model.surname, new { required = "required" })
+    @Html.TextBoxFor(model => model.surname, new { maxlength = "15", required = "required" })
     @Html.Raw("<br><br>")
 
     @Html.LabelFor(model => model.email, "Email:")
-    @Html.TextBoxFor(model => model.email, new { type = "email", required = "required" })
+    @Html.TextBoxFor(model => model.email, new { maxlength = "50", type = "email", required = "required" })
     @Html.Raw("<br><br>")
 
     @Html.LabelFor(model => model.password, "Password:")
-    @Html.PasswordFor(model => model.password, new { id = "Password", required = "required" })
+    @Html.PasswordFor(model => model.password, new { maxlength = "10", id = "Password", required = "required" })
     @Html.Raw("<br><br>")
 
     @Html.Label("PasswordAgain", "Password Again:")
-    @Html.Password("PasswordAgain", null, new { id = "PasswordAgain", required = "required" })
+    @Html.Password("PasswordAgain", null, new { maxlength = "10", id = "PasswordAgain", required = "required" })
     @Html.Raw("<br><br>")
 
     @Html.LabelFor(model => model.phone_num, "Phone Number:")
-    @Html.TextBoxFor(model => model.phone_num, new { required = "required" })
+    @Html.TextBoxFor(model => model.phone_num, new { maxlength = "11", required = "required" })
     @Html.Raw("<br><br>")
 
 
@@ -65,7 +65,7 @@
 
         if (password !== passwordAgain) {
             errorMessage.style.display = 'block';
-            event.preventDefault(); // Form gönderimini engelle
+            event.preventDefault();
         } else {
             errorMessage.style.display = 'none';
         }

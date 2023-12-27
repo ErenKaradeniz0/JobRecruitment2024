@@ -13,7 +13,6 @@
         <p>@ViewBag.SuccessMessage</p>
     }
 
-    <!-- Display available jobs -->
     <h2>Available Jobs</h2>
     if (Model != null && Model.Any())
     {
@@ -43,7 +42,7 @@ else
     <script>
     setTimeout(function () {
         window.location.href = '@Url.Action("UserLoginPage", "User")';
-    }, 3000); // Redirect after 3 seconds
+    }, 3000);
     </script>
 }
 

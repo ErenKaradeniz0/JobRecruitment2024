@@ -58,6 +58,7 @@ namespace JobRecruitment2024.Controllers
                 {
                     job_name = model.job_name,
                     job_description = model.job_description,
+                    salary = model.salary,
                     employee_limit = model.employee_limit,
                     vacancy = model.employee_limit,
                     dep_id = currentManager.dep_id,
@@ -132,6 +133,7 @@ namespace JobRecruitment2024.Controllers
 
                 job.job_name = model.job_name;
                 job.job_description = model.job_description;
+                job.salary = model.salary;
                 job.employee_limit = model.employee_limit;
                 job.vacancy = model.employee_limit;
                 //vacancy

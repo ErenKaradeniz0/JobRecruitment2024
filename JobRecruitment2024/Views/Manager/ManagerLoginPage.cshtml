@@ -10,14 +10,17 @@
 <body>
     <div class="login-container">
         <h2>Manager Login</h2>
-        <form class="login-form" method="POST">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
+        @using (Html.BeginForm(FormMethod.Post))
+        {
+            @Html.TextBox("username", null, new { maxlength = "15", @placeholder = "Username", required = "required" })
+            @Html.Password("password", null, new { maxlength = "10", @placeholder = "Password", required = "required" })
             <button type="submit">Login</button>
-        </form>
+            <a href="@Url.Action("Register", "YourController")">Don't have an account yet? Sign Up</a>
+        }
         <div>
             <a href="~/Home/Forgot_Password">Forgot Password?</a>
         </div>
         @Html.Partial("_ErrorMessage")
+        <a href="@Url.Action("Index", "Home")">Go Home Page</a>
     </div>
 </body>

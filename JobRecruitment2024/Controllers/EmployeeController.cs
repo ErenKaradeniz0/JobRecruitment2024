@@ -29,11 +29,13 @@ namespace JobRecruitment2024.Controllers
                 {
                     // Delete other applications for the user
                     _context.Applications.RemoveRange(_context.Applications.Where(app => app.tc == currentUser.tc));
-
+                    var job = _context.Jobs.FirstOrDefault(u => u.job_id == jobId);
                     // Update user's employment status to "employee"
                     currentUser.emp_status = "employee";
-                    currentUser.job_id = jobId;
+                    currentUser.job_id = job.job_id;
+                    currentUser.salary = job.salary;
                     currentUser.insurance_num = currentUser.tc;
+                   
 
 
 
