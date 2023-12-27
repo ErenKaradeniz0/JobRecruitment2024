@@ -18,6 +18,7 @@ namespace JobRecruitment2024.Models
         }
         public DbSet<Users> Users { get; set; }
         public DbSet<Managers> Managers { get; set; }
+        public DbSet<Departments> Departments { get; set; }
         public DbSet<Jobs> Jobs { get; set; }
         public DbSet<Applications> Applications { get; set; }
         public DbSet<Histories> Histories { get; set; }

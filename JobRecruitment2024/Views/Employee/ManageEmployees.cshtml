@@ -1,7 +1,76 @@
-﻿
-@{
-    ViewBag.Title = "ManageEmployees";
+﻿@model JobRecruitment2024.Models.UserViewModel
+@{    
+ViewBag.Title = "ManageEmployees";
 }
 
 <h2>ManageEmployees</h2>
+@if (Model != null)
+{
+  <div id="Update">
 
+      @if (Model.UserList.Any())
+      {
+          foreach (var employee in Model.UserList)
+          {
+              <div>
+                  <p>Name Surname : @employee.name @employee.surname</p>
+                  <p>Email : @employee.email </p>
+                  <p>Phone Number: @employee.phone_num</p>
+                  <p>Insurance Number: @employee.insurance_num</p>
+                  <p>Salary: @employee.salary</p>
+                  <p>Status: @employee.emp_status</p>
+                  <button class="updateButton" data-jobid="@employee.job_id">Edit</button>
+
+                  <form id="updateForm_@employee.job_id" style="display: none;" method="post" action="@Url.Action("EmployeeUpdate", "Employee")">
+
+                      @Html.HiddenFor(model => model.tc, new {@Value = employee.tc, Name = "tc" })
+
+                      @Html.LabelFor(model => model.salary, "Salary:")
+                      @Html.TextBoxFor(model => model.salary, new { @Value = employee.salary, required = "required" })
+
+                      <br />
+                      <input type="submit" value="Update" />
+                  </form>
+
+
+                  <form method="post" action="@Url.Action("FireEmployee", "Employee")">
+                      <input type="hidden" name="tc" value="@employee.tc" />
+                      <input type="submit" value="Delete" />
+                  </form>
+              </div>
+          }
+      }
+      else
+      {
+          <div id="errorMessage" style="color: red;">No Employees found.</div>
+      }
+
+  </div>
+}
+else
+{
+    <p>@ViewBag.ErrorMessage</p>
+    <script>
+        setTimeout(function () {
+            window.location.href = '@Url.Action("ManagerLoginPage", "Manager")';
+        }, 3000);
+    </script>
+}
+
+<a href="@Url.Action("ManagerMainPage", "Manager")">Manager Main Page</a>
+
+<script>
+    var updateButtons = document.getElementsByClassName('updateButton');
+    for (var i = 0; i < updateButtons.length; i++) {
+        updateButtons[i].addEventListener('click', function () {
+            var jobId = this.getAttribute('data-jobid');
+            var updateForm = document.getElementById('updateForm_' + jobId);
+
+            if (updateForm.style.display === 'none') {
+                updateForm.style.display = 'block';
+            } else {
+                updateForm.style.display = 'none';
+            }
+        });
+    }
+</script>

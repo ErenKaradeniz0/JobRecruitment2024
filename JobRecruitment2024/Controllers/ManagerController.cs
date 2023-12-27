@@ -60,9 +60,9 @@ namespace JobRecruitment2024.Controllers
         [HttpGet]
         public ActionResult ManagerUpdateAccount()
         {
-            string ManagerUsername = Session["ManagerUsername"] as string;
             try
             {
+                string ManagerUsername = Session["ManagerUsername"] as string;
                 Managers manager = _context.Managers.FirstOrDefault(m => m.username == ManagerUsername);
 
 

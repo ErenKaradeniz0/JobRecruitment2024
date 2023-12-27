@@ -205,6 +205,7 @@
     <Compile Include="Models\JobViewModel.cs" />
     <Compile Include="Models\Users.cs" />
     <Compile Include="Models\Managers.cs" />
+    <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -288,13 +289,12 @@
     <Content Include="Views\User\UserMainPage.cshtml" />
     <Content Include="Views\Application\ManageApplications.cshtml" />
     <Content Include="Views\Manager\ManagerUpdateAccount.cshtml" />
-    <Content Include="Views\Job\ManageEmployees.cshtml" />
+    <Content Include="Views\Employee\ManageEmployees.cshtml" />
     <Content Include="Views\User\UserUpdateAccount.cshtml" />
     <Content Include="Views\Application\ApplyJob.cshtml" />
     <Content Include="Views\Application\MyApplications.cshtml" />
     <Content Include="Views\User\UserDeleteAccount.cshtml" />
     <Content Include="Views\Job\ManageJobPosting.cshtml" />
-    <Content Include="Views\Employee\ManageEmployees.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

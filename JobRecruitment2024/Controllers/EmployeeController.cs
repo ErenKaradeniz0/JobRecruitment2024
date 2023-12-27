@@ -22,6 +22,7 @@ namespace JobRecruitment2024.Controllers
         {
             try
             {
+
                 // Retrieve the current user
                 var currentUser = _context.Users.FirstOrDefault(u => u.tc == tc);
 
@@ -35,9 +36,6 @@ namespace JobRecruitment2024.Controllers
                     currentUser.job_id = job.job_id;
                     currentUser.salary = job.salary;
                     currentUser.insurance_num = currentUser.tc;
-                   
-
-
 
                     _context.SaveChanges();
 
@@ -48,7 +46,7 @@ namespace JobRecruitment2024.Controllers
                     TempData["ErrorMessage"] = "User not found.";
                 }
 
-                return RedirectToAction("UserMainPage","User");
+                return RedirectToAction("UserMainPage", "User");
             }
             catch (Exception ex)
             {
@@ -59,7 +57,93 @@ namespace JobRecruitment2024.Controllers
         [HttpGet]
         public ActionResult ManageEmployees()
         {
+
+            try
+            {
+                string ManagerUsername = Session["ManagerUsername"] as string;
+                Managers manager = _context.Managers.FirstOrDefault(m => m.username == ManagerUsername);
+
+                if (manager != null)
+                {
+                    var employees = _context.Users
+                       .Join(
+                           _context.Jobs,
+                           user => user.job_id,
+                           job => job.job_id,
+                           (user, job) => new { User = user, Job = job }
+                       )
+                       .Where(joined => joined.User.job_id == joined.Job.job_id && joined.Job.dep_id == manager.dep_id)
+                       .Select(joined => joined.User)
+                       .ToList();
+
+                    if (employees == null || !employees.Any())
+                    {
+                        ViewBag.ErrorMessage = "No Employees Found";
+                    }
+
+                    var UserViewModel = new UserViewModel
+                    {
+                        UserList = employees
+                    };
+
+                    return View(UserViewModel);
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Manager not found. Redirecting Login Page...";
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "An error occurred while processing your request.";
+
+                if (ex.InnerException != null)
+                {
+                    ViewBag.InnerErrorMessage = ex.InnerException.Message;
+                }
+
+                return View();
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult ManageEmployees(Managers manager)
+        {
             return View();
         }
+
+        [HttpPost]
+        public ActionResult EmployeeUpdate(Users model)
+        {
+
+            var employee = _context.Users.Find(model.tc);
+
+            if (employee != null && ModelState.IsValid)
+            {
+
+                employee.salary = model.salary;
+                _context.SaveChanges();
+
+            }
+            return RedirectToAction("ManageEmployees", "Employee");
+        }
+        [HttpPost]
+        public ActionResult FireEmployee(string tc)
+        {
+            var employee = _context.Users.Find(tc);
+            if (employee == null)
+            {
+                return HttpNotFound();
+            }
+            employee.job_id = null;
+            employee.emp_status = null;
+            employee.salary = 0;
+            _context.SaveChanges();
+
+            return RedirectToAction("ManageEmployees", "Employee");
+        }
     }
+
 }

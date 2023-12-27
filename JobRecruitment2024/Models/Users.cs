@@ -19,8 +19,6 @@ namespace JobRecruitment2024.Models
         public string emp_status { get; set; }
         public string insurance_num { get; set; }
         public int? job_id {  get; set; }
-
-        //worker
     }
 }
 
