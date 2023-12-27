@@ -26,7 +26,11 @@ namespace JobRecruitment2024.Controllers
                 ViewBag.ErrorMessage = "Manager not found. Redirecting Login Page...";
                 return View();
             }
-            var jobs = _context.Jobs.ToList();
+            int managerDepartmentId = currentManager.dep_id;
+            var jobs = _context.Jobs
+                .Where(job => job.dep_id == managerDepartmentId)
+                .ToList();
+
 
             if (jobs == null || !jobs.Any())
             {
@@ -80,7 +84,13 @@ namespace JobRecruitment2024.Controllers
                 _context.Jobs.Add(job);
                 _context.SaveChanges();
 
-                var jobs = _context.Jobs.ToList();
+                string ManagerUsername = Session["ManagerUsername"] as string;
+                Managers currentManager = _context.Managers.FirstOrDefault(m => m.username == ManagerUsername);
+
+                int managerDepartmentId = currentManager.dep_id;
+                var jobs = _context.Jobs
+                           .Where(related_jobs => related_jobs.dep_id == managerDepartmentId) // Changed to related_jobs.dep_id
+                           .ToList();
                 return jobs;
             }
             else

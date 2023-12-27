@@ -87,10 +87,10 @@ namespace JobRecruitment2024.Controllers
 
                 if (currentUser != null)
                 {
-                    List<JobsWithAppId> userApplications = (from app in _context.Applications
+                    List<JobViewModel> userApplications = (from app in _context.Applications
                                                             join job in _context.Jobs on app.job_id equals job.job_id
                                                             where app.tc == currentUser.tc
-                                                            select new JobsWithAppId
+                                                            select new JobViewModel
                                                             {
                                                                 job_id = job.job_id,
                                                                 job_name = job.job_name,
@@ -98,7 +98,9 @@ namespace JobRecruitment2024.Controllers
                                                                 employee_limit = job.employee_limit,
                                                                 vacancy = job.vacancy,
                                                                 dep_id = job.dep_id,
-                                                                application_id = app.application_id
+                                                                application_id = app.application_id,
+                                                                app_status = app.app_status,
+                                                                tc = app.tc,
                                                             }).ToList();
                     if (TempData["SuccessMessage"] != null)
                     {

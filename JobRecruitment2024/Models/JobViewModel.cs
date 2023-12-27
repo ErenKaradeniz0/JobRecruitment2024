@@ -10,6 +10,9 @@ namespace JobRecruitment2024.Models
     public class JobViewModel:Jobs
     {
         public IEnumerable<Jobs> JobsList { get; set; }
+        public int application_id { get; set; }
+        public string app_status { get; set; }
+        public string tc { get; set; }
 
     }
 }

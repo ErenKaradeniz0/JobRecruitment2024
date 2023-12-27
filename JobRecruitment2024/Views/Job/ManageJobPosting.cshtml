@@ -45,7 +45,8 @@
                 <div>
                     <h3>Name: @job.job_name</h3>
                     <p>Description: @job.job_description</p>
-                    <p>Vacancy: @job.vacancy</p>
+                    
+                    <p>Vacancy/Employee Limit: @job.vacancy/@job.employee_limit </p>
                     <button class="updateButton" data-jobid="@job.job_id">Edit</button>
 
                     <form id="updateForm_@job.job_id" style="display: none;" method="post" action="@Url.Action("JobUpdate", "Job")">

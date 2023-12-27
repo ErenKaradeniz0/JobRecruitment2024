@@ -3,6 +3,20 @@
 }
 
 <h2>User Main Page</h2>
+@if (TempData["SuccessMessage"] != null)
+{
+    ViewBag.SuccessMessage = TempData["SuccessMessage"];
+}
+else if (TempData["ErrorMessage"] != null)
+{
+    ViewBag.ErrorMessage = TempData["ErrorMessage"];
+}
+
+@if(ViewBag.SuccessMessage != null)
+{
+    <p> @ViewBag.SuccessMessage</p>
+}
+
 @if (ViewBag.ErrorMessage != null)
 {
     <p>@ViewBag.ErrorMessage</p>

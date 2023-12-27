@@ -1,4 +1,4 @@
-﻿@model List<JobRecruitment2024.Models.JobsWithAppId>
+﻿@model List<JobRecruitment2024.Models.JobViewModel>
 
 @{
     ViewBag.Title = "My Applications";
@@ -18,17 +18,27 @@
     {
         foreach (var job in Model)
         {
-            <div>
-                <p>Job Name: @job.job_name</p>
-                <p>Job Description: @job.job_description</p>
-                <p>Vacancy: @job.vacancy</p>
-                @using (Html.BeginForm("DeleteApplication", "Application", FormMethod.Post))
-                {
-                    @Html.Hidden("applicationId", job.application_id)
-                    <input type="submit" value="Delete" />
-                }
-                <!-- Display other relevant application information -->
-            </div>
+<div>
+    <p>Job Name: @job.job_name</p>
+    <p>Job Description: @job.job_description</p>
+    <p>Application Status: @job.app_status</p>
+    @if (job.app_status == "Accepted")
+    {
+        using (Html.BeginForm("Employment", "Employee", FormMethod.Post))
+        {
+            @Html.Hidden("jobId", job.job_id)
+            @Html.Hidden("tc", job.tc)
+            <input type="submit" value="Confirm" />
+        }
+    }
+
+    @using (Html.BeginForm("DeleteApplication", "Application", FormMethod.Post))
+    {
+        @Html.Hidden("applicationId", job.application_id)
+        <input type="submit" value="Delete" />
+    }
+    <!-- Display other relevant application information -->
+</div>
         }
 
     }
