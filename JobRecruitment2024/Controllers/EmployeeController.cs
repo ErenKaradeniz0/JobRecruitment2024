@@ -36,8 +36,22 @@ namespace JobRecruitment2024.Controllers
                     currentUser.job_id = job.job_id;
                     currentUser.salary = job.salary;
                     currentUser.insurance_num = currentUser.tc;
-
+                    job.vacancy -= 1;
                     _context.SaveChanges();
+
+                    string dateString = DateTime.Today.ToString("yyyy-MM-dd");
+
+                    var newHistoryEntry = new Histories
+                    {
+                        recruitment_date = dateString, // Assuming this is the recruitment date
+                        dismissal_date = null, // Assuming this is null when the user is employed
+                        job_id = job.job_id,
+                        tc = currentUser.tc
+                        // You might need to populate other fields based on your table structure
+                    };
+                    _context.Histories.Add(newHistoryEntry);
+                    _context.SaveChanges();
+
 
                     TempData["SuccessMessage"] = "Job confirmed. Your other applications deleted.";
                 }
@@ -51,7 +65,7 @@ namespace JobRecruitment2024.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrorMessage = "An error occurred while confirming the job: " + ex.Message;
-                return RedirectToAction("MyApplications");
+                return RedirectToAction("MyApplications","Application");
             }
         }
         [HttpGet]
@@ -133,16 +147,71 @@ namespace JobRecruitment2024.Controllers
         public ActionResult FireEmployee(string tc)
         {
             var employee = _context.Users.Find(tc);
+            var job = _context.Jobs.FirstOrDefault(u => u.job_id == employee.job_id);
             if (employee == null)
             {
                 return HttpNotFound();
             }
+
+            var latestHistoryEntry = _context.Histories
+                 .Where(h => h.job_id == job.job_id && h.tc == employee.tc)
+                 .OrderByDescending(h => h.history_id)
+                 .FirstOrDefault();
+            string dateString = DateTime.Today.ToString("yyyy-MM-dd");
+            if (latestHistoryEntry != null)
+            {
+                latestHistoryEntry.dismissal_date = dateString;
+                _context.SaveChanges();
+            }
+
             employee.job_id = null;
             employee.emp_status = null;
             employee.salary = 0;
+            job.vacancy += 1;
             _context.SaveChanges();
 
             return RedirectToAction("ManageEmployees", "Employee");
+        }
+
+        [HttpPost]
+
+        public ActionResult LeaveJob(string tc)
+        {
+
+            try
+            {
+                var employee = _context.Users.Find(tc);
+                var job = _context.Jobs.FirstOrDefault(u => u.job_id == employee.job_id);
+
+                var latestHistoryEntry = _context.Histories
+                     .Where(h => h.job_id == job.job_id && h.tc == employee.tc)
+                     .OrderByDescending(h => h.history_id)
+                     .FirstOrDefault();
+                string dateString = DateTime.Today.ToString("yyyy-MM-dd");
+                if (latestHistoryEntry != null)
+                {
+                    latestHistoryEntry.dismissal_date = dateString;
+                    _context.SaveChanges();
+                }
+                employee.job_id = null;
+                employee.emp_status = null;
+                employee.salary = 0;
+                job.vacancy += 1;
+                _context.SaveChanges();
+                TempData["SuccessMessage"] = "You Left your Job.";
+                return RedirectToAction("UserMainPage", "User");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "An error occurred while processing your request.";
+
+                if (ex.InnerException != null)
+                {
+                    ViewBag.InnerErrorMessage = ex.InnerException.Message;
+                }
+
+                return View();
+            }
         }
     }
 

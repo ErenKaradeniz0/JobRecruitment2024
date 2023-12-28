@@ -25,13 +25,22 @@ namespace JobRecruitment2024.Controllers
 
                 if (currentUser != null)
                 {
+                    if (currentUser.job_id != null)
+                    {
+                        ViewBag.StatusMessage = "You have been employed.";
+                        return View();
+                    }
                     var appliedJobsForUser = _context.Applications
-                       .Where(a => a.tc == currentUser.tc)
-                       .Select(a => a.job_id)
-                       .ToList();
+                        .Where(a => a.tc == currentUser.tc)
+                        .Select(a => a.job_id)
+                        .ToList();
 
-                    var availableJobs = _context.Jobs.Where(j => !appliedJobsForUser.Contains(j.job_id)).ToList();
+                    var availableJobs = _context.Jobs
+                        .Where(j => !appliedJobsForUser.Contains(j.job_id) && j.vacancy > 0)
+                        .ToList();
+
                     return View(availableJobs);
+
                 }
                 else
                 {
@@ -89,7 +98,7 @@ namespace JobRecruitment2024.Controllers
                 {
                     List<JobViewModel> userApplications = (from app in _context.Applications
                                                             join job in _context.Jobs on app.job_id equals job.job_id
-                                                            where app.tc == currentUser.tc
+                                                            where app.tc == currentUser.tc && job.vacancy > 0
                                                             select new JobViewModel
                                                             {
                                                                 job_id = job.job_id,
@@ -162,7 +171,7 @@ namespace JobRecruitment2024.Controllers
         // Action method to accept an application
         [HttpPost]
         public ActionResult AcceptApplication(int application_id)
-        {
+        {   
             var application = _context.Applications.FirstOrDefault(a => a.application_id == application_id);
             if (application != null)
             {

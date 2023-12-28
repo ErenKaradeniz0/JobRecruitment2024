@@ -10,10 +10,10 @@ namespace JobRecruitment2024.Models
     {
         [Key]
         public int history_id { get; set; }
-        public DateTime recruitment_date { get; set; }
-        public DateTime? dismissal_date { get; set; }
+        public string recruitment_date { get; set; }
+        public string dismissal_date { get; set; }
         public int job_id { get; set; }
-        public int tc { get; set; }
+        public string tc { get; set; }
         //make
     }
 }

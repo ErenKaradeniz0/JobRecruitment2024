@@ -196,7 +196,24 @@ namespace JobRecruitment2024.Controllers
 
         public ActionResult UserDeleteAccount()
         {
-            return View();
+            string userEmail = Session["UserEmail"] as string;
+            Users user = _context.Users.FirstOrDefault(u => u.email == userEmail);
+            // Delete applications associated with the user's tc
+
+            var userApplications = _context.Applications.Where(a => a.tc == user.tc);
+                _context.Applications.RemoveRange(userApplications);
+
+                // Delete the user with the specified tc
+                var userToDelete = _context.Users.SingleOrDefault(u => u.tc == user.tc);
+                if (userToDelete != null)
+                {
+                _context.Users.Remove(userToDelete);
+                }
+
+                _context.SaveChanges();
+            TempData["SuccessMessage"] = "You've deleted your account.";
+            return RedirectToAction("UserLoginPage", "User");
+
         }
     }
 }

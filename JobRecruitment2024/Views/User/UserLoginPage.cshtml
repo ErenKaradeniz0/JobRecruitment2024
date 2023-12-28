@@ -6,22 +6,27 @@
     <title>User Login</title>
 </head>
 
-<body>
-    <div class="login-container">
-        <h2>User Login</h2>
-        @using (Html.BeginForm(FormMethod.Post))
-        {
-            @Html.TextBox("email", null, new {maxlength = "50", @placeholder = "Email", required = "required" })
-            @Html.Password("password", null, new {maxlength = "10", @placeholder = "Password", required = "required" })
-            <button type="submit">Login</button>
-            <a href="@Url.Action("Register", "YourController")">Don't have an account yet? Sign Up</a>
-        }
+@if (TempData["SuccessMessage"] != null)
+{
+    ViewBag.SuccessMessage = TempData["SuccessMessage"];
+    <p> @ViewBag.SuccessMessage</p>
+}
 
 
-        <div>
-            <a href="~/Home/Forgot_Password">Forgot Password?</a>
-        </div>
-        @Html.Partial("_ErrorMessage")
-        <a href="@Url.Action("Index", "Home")">Go Home Page</a>
+<div class="login-container">
+    <h2>User Login</h2>
+    @using (Html.BeginForm(FormMethod.Post))
+    {
+        @Html.TextBox("email", null, new { maxlength = "50", @placeholder = "Email", required = "required" })
+        @Html.Password("password", null, new { maxlength = "10", @placeholder = "Password", required = "required" })
+        <button type="submit">Login</button>
+        <a href="@Url.Action("Register", "User")">Don't have an account yet? Sign Up</a>
+    }
+
+
+    <div>
+        <a href="~/Home/Forgot_Password">Forgot Password?</a>
     </div>
-</body>
+    @Html.Partial("_ErrorMessage")
+    <a href="@Url.Action("Index", "Home")">Go Home Page</a>
+</div>

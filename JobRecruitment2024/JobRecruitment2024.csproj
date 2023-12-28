@@ -293,7 +293,6 @@
     <Content Include="Views\User\UserUpdateAccount.cshtml" />
     <Content Include="Views\Application\ApplyJob.cshtml" />
     <Content Include="Views\Application\MyApplications.cshtml" />
-    <Content Include="Views\User\UserDeleteAccount.cshtml" />
     <Content Include="Views\Job\ManageJobPosting.cshtml" />
   </ItemGroup>
   <ItemGroup>

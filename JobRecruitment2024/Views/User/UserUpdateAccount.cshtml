@@ -57,6 +57,24 @@
 
         <button type="submit">Update Account</button>
     }
+
+    if (Model.job_id != null)
+    {
+        using (Html.BeginForm("LeaveJob", "Employee", FormMethod.Post))
+        {
+            @Html.Hidden("tc", Model.tc)
+            <button type="submit">Leave Job</button>
+        }
+    }
+    else
+    {
+        using (Html.BeginForm("UserDeleteAccount", "User", FormMethod.Post))
+        {
+            @Html.Hidden("tc", Model.tc)
+            <button type="submit">Delete Account</button>
+        }
+    }
+    <a href="UserMainPage">Manager Main Page</a>
 }
 else
 {<p>@ViewBag.ErrorMessage</p>
@@ -67,7 +85,6 @@ else
 </script>
 }
 
-<a href="UserMainPage">Manager Main Page</a>
 
 <script>
 

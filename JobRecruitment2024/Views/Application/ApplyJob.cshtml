@@ -38,12 +38,22 @@
 
 else
 {
-    <p>@ViewBag.ErrorMessage</p>
-    <script>
+    if (ViewBag.StatusMessage != null)
+    {
+        <p>@ViewBag.StatusMessage</p>
+    }
+
+    if (ViewBag.ErrorMessage != null)
+    {
+
+        <p>@ViewBag.ErrorMessage</p>
+        <script>
     setTimeout(function () {
         window.location.href = '@Url.Action("UserLoginPage", "User")';
     }, 3000);
-    </script>
+        </script>
+    }
+
 }
 
 <a href="@Url.Action("UserMainPage", "User")">User Main Page</a>

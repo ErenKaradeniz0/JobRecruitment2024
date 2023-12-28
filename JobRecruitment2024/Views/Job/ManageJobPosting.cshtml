@@ -30,11 +30,11 @@
 
 
             @Html.LabelFor(model => model.salary, "Salary:")
-            @Html.TextBoxFor(model => model.salary, new { required = "required" })
+            @Html.TextBoxFor(model => model.salary, new { @Value = "", required = "required" })
             @Html.Raw("<br><br>")
 
             @Html.LabelFor(model => model.employee_limit, "Employee Limit:")
-            @Html.TextBoxFor(model => model.employee_limit, new { required = "required" })
+            @Html.TextBoxFor(model => model.employee_limit, new { @Value = "", required = "required" })
             @Html.Raw("<br><br>")
 
             <input type="submit" value="Create Job" />
