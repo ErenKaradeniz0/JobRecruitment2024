@@ -1,6 +1,7 @@
 ﻿using JobRecruitment2024.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Mail;
 using System.Web;
@@ -21,6 +22,7 @@ namespace JobRecruitment2024.Controllers
         {
             try
             {
+                Debug.WriteLine(PasswordEncrypt("a"));
                 var users = _context.Managers.ToList();
                 ViewBag.Message = "Connection successful!!";
             }
@@ -53,16 +55,18 @@ namespace JobRecruitment2024.Controllers
         public ActionResult Forgot_Password(string email)
         {
             string newPassword = GenerateRandomPassword();
+            string encryptedPassword = PasswordEncrypt(newPassword);
             string userType = Session["userType"] as string;
+
             if (userType == "Manager")
             {
                 var client = _context.Managers.FirstOrDefault(m => m.email == email);
-                client.password = newPassword;
+                client.password = encryptedPassword;
             }
             else if (userType == "User")
             {
                 var client = _context.Users.FirstOrDefault(u => u.email == email);
-                client.password = newPassword;
+                client.password = encryptedPassword;
             }
              
      
@@ -113,5 +117,49 @@ namespace JobRecruitment2024.Controllers
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             return new string(Enumerable.Repeat(chars, 8).Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
+        public static string PasswordEncrypt(string password)
+        {
+            int minAsciiVal = 32;
+            int maxAsciiVal = 126;
+            int key = 13;
+            int mirrorKey = -17;
+
+            string crypto = "";
+            string cryptoMirror = "";
+
+            string mirror = new string(password.Reverse().ToArray());
+
+            for (int i = 0; i < password.Length; i++)
+            {
+                int charPassword = (int)password[i] + key;
+                int charMirror = (int)mirror[i] + mirrorKey;
+
+                if (charPassword > maxAsciiVal)
+                    charPassword = charPassword - maxAsciiVal + minAsciiVal - 1;
+
+                if (charMirror < minAsciiVal)
+                    charMirror = charMirror + maxAsciiVal - minAsciiVal + 1;
+
+                // Escape single quotes in the password
+                if (charPassword == 39)
+                {
+                    charPassword = int.Parse("39" + charPassword);
+                }
+
+                if (charMirror == 39)
+                {
+                    charMirror = int.Parse("39" + charMirror);
+                }
+
+                crypto += (char)charPassword;
+                cryptoMirror += (char)charMirror;
+            }
+
+            string newPassword = crypto + cryptoMirror;
+
+            return newPassword;
+        }
+
     }
 }

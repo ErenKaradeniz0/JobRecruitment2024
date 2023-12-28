@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 using System.Web.Helpers;
 using System.Data.Entity.Infrastructure;
 using static System.Net.Mime.MediaTypeNames;
+using System.Reflection;
 
 namespace JobRecruitment2024.Controllers
 {
@@ -32,8 +33,9 @@ namespace JobRecruitment2024.Controllers
         [HttpPost]
         public ActionResult UserLoginPage(string email, string password)
         {
+            string encryptedPassword = HomeController.PasswordEncrypt(password);
             Session["UserEmail"] = email;
-            var user = _context.Users.FirstOrDefault(u => u.email == email && u.password == password);
+            var user = _context.Users.FirstOrDefault(u => u.email == email && u.password == encryptedPassword);
 
             if (user != null)
             {
@@ -70,6 +72,7 @@ namespace JobRecruitment2024.Controllers
                         throw new InvalidOperationException("This email is already registered.");
                     }
 
+                    string encryptedPassword = HomeController.PasswordEncrypt(model.password);
                     var user = new Users
                     {
                         tc = model.tc,
@@ -77,7 +80,7 @@ namespace JobRecruitment2024.Controllers
                         surname = model.surname,
                         phone_num = model.phone_num,
                         email = model.email,
-                        password = model.password
+                        password = encryptedPassword
                     };
 
                     _context.Users.Add(user);
@@ -158,13 +161,14 @@ namespace JobRecruitment2024.Controllers
                 try
                 {
                     Users currentUser = _context.Users.FirstOrDefault(u => u.email == userEmail);
-
+                    string encryptedPassword = HomeController.PasswordEncrypt(updatedUser.password);
                     currentUser.name = updatedUser.name;
                     currentUser.surname = updatedUser.surname;
                     currentUser.email = updatedUser.email;
                     currentUser.phone_num = updatedUser.phone_num;
 
-                    if (updatedUser.password != null) currentUser.password = updatedUser.password;
+                    if (updatedUser.password != null)
+                        currentUser.password = encryptedPassword;
 
 
                     _context.SaveChanges();

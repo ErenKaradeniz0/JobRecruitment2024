@@ -28,8 +28,11 @@ namespace JobRecruitment2024.Controllers
         [HttpPost]
         public ActionResult ManagerLoginPage(string username, string password)
         {
+
+            string encryptedPassword = HomeController.PasswordEncrypt(password);
             Session["ManagerUsername"] = username;
-            var manager = _context.Managers.FirstOrDefault(u => u.username == username && u.password == password);
+
+            var manager = _context.Managers.FirstOrDefault(m => m.username == username && m.password == encryptedPassword);
 
 
             if (manager != null)
@@ -104,7 +107,12 @@ namespace JobRecruitment2024.Controllers
                     currentManager.email = updatedManager.email;
                     currentManager.phone_num = updatedManager.phone_num;
 
-                    if (updatedManager.password != null) currentManager.password = updatedManager.password;
+                    if (updatedManager.password != null)
+                    {
+                        string encryptedPassword = HomeController.PasswordEncrypt(updatedManager.password);
+                        currentManager.password = encryptedPassword;
+                    }
+
 
 
                     _context.SaveChanges();
