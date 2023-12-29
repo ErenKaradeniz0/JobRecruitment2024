@@ -42,11 +42,14 @@ namespace JobRecruitment2024.Controllers
         public ActionResult Forgot_Password()
         {
             string referrerUrl = Request.UrlReferrer?.ToString();
-            if (referrerUrl.Contains("Manager"))
-                Session["userType"] = "Manager";
+            if (referrerUrl != null)
+            {
+                if (referrerUrl.Contains("Manager"))
+                    Session["userType"] = "Manager";
 
-            else if (referrerUrl.Contains("User"))
-               Session["userType"] = "User";
+                else if (referrerUrl.Contains("User"))
+                    Session["userType"] = "User";
+            }
 
             return View();
         }

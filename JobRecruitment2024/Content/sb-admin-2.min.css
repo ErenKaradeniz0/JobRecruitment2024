@@ -11029,13 +11029,13 @@ a:focus {
 }
 
 .bg-user-login-image {
-    background: url("img/Manager.jpg");
+    background: url("img/User.jpg");
     background-position: center;
     background-size: cover
 }
 
-.bg-register-image {
-    background: url(https://source.unsplash.com/Mv9hjnEUHR4/600x800);
+.bg-forgot-password-image {
+    background: url("img/Forgot_Password.jpg");
     background-position: center;
     background-size: cover
 }
