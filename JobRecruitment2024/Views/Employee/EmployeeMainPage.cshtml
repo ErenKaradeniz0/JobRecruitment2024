@@ -1,0 +1,24 @@
+﻿@model JobRecruitment2024.Models.Managers
+@{
+    ViewBag.Title = "Employee Main Page";
+}
+
+<h2>EmployeeMainPage</h2>
+
+@if (Model != null)
+{
+    <h4>Your Manager's</h4>
+    <p>Email: @Model.email</p>
+    <p>Phone Number: @Model.phone_num</p>
+    <p>Name surname: @Model.name  @Model.surname</p>
+    <a href="@Url.Action("UserMainPage", "User")">User Main Page</a>
+}
+else
+{
+    <p>@ViewBag.ErrorMessage</p>
+    <script>
+        setTimeout(function () {
+            window.location.href = '@Url.Action("UserLoginPage","User")';
+        }, 3000);
+    </script>
+}

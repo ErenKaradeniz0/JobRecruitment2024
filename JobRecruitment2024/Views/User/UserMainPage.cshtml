@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "User";
+    ViewBag.Title = "User Main Page";
 }
 
 <h2>User Main Page</h2>
@@ -30,8 +30,18 @@ else
 {
 <ul>
     <li><a href="@Url.Action("UserUpdateAccount")">Update Account Information</a></li>
-    <li><a href="@Url.Action("ApplyJob", "Application")">Apply jobs</a></li>
-    <li><a href="@Url.Action("MyApplications", "Application")">My Applications</a></li>
+    @if (ViewBag.StatusMessage != null)
+    {
+        <li><a href="@Url.Action("EmployeeMainPage", "Employee")">Employee Main Page</a></li>
+    }
+    else
+    {
+
+        <li><a href="@Url.Action("ApplyJob", "Application")">Apply jobs</a></li>
+        <li><a href="@Url.Action("MyApplications", "Application")">My Applications</a></li>
+    }
+
+
 
 </ul>
 

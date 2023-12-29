@@ -225,9 +225,11 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\img\Manager.jpg" />
+    <Content Include="Content\img\User.jpg" />
+    <Content Include="Content\sb-admin-2.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -294,6 +296,8 @@
     <Content Include="Views\Application\ApplyJob.cshtml" />
     <Content Include="Views\Application\MyApplications.cshtml" />
     <Content Include="Views\Job\ManageJobPosting.cshtml" />
+    <Content Include="Views\Employee\EmployeeMainPage.cshtml" />
+    <Content Include="Views\Shared\_LoginLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

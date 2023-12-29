@@ -22,7 +22,6 @@ namespace JobRecruitment2024.Controllers
         {
             try
             {
-
                 // Retrieve the current user
                 var currentUser = _context.Users.FirstOrDefault(u => u.tc == tc);
 
@@ -68,6 +67,46 @@ namespace JobRecruitment2024.Controllers
                 return RedirectToAction("MyApplications","Application");
             }
         }
+
+        [HttpGet]
+        public ActionResult EmployeeMainPage()
+        {
+            var employeeEmail = Session["UserEmail"] as string; // Assuming you store the employee's email in session
+
+            if (employeeEmail != null)
+            {
+                var employee = _context.Users.FirstOrDefault(e => e.email == employeeEmail);
+                if (employee != null)
+                {
+                    var job = _context.Jobs.FirstOrDefault(j => j.job_id == employee.job_id);
+                    if (job != null)
+                    {
+                        var department = _context.Managers.FirstOrDefault(m => m.dep_id == job.dep_id);
+                        if (department != null)
+                        {
+                            var managers = _context.Managers.FirstOrDefault(m => m.manager_id == department.manager_id);
+                            if (managers != null)
+                            {
+                                var managerInfo = new Managers
+                                {
+                                    email = managers.email,
+                                    phone_num = managers.phone_num,
+                                    name = managers.name,
+                                    surname = managers.surname
+                                };
+                                return View(managerInfo);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "User not found. Redirecting Login Page...";
+            }
+            return View();
+        }
+
         [HttpGet]
         public ActionResult ManageEmployees()
         {

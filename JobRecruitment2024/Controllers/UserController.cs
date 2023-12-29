@@ -12,6 +12,7 @@ using System.Web.Helpers;
 using System.Data.Entity.Infrastructure;
 using static System.Net.Mime.MediaTypeNames;
 using System.Reflection;
+using System.Runtime.ConstrainedExecution;
 
 namespace JobRecruitment2024.Controllers
 {
@@ -107,20 +108,33 @@ namespace JobRecruitment2024.Controllers
             return View(model);
         }
 
-
+        [HttpGet]
         public ActionResult UserMainPage()
         {
-            if (Session["UserEmail"] == null)
-                ViewBag.ErrorMessage = "User not found. Redirecting Login Page...";
 
+            string userEmail = Session["UserEmail"] as string;
+            Users user = _context.Users.FirstOrDefault(u => u.email == userEmail);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = "User not found. Redirecting Login Page...";
+            }
+            else
+            {
+                if(user.emp_status != null)
+                {
+                    ViewBag.StatusMessage = "You have been employed.";
+                }
+            }
             return View();
         }
 
+        [HttpGet]
         public ActionResult Logout()
         {
             Session.Remove("UserEmail");
             return RedirectToAction("Index", "Home");
         }
+
         [HttpGet]
         public ActionResult UserUpdateAccount()
         {

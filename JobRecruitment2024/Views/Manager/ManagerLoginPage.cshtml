@@ -1,25 +1,31 @@
 ﻿@{
-    ViewBag.Title = "Login";
+    ViewBag.Title = "Manager Login";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+
 }
-
-<head>
-    <title>Manager Login</title>
-</head>
-
-<body>
-    <div class="login-container">
-        <h2>Manager Login</h2>
-        @using (Html.BeginForm(FormMethod.Post))
+<div class="col-lg-6 d-none d-lg-block bg-manager-login-image"></div>
+<div class="col-lg-6">
+    <div class="p-5">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "user" }))
         {
-            @Html.TextBox("username", null, new { maxlength = "15", @placeholder = "Username", required = "required" })
-            @Html.Password("password", null, new { maxlength = "10", @placeholder = "Password", required = "required" })
-            <button type="submit">Login</button>
-            <a href="@Url.Action("Register", "YourController")">Don't have an account yet? Sign Up</a>
+            <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Manager Login</h1>
+            </div>
+            <div class="form-group">
+                @Html.TextBox("username", null, new { @class = "form-control form-control-user", maxlength = "15", @placeholder = "Username", required = "required" })
+            </div>
+            <div class="form-group">
+                @Html.Password("password", null, new { @class = "form-control form-control-user", maxlength = "10", @placeholder = "Password", required = "required" })
+            </div>
+            <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>
         }
-        <div>
-            <a href="~/Home/Forgot_Password">Forgot Password?</a>
+        <hr>
+        <div class="text-center">
+            <a class="small" href="@Url.Action("Forgot_Password", "Home")">Forgot Password?</a>
+        </div>
+        <div class="text-center">
+            <a class="small" href="@Url.Action("Index", "Home")">Go Home Page</a>
         </div>
         @Html.Partial("_ErrorMessage")
-        <a href="@Url.Action("Index", "Home")">Go Home Page</a>
     </div>
-</body>
+</div>
