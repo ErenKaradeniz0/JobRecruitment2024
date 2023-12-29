@@ -69,7 +69,7 @@ namespace JobRecruitment2024.Controllers
         }
 
         [HttpGet]
-        public ActionResult EmployeeMainPage()
+        public ActionResult YourManager()
         {
             var employeeEmail = Session["UserEmail"] as string; // Assuming you store the employee's email in session
 

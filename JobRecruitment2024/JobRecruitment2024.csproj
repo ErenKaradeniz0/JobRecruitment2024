@@ -300,8 +300,8 @@
     <Content Include="Views\Application\ApplyJob.cshtml" />
     <Content Include="Views\Application\MyApplications.cshtml" />
     <Content Include="Views\Job\ManageJobPosting.cshtml" />
-    <Content Include="Views\Employee\EmployeeMainPage.cshtml" />
-    <Content Include="Views\Shared\_LoginLayout.cshtml" />
+    <Content Include="Views\Employee\YourManager.cshtml" />
+    <Content Include="Views\Shared\_LayoutWithImg.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
