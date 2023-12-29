@@ -2,58 +2,83 @@
 
 @{
     ViewBag.Title = "Apply Job";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
 
-@if (Model != null)
-{
-    if (ViewBag.SuccessMessage != null)
-    {
-        <p>@ViewBag.SuccessMessage</p>
-    }
-
-    <h2>Available Jobs</h2>
-    if (Model != null && Model.Any())
-    {
-        <ul>
-            @foreach (var job in Model)
+<div class="col-xl-6 col-lg-6 col-md-8">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            @if (Model != null)
             {
-                <li>
-                    <h3>@job.job_name</h3>
-                    <p>@job.job_description</p>
-                    <form method="post" action="@Url.Action("ApplyJob")">
-                        @Html.Hidden("job_id_apply", job.job_id) <!-- Pass the JobId -->
-                        <input type="submit" value="Apply" />
-                    </form>
-                </li>
+                <div class="row">
+                    <div class="col-lg-">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
+                            </div>
+                            @if (ViewBag.SuccessMessage != null)
+                            {
+                                <p>@ViewBag.SuccessMessage</p>
+                            }
+                            <div class="text-center">
+                                <h5 class="h5 text-gray-900 mb-4">Available Jobs</h5>
+                            </div>
+                            @if (Model.Any())
+                            {
+                                foreach (var job in Model)
+                                {
+                                    <div id="jobForm_@job.job_id">
+                                        <h3>@job.job_name</h3>
+                                        <p>@job.job_description</p>
+                                        <form method="post" action="@Url.Action("ApplyJob")">
+                                            @using (Html.BeginForm("ApplyJob", "Application", FormMethod.Post, new { @class = "user" }))
+                                            {
+                                                @Html.Hidden("job_id_apply", job.job_id) <!-- Pass the JobId -->
+                                                <input type="submit" class="btn btn-primary btn-user btn-block" value="Apply" />
+                                            }
+
+                                        </form>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p> No jobs available</p>
+                            }
+                            <div class="text-center">
+                                <a href="@Url.Action("UserMainPage", "User")">User Main Page</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
-        </ul>
-    }
-    else
-    {
-        <p>No jobs available</p>
-    }
-}
+            else
+            {
+                if (ViewBag.StatusMessage != null)
+                {
+                    <p>@ViewBag.StatusMessage</p>
+                }
 
-else
-{
-    if (ViewBag.StatusMessage != null)
-    {
-        <p>@ViewBag.StatusMessage</p>
-    }
+                if (ViewBag.ErrorMessage != null)
+                {
 
-    if (ViewBag.ErrorMessage != null)
-    {
+                    <p>@ViewBag.ErrorMessage</p>
 
-        <p>@ViewBag.ErrorMessage</p>
-        <script>
-    setTimeout(function () {
-        window.location.href = '@Url.Action("UserLoginPage", "User")';
-    }, 3000);
-        </script>
-    }
+                    <script>
+                        setTimeout(function () {
+                            window.location.href = '@Url.Action("UserLoginPage", "User")';
+                        }, 3000);
+                    </script>
+                }
 
-}
+            }
 
-<a href="@Url.Action("UserMainPage", "User")">User Main Page</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+

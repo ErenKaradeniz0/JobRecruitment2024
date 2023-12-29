@@ -1,91 +1,108 @@
 ﻿@model JobRecruitment2024.Models.Users
 @{
     ViewBag.Title = "User Update Account";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
+<div class="col-xl-6 col-lg-6 col-md-8">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            @if (Model != null)
+            {
 
-<h2>@ViewBag.Title</h2>
+                <div id="errorMessage" style="display: none; color: red;">Passwords do not match!</div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="p-5">
 
-<div id="errorMessage" style="display: none; color: red;">Passwords do not match!</div>
+                            @if (ViewBag.SuccessMessage != null)
+                            {
+                                <p>@ViewBag.SuccessMessage</p>
+                                <script>
+                                setTimeout(function () {
+                                    window.location.href = '@Url.Action("UserMainPage")';
+                                }, 3000);
+                                </script>
+                            }
+                            else if (ViewBag.ErrorMessage != null)
+                            {
+                                <p>@ViewBag.ErrorMessage </p>
+                            }
 
-@if (Model != null)
-{
-    if (ViewBag.SuccessMessage != null)
-    {
-        <p>@ViewBag.SuccessMessage</p>
-        <script>
-        setTimeout(function () {
-            window.location.href = '@Url.Action("UserMainPage")';
-        }, 3000);
-        </script>
-    }
-    else if (ViewBag.ErrorMessage != null)
-    {
-        <p>@ViewBag.ErrorMessage </p>
-    }
+                            <div class="text-center">
+                                <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
+                            </div>
 
-    using (Html.BeginForm("UserUpdateAccount", "User", FormMethod.Post, new { id = "updateForm" }))
-    {
-        @Html.LabelFor(model => model.name, "Name:")
-        @Html.TextBoxFor(model => model.name, new { maxlength = 15, required = "required" })
-        @Html.Raw("<br><br>")
+                            @using (Html.BeginForm("UserUpdateAccount", "User", FormMethod.Post, new { @class = "user", id = "updateForm" }))
+                            {
+                                @Html.LabelFor(model => model.name, "Name:")
+                                @Html.TextBoxFor(model => model.name, new { @class = "form-control form-control-user", maxlength = 15, required = "required" })
 
-        @Html.LabelFor(model => model.surname, "Surname:")
-        @Html.TextBoxFor(model => model.surname, new { maxlength = 15, required = "required" })
-        @Html.Raw("<br><br>")
+                                @Html.LabelFor(model => model.surname, "Surname:")
+                                @Html.TextBoxFor(model => model.surname, new { @class = "form-control form-control-user", maxlength = 15, required = "required" })
 
-        @Html.LabelFor(model => model.email, "Email:")
-        @Html.TextBoxFor(model => model.email, new { maxlength = 50, type = "email" })
-        @Html.Raw("<br><br>")
+                                @Html.LabelFor(model => model.email, "Email:")
+                                @Html.TextBoxFor(model => model.email, new { @class = "form-control form-control-user", maxlength = 50, type = "email" })
 
-        @Html.CheckBox("changePassword", new { id = "changePasswordCheckbox" })
-        @Html.Label("changePassword", "Change Password")
-        @Html.Raw("<br><br>")
 
-        <div id="passwordField" style="display: none;">
-            @Html.LabelFor(model => model.password, "New Password:")
-            @Html.PasswordFor(model => model.password, new { maxlength = 10, id = "newPassword" })
-            @Html.Raw("<br><br>")
+                                @Html.CheckBox("changePassword", new { id = "changePasswordCheckbox" })
+                                @Html.Label("changePassword", "Change Password")
+                                <br />
 
-            @Html.Label("newPasswordAgain", "New Password Again:")
-            @Html.Password("newPasswordAgain", null, new { maxlength = 10 })
-            @Html.Raw("<br><br>")
+
+                                <div id="passwordField" style="display: none;">
+                                    @Html.LabelFor(model => model.password, "New Password:")
+                                    @Html.PasswordFor(model => model.password, new { @class = "form-control form-control-user", maxlength = 10, id = "newPassword" })
+
+
+                                    @Html.Label("newPasswordAgain", "New Password Again:")
+                                    @Html.Password("newPasswordAgain", null, new { @class = "form-control form-control-user", maxlength = 10 })
+
+                                </div>
+
+                                @Html.LabelFor(model => model.phone_num, "Phone:")
+                                @Html.TextBoxFor(model => model.phone_num, new { @class = "form-control form-control-user", maxlength = 11, required = "required" })
+
+                                <br />
+                                <button type="submit" class="btn btn-primary btn-user btn-block">Update Account</button>
+                            }
+                            <br />
+                            @if (Model.job_id != null)
+                            {
+                                using (Html.BeginForm("LeaveJob", "Employee", FormMethod.Post, new { @class = "user" }))
+                                {
+                                    @Html.Hidden("tc", Model.tc)
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">Leave Job</button>
+                                }
+                            }
+                            else
+                            {
+                                using (Html.BeginForm("UserDeleteAccount", "User", FormMethod.Post, new { @class = "user" }))
+                                {
+                                    {
+                                        @Html.Hidden("tc", Model.tc)
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">Delete Account</button>
+                                    }
+                                }
+                                <div class="text-center">
+                                    <a class="small" href="UserMainPage">User Main Page</a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            }
+            else
+            {<p>@ViewBag.ErrorMessage</p>
+            <script>
+                setTimeout(function () {
+                    window.location.href = '@Url.Action("UserLoginPage")';
+                }, 3000);
+            </script>
+        }
         </div>
-
-        @Html.LabelFor(model => model.phone_num, "Phone:")
-        @Html.TextBoxFor(model => model.phone_num, new { maxlength = 11, required = "required" })
-        @Html.Raw("<br><br>")
-
-        <button type="submit">Update Account</button>
-    }
-
-    if (Model.job_id != null)
-    {
-        using (Html.BeginForm("LeaveJob", "Employee", FormMethod.Post))
-        {
-            @Html.Hidden("tc", Model.tc)
-            <button type="submit">Leave Job</button>
-        }
-    }
-    else
-    {
-        using (Html.BeginForm("UserDeleteAccount", "User", FormMethod.Post))
-        {
-            @Html.Hidden("tc", Model.tc)
-            <button type="submit">Delete Account</button>
-        }
-    }
-    <a href="UserMainPage">User Main Page</a>
-}
-else
-{<p>@ViewBag.ErrorMessage</p>
-<script>
-        setTimeout(function () {
-            window.location.href = '@Url.Action("UserLoginPage")';
-        }, 3000);
-</script>
-}
-
-
+    </div>
+</div>
 <script>
 
     var newPasswordInput = document.getElementById('newPassword');

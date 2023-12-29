@@ -1,8 +1,8 @@
 ﻿@{
     ViewBag.Title = "User Main Page";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
 
-<h2>User Main Page</h2>
 @if (TempData["SuccessMessage"] != null)
 {
     ViewBag.SuccessMessage = TempData["SuccessMessage"];
@@ -12,7 +12,7 @@ else if (TempData["ErrorMessage"] != null)
     ViewBag.ErrorMessage = TempData["ErrorMessage"];
 }
 
-@if(ViewBag.SuccessMessage != null)
+@if (ViewBag.SuccessMessage != null)
 {
     <p> @ViewBag.SuccessMessage</p>
 }
@@ -28,23 +28,37 @@ else if (TempData["ErrorMessage"] != null)
 }
 else
 {
-<ul>
-    <li><a href="@Url.Action("UserUpdateAccount")">Update Account Information</a></li>
-    @if (ViewBag.StatusMessage != null)
-    {
-        <li><a href="@Url.Action("EmployeeMainPage", "Employee")">Employee Main Page</a></li>
-    }
-    else
-    {
+    <div class="col-xl-10 col-lg-12 col-md-9">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <div class="row">
+                    <div class="col-lg-6 d-none d-lg-block bg-user-main-image"></div>
+                    <div class="col-lg-6">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
+                            </div>
 
-        <li><a href="@Url.Action("ApplyJob", "Application")">Apply jobs</a></li>
-        <li><a href="@Url.Action("MyApplications", "Application")">My Applications</a></li>
-    }
+                            <a href="@Url.Action("UserUpdateAccount")" class="btn btn-primary btn-user btn-block">Update Account Information</a>
+                            @if (ViewBag.StatusMessage != null)
+                            {
+                                <a href="@Url.Action("EmployeeMainPage", "Employee")" class="btn btn-primary btn-user btn-block">Employee Main Page</a>
+                            }
+                            else
+                            {
 
+                                <a href="@Url.Action("ApplyJob", "Application")" class="btn btn-primary btn-user btn-block">Apply jobs</a>
+                                <a href="@Url.Action("MyApplications", "Application")" class="btn btn-primary btn-user btn-block">My Applications</a>
+                            }
 
-
-</ul>
-
-    <a href="@Url.Action("Logout", "User")">Log Out</a>
+                            <div class="text-center">
+                                <a class="small" href="@Url.Action("Logout", "User")">Log Out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 }

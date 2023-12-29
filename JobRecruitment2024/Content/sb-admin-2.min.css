@@ -11040,11 +11040,24 @@ a:focus {
     background-size: cover
 }
 
-.bg-password-image {
-    background: url(https://source.unsplash.com/oWTW-jNGl9I/600x800);
+.bg-user-main-image {
+    background: url("img/user-main.png");
     background-position: center;
     background-size: cover
 }
+
+.bg-manager-main-image {
+    background: url("img/manager-main.jpg");
+    background-position: center;
+    background-size: cover
+}
+
+.bg-update-image {
+    background: url("img/update-account.jpg");
+    background-position: center;
+    background-size: cover
+}
+
 
 form.user .custom-checkbox.small label {
     line-height: 1.5rem
@@ -11132,7 +11145,7 @@ form.user .btn-user {
             box-shadow: 0 0 0 .2rem rgba(255,255,255,.5)
         }
 
-.error {
+.error {manager.jpg
     color: #5a5c69;
     font-size: 7rem;
     position: relative;

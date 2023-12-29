@@ -1,8 +1,7 @@
 ﻿@{
     ViewBag.Title = "Manager Main Page";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
-
-<h2>Manager Main Page</h2>
 
 @if (ViewBag.ErrorMessage != null)
 {
@@ -15,12 +14,28 @@
 }
 else
 {
-    <ul>
-        <li><a href="ManagerUpdateAccount">Update Account Information</a></li>
-        <li><a href="@Url.Action("ManageJobPosting", "Job")">Manage Job Posting</li>
-        <li><a href="@Url.Action("ManageEmployees", "Employee")">Manage Employees</a></li>
-        <li><a href="@Url.Action("ManageApplications", "Application")">Manage Received Applications</a></li>
-    </ul>
+    <div class="col-xl-10 col-lg-12 col-md-9">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <div class="row">
+                    <div class="col-lg-6 d-none d-lg-block bg-manager-main-image"></div>
+                    <div class="col-lg-6">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h4 class="h4 text-gray-900 mb-4">Manager Main Page</h4>
+                            </div>
+                            <a href="ManagerUpdateAccount" class="btn btn-primary btn-user btn-block">Update Account Information</a>
+                            <a href="@Url.Action("ManageJobPosting", "Job")" class="btn btn-primary btn-user btn-block">Manage Job Posting</a>
+                            <a href="@Url.Action("ManageEmployees", "Employee")" class="btn btn-primary btn-user btn-block">Manage Employees</a>
+                            <a href="@Url.Action("ManageApplications", "Application")" class="btn btn-primary btn-user btn-block">Manage Received Applications</a>
 
-    <a href="@Url.Action("Logout", "Manager")">Log Out</a>
+                            <div class="text-center">
+                                <a class="small" href="@Url.Action("Logout", "Manager")">Log Out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 }

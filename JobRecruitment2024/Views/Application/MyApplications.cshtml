@@ -2,60 +2,73 @@
 
 @{
     ViewBag.Title = "My Applications";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
 
-<h2>My Applications</h2>
+<div class="col-xl-6 col-lg-6 col-md-8">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            @if (Model != null)
+            {
+                <div class="row">
+                    <div class="col-lg-">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
+                            </div>
 
-@if (Model != null)
-{
+                            @if (ViewBag.SuccessMessage != null)
+                            {
+                                <p>@ViewBag.SuccessMessage</p>
+                            }
+                            @if (Model.Any())
+                            {
+                                foreach (var job in Model)
+                                {
+                                    <div>
+                                        <p>Job Name: @job.job_name</p>
+                                        <p>Job Description: @job.job_description</p>
+                                        <p>Application Status: @job.app_status</p>
+                                        @if (job.app_status == "Accepted")
+                                        {
+                                            using (Html.BeginForm("Employment", "Employee", FormMethod.Post))
+                                            {
+                                                @Html.Hidden("jobId", job.job_id)
+                                                @Html.Hidden("tc", job.tc)
+                                                <input type="submit" value="Confirm" />
+                                            }
+                                        }
 
-   if (ViewBag.SuccessMessage != null)
-    {
-        <p>@ViewBag.SuccessMessage</p>
-    }
+                                        @using (Html.BeginForm("DeleteApplication", "Application", FormMethod.Post))
+                                        {
+                                            @Html.Hidden("applicationId", job.application_id)
+                                            <input type="submit" value="Delete" />
+                                        }
 
-    if (Model != null)
-    {
-        foreach (var job in Model)
-        {
-<div>
-    <p>Job Name: @job.job_name</p>
-    <p>Job Description: @job.job_description</p>
-    <p>Application Status: @job.app_status</p>
-    @if (job.app_status == "Accepted")
-    {
-        using (Html.BeginForm("Employment", "Employee", FormMethod.Post))
-        {
-            @Html.Hidden("jobId", job.job_id)
-            @Html.Hidden("tc", job.tc)
-            <input type="submit" value="Confirm" />
-        }
-    }
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p>You don't applied any job</p>
+                            }
+                            <div class="text-center">
+                                <a href="@Url.Action("UserMainPage", "User")">User Main Page</a>
+                            </div>
 
-    @using (Html.BeginForm("DeleteApplication", "Application", FormMethod.Post))
-    {
-        @Html.Hidden("applicationId", job.application_id)
-        <input type="submit" value="Delete" />
-    }
-
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p> @ViewBag.ErrorMessage </p>
+                <script>
+                    setTimeout(function() {
+                                    window.location.href = '@Url.Action("UserLoginPage","User")';
+                                }, 3000);
+                </script>
+            }
+        </div>
+    </div>
 </div>
-        }
-
-    }
-    else
-    {
-        <p>You don't applied any job</p>
-    }
-}
-else
-{
-        <p>@ViewBag.ErrorMessage</p>
-        <script>
-        setTimeout(function () {
-            window.location.href = '@Url.Action("UserLoginPage","User")';
-        }, 3000);
-        </script>
-
-}
-<a href="@Url.Action("UserMainPage", "User")">User Main Page</a>
-
