@@ -1916,7 +1916,7 @@ pre {
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #6e707e;
+    color: black;
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid #d1d3e2;
@@ -1937,11 +1937,11 @@ pre {
 
 .form-control:-moz-focusring {
     color: transparent;
-    text-shadow: 0 0 0 #6e707e
+    text-shadow: 0 0 0 black;
 }
 
 .form-control:focus {
-    color: #6e707e;
+    color: black;
     background-color: #fff;
     border-color: #bac8f3;
     outline: 0;
@@ -1985,7 +1985,7 @@ input[type=date].form-control, input[type=datetime-local].form-control, input[ty
 }
 
 select.form-control:focus::-ms-value {
-    color: #6e707e;
+    color: black;
     background-color: #fff
 }
 
@@ -3459,7 +3459,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #6e707e;
+    color: black;
     text-align: center;
     white-space: nowrap;
     background-color: #eaecf4;
@@ -11052,8 +11052,8 @@ a:focus {
     background-size: cover
 }
 
-.bg-update-image {
-    background: url("img/update-account.jpg");
+.bg-register-image {
+    background: url("img/register.jpg");
     background-position: center;
     background-size: cover
 }

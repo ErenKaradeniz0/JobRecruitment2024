@@ -31,12 +31,6 @@ namespace JobRecruitment2024.Controllers
                 .Where(job => job.dep_id == managerDepartmentId)
                 .ToList();
 
-
-            if (jobs == null || !jobs.Any())
-            {
-                ViewBag.ErrorMessage = "No Jobs Found. Redirecting mainpage...";
-            }
-
             var jobViewModel = new JobViewModel
             {
                 JobsList = jobs
@@ -62,10 +56,8 @@ namespace JobRecruitment2024.Controllers
                     employee_limit = model.employee_limit,
                     vacancy = model.employee_limit,
                     dep_id = currentManager.dep_id,
-                    //fix vacany
                 };
                 model.JobsList = JobCreate(job);
-
                 ViewBag.SuccessMessage = "Job created successfully.";
                 return View("ManageJobPosting", model);
             }
@@ -116,6 +108,28 @@ namespace JobRecruitment2024.Controllers
                 }
             }
 
+            var histories = _context.Histories.Where(a => a.job_id == job.job_id).ToList();
+            if (histories.Any())
+            {
+                foreach (var history in histories)
+                {
+                    _context.Histories.Remove(history);
+                }
+            }
+
+            var employees = _context.Users.Where(a => a.job_id == job.job_id).ToList();
+            if (employees.Any())
+            {
+                foreach(var employee in employees)
+                {
+                    employee.job_id = null;
+                    employee.emp_status = null;
+                    employee.salary = 0;
+                    job.vacancy += 1;
+
+                }
+            }
+
             _context.Jobs.Remove(job);
             _context.SaveChanges();
 
@@ -131,12 +145,14 @@ namespace JobRecruitment2024.Controllers
             if (job != null && ModelState.IsValid)
             {
 
+                int diff = job.employee_limit - job.vacancy;
+                
+
                 job.job_name = model.job_name;
                 job.job_description = model.job_description;
                 job.salary = model.salary;
                 job.employee_limit = model.employee_limit;
-                job.vacancy = model.employee_limit;
-                //vacancy
+                job.vacancy = job.employee_limit - diff;
 
                 _context.SaveChanges();
 

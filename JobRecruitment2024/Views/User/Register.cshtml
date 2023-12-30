@@ -1,13 +1,10 @@
 ﻿@model JobRecruitment2024.Models.Users
 @{
     ViewBag.Title = "User Registration";
+    Layout = "~/Views/Shared/_LayoutWithImg.cshtml";
 }
 
 
-
-<h2>@ViewBag.Title</h2>
-
-<div id="errorMessage" style="display: none; color: red;">Passwords do not match!</div>
 
 @if (ViewBag.SuccessMessage != null)
 {
@@ -22,41 +19,46 @@
 {
     <p>@ViewBag.ErrorMessage</p>
 }
-
-@using (Html.BeginForm("Register", "User", FormMethod.Post, new { id = "registrationForm" }))
-{
-    @Html.LabelFor(model => model.tc, "TC:")
-    @Html.TextBoxFor(model => model.tc, new { maxlength = "11", required = "required" })
-    @Html.Raw("<br><br>")
-
-    @Html.LabelFor(model => model.name, "Name:")
-    @Html.TextBoxFor(model => model.name, new { maxlength = "15", required = "required" })
-    @Html.Raw("<br><br>")
-
-    @Html.LabelFor(model => model.surname, "Surname:")
-    @Html.TextBoxFor(model => model.surname, new { maxlength = "15", required = "required" })
-    @Html.Raw("<br><br>")
-
-    @Html.LabelFor(model => model.email, "Email:")
-    @Html.TextBoxFor(model => model.email, new { maxlength = "50", type = "email", required = "required" })
-    @Html.Raw("<br><br>")
-
-    @Html.LabelFor(model => model.password, "Password:")
-    @Html.PasswordFor(model => model.password, new { maxlength = "10", id = "Password", required = "required" })
-    @Html.Raw("<br><br>")
-
-    @Html.Label("PasswordAgain", "Password Again:")
-    @Html.Password("PasswordAgain", null, new { maxlength = "10", id = "PasswordAgain", required = "required" })
-    @Html.Raw("<br><br>")
-
-    @Html.LabelFor(model => model.phone_num, "Phone Number:")
-    @Html.TextBoxFor(model => model.phone_num, new { maxlength = "11", required = "required" })
-    @Html.Raw("<br><br>")
+<div class="col-lg-6 d-none d-lg-block bg-register-image"></div>
+<div class="col-lg-6">
+    <div class="p-5">
 
 
-    <button type="submit">Register</button>
-}
+        <div class="text-center">
+            <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
+        </div>
+        @using (Html.BeginForm("Register", "User", FormMethod.Post, new { id = "registrationForm" }))
+        {
+            @Html.LabelFor(model => model.tc, "TC:")
+            @Html.TextBoxFor(model => model.tc, new { @class = "form-control form-control-user", maxlength = "11", required = "required" })
 
+            @Html.LabelFor(model => model.name, "Name:")
+            @Html.TextBoxFor(model => model.name, new { @class = "form-control form-control-user", maxlength = "15", required = "required" })
+
+            @Html.LabelFor(model => model.surname, "Surname:")
+            @Html.TextBoxFor(model => model.surname, new { @class = "form-control form-control-user", maxlength = "15", required = "required" })
+
+            @Html.LabelFor(model => model.email, "Email:")
+            @Html.TextBoxFor(model => model.email, new { @class = "form-control form-control-user", maxlength = "50", type = "email", required = "required" })
+
+            @Html.LabelFor(model => model.password, "Password:")
+            @Html.PasswordFor(model => model.password, new { @class = "form-control form-control-user", maxlength = "10", id = "Password", required = "required" })
+
+            @Html.Label("PasswordAgain", "Password Again:")
+            @Html.Password("PasswordAgain", null, new { @class = "form-control form-control-user", maxlength = "10", id = "PasswordAgain", required = "required" })
+
+            @Html.LabelFor(model => model.phone_num, "Phone Number:")
+            @Html.TextBoxFor(model => model.phone_num, new { @class = "form-control form-control-user", maxlength = "11", required = "required" })
+            <br />
+            <button type="submit" class="btn btn-primary btn-user btn-block" >Register</button>
+            <div class="text-center">
+                <a href="@Url.Action("Index", "Home")">Main Page</a>
+            </div>
+            <div id="errorMessage" style="display: none; color: red;">Passwords do not match!</div>
+        }
+
+    </div>
+</div>
 <script>
     document.getElementById('registrationForm').addEventListener('submit', function (event) {
         var password = document.getElementById('Password').value;

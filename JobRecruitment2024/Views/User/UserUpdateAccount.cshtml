@@ -39,20 +39,21 @@
                     @Html.LabelFor(model => model.email, "Email:")
                     @Html.TextBoxFor(model => model.email, new { @class = "form-control form-control-user", maxlength = 50, type = "email" })
 
-
-                    @Html.CheckBox("changePassword", new { id = "changePasswordCheckbox" })
-                    @Html.Label("changePassword", "Change Password")
-                    <br />
+                    <div class="custom-control custom-checkbox small">
+                        <input type="checkbox" class="custom-control-input" id="changePasswordCheckbox">
+                        <label class="custom-control-label" for="changePasswordCheckbox">
+                            Remember
+                            Me
+                        </label>
+                    </div>
 
 
                     <div id="passwordField" style="display: none;">
                         @Html.LabelFor(model => model.password, "New Password:")
                         @Html.PasswordFor(model => model.password, new { @class = "form-control form-control-user", maxlength = 10, id = "newPassword" })
 
-
                         @Html.Label("newPasswordAgain", "New Password Again:")
                         @Html.Password("newPasswordAgain", null, new { @class = "form-control form-control-user", maxlength = 10 })
-
                     </div>
 
                     @Html.LabelFor(model => model.phone_num, "Phone:")

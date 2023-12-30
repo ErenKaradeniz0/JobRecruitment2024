@@ -228,6 +228,7 @@
     <Content Include="Content\img\Forgot_Password.jpg" />
     <Content Include="Content\img\manager-main.jpg" />
     <Content Include="Content\img\Manager.jpg" />
+    <Content Include="Content\img\register.jpg" />
     <Content Include="Content\img\update-account.jpg" />
     <Content Include="Content\img\user-main.png" />
     <Content Include="Content\img\User.jpg" />
@@ -302,6 +303,7 @@
     <Content Include="Views\Job\ManageJobPosting.cshtml" />
     <Content Include="Views\Employee\YourManager.cshtml" />
     <Content Include="Views\Shared\_LayoutWithImg.cshtml" />
+    <Content Include="Views\Shared\_LayoutList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -2,79 +2,101 @@
 
 @{
     ViewBag.Title = "Manage Applications";
+    Layout = "~/Views/Shared/_LayoutList.cshtml";
 }
 
-<h2>ManageApplications</h2>
 
 @if (Model != null)
 {
-    if (Model.Any())
-    {
-        <table border="1" id="pendingTable">
-            <tr>
-                <th>Application ID</th>
-                <th>Applicant TC</th>
-                <th>Job ID</th>
-                <th>Application Status</th>
-                <th>Action</th>
-            </tr>
-            @foreach (var application in Model)
-            {
-                if (application.app_status == "Pending")
+    <div class="row">
+        <div class="col-lg-">
+            <div class="p-5">
+                <div class="text-center">
+                    <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
+                </div>
+                @if (Model.Any())
                 {
-                    <tr>
-                        <td>@application.application_id</td>
-                        <td>@application.tc</td>
-                        <td>@application.job_id</td>
-                        <td>@application.app_status</td>
+                    <div class="container mt-4">
+                        <div class="d-flex justify-content-center">
+                            <table class="table" id="pendingTable">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Application ID</th>
+                                        <th>Applicant TC</th>
+                                        <th>Job ID</th>
+                                        <th>Application Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var application in Model)
+                                    {
+                                        if (application.app_status == "Pending")
+                                        {
+                                            <tr>
+                                                <td>@application.application_id</td>
+                                                <td>@application.tc</td>
+                                                <td>@application.job_id</td>
+                                                <td>@application.app_status</td>
 
-                        <td>
-                            @using (Html.BeginForm("AcceptApplication", "Application", FormMethod.Post))
-                            {
-                                @Html.Hidden("application_id", application.application_id)
-                                <input type="submit" value="Accept">
-                            }
+                                                <td>
+                                                    @using (Html.BeginForm("AcceptApplication", "Application", FormMethod.Post))
+                                                    {
+                                                        @Html.Hidden("application_id", application.application_id)
+                                                        <button type="submit" class="btn btn-success btn-user btn-block">Accept</button>
+                                                    }
 
-                            @using (Html.BeginForm("RejectApplication", "Application", FormMethod.Post))
-                            {
-                                @Html.Hidden("application_id", application.application_id)
-                                <input type="submit" value="Reject">
-                            }
-                        </td>
-                    </tr>
+                                                    @using (Html.BeginForm("RejectApplication", "Application", FormMethod.Post))
+                                                    {
+                                                        @Html.Hidden("application_id", application.application_id)
+                                                        <button type="submit" class="btn btn-danger btn-user btn-block">Reject</button>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+
+                            <table class="table" id="processedTable" style="display:none">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Application ID</th>
+                                        <th>Applicant TC</th>
+                                        <th>Job ID</th>
+                                        <th>Application Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var application in Model)
+                                    {
+                                        if (application.app_status != "Pending")
+                                        {
+                                            <tr>
+                                                <td>@application.application_id</td>
+                                                <td>@application.tc</td>
+                                                <td>@application.job_id</td>
+                                                <td>@application.app_status</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-primary btn-user btn-block" onclick="toggleTables()" id="toggleButton">Show Processed Applications</button>
+                    </div>
                 }
-            }
-        </table>
-
-
-        <table border="1" id="processedTable" style="display:none">
-            <tr>
-                <th>Application ID</th>
-                <th>Applicant TC</th>
-                <th>Job ID</th>
-                <th>Application Status</th>
-            </tr>
-
-            @foreach (var application in Model)
-            {
-                if (application.app_status != "Pending")
+                else
                 {
-                    <tr>
-                        <td>@application.application_id</td>
-                        <td>@application.tc</td>
-                        <td>@application.job_id</td>
-                        <td>@application.app_status</td>
-                    </tr>
+                    <p>You don't received any applications for your job postings</p>
                 }
-            }
-        </table>
+                <div class="text-center">
+                    <a href="@Url.Action("ManagerMainPage", "Manager")">Manager Main Page</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <button onclick="toggleTables()" id="toggleButton">Show Processed Applications</button>
-    }
-    else
-    {
-        <p> You don't received any applications for your job postings</p>
-    }
 }
 else
 {<p>@ViewBag.ErrorMessage</p>
@@ -85,7 +107,7 @@ else
 </script>
 }
 
-<a href="@Url.Action("ManagerMainPage", "Manager")">Manager Main Page</a>
+
 
 <script>
     function toggleTables() {
@@ -94,12 +116,12 @@ else
 
 
         if (processedTable.style.display === 'none') {
-            processedTable.style.display = 'block';
+            processedTable.style.display = 'table';
             pendingTable.style.display = 'none';
             toggleButton.textContent = 'Show Pending Applications';
         } else {
             processedTable.style.display = 'none';
-            pendingTable.style.display = 'block';
+            pendingTable.style.display = 'table';
             toggleButton.textContent = 'Show Processed Applications';
         }
     }

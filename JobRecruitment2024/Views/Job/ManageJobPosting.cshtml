@@ -2,111 +2,135 @@
 
 @{
     ViewBag.Title = "Manage Job Posting";
-}
-
-<h2>@ViewBag.Title</h2>
-
-@if (ViewBag.SuccessMessage != null)
-{
-    <p>@ViewBag.SuccessMessage</p>
+    Layout = "~/Views/Shared/_LayoutList.cshtml";
 }
 
 
 @if (Model != null && Model.JobsList != null)
 {
-    <button id="createButton">Create</button>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="p-5">
+                <div class="text-center">
+                    <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
+                </div>
 
-    <div id="Create" style="display:none">
-        @Html.Raw("<br><br>")
+                <button id="createButton" class="btn btn-primary btn-user btn-block">Create</button>
 
-        <form method="post">
-            @Html.LabelFor(model => model.job_name, "Job Name:")
-            @Html.TextBoxFor(model => model.job_name, new { maxlength = 50, required = "required" })
-            @Html.Raw("<br><br>")
+                @if (ViewBag.SuccessMessage != null)
+                {
+                    <p>@ViewBag.SuccessMessage</p>
+                }
 
-            @Html.LabelFor(model => model.job_description, "Job Descrition:")
-            @Html.TextBoxFor(model => model.job_description, new { maxlength = 100, required = "required" })
-            @Html.Raw("<br><br>")
-
-
-            @Html.LabelFor(model => model.salary, "Salary:")
-            @Html.TextBoxFor(model => model.salary, new { @Value = "", required = "required" })
-            @Html.Raw("<br><br>")
-
-            @Html.LabelFor(model => model.employee_limit, "Employee Limit:")
-            @Html.TextBoxFor(model => model.employee_limit, new { @Value = "", required = "required" })
-            @Html.Raw("<br><br>")
-
-            <input type="submit" value="Create Job" />
-        </form>
-    </div>
-
-    <div id="Update">
-
-        @if (Model.JobsList.Any())
-        {
-            foreach (var job in Model.JobsList)
-            {
-                <div>
-                    <h3>Name: @job.job_name</h3>
-                    <p>Description: @job.job_description</p>
-                    <p>Salary: @job.salary</p>
-                    <p>Vacancy/Employee Limit: @job.vacancy/@job.employee_limit </p>
-                    <button class="updateButton" data-jobid="@job.job_id">Edit</button>
-
-                    <form id="updateForm_@job.job_id" style="display: none;" method="post" action="@Url.Action("JobUpdate", "Job")">
-
-                        @Html.HiddenFor(model => job.job_id, new { Name = "job_id" })
-                        @Html.HiddenFor(model => job.dep_id, new { Name = "dep_id" })
-                        @Html.HiddenFor(model => job.vacancy, new { Name = "vacancy" })
-
-
+                <div id="Create" style="display:none">
+                    <form method="post">
                         @Html.LabelFor(model => model.job_name, "Job Name:")
-                        @Html.TextBoxFor(model => model.job_name, new { maxlength = 50, @Value = job.job_name, required = "required" })
-                        <br />
+                        @Html.TextBoxFor(model => model.job_name, new { @class = "form-control form-control-user", maxlength = 50, required = "required" })
 
                         @Html.LabelFor(model => model.job_description, "Job Descrition:")
-                        @Html.TextBoxFor(model => model.job_description, new { maxlength = 100, @Value = job.job_description, required = "required" })
-                        <br />
+                        @Html.TextBoxFor(model => model.job_description, new { @class = "form-control form-control-user", maxlength = 100, required = "required" })
 
                         @Html.LabelFor(model => model.salary, "Salary:")
-                        @Html.TextBoxFor(model => model.salary, new { @Value = job.salary, required = "required" })
-
-                        <br />
+                        @Html.TextBoxFor(model => model.salary, new { @class = "form-control form-control-user", @Value = "", required = "required" })
 
                         @Html.LabelFor(model => model.employee_limit, "Employee Limit:")
-                        @Html.TextBoxFor(model => model.employee_limit, new { @Value = job.employee_limit, required = "required" })
-
+                        @Html.TextBoxFor(model => model.employee_limit, new { @class = "form-control form-control-user", @Value = "", required = "required" })
                         <br />
-
-                        <input type="submit" value="Update" />
-                    </form>
-
-
-                    <form method="post" action="@Url.Action("JobDelete", "Job")">
-                        <input type="hidden" name="job_id" value="@job.job_id" />
-                        <input type="submit" value="Delete" />
+                        <input type="submit" class="btn btn-success btn-user btn-block" value="Create Job" />
                     </form>
                 </div>
-            }
-        }
-        else
-        {
-            <div id="errorMessage" style="color: red;">No Jobs Found.</div>
-        }
 
+                <div id="Update">
+
+                    @if (Model.JobsList.Any())
+                    {
+                        <div class="container mt-4">
+                            <div class="d-flex justify-content-center">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Salary</th>
+                                            <th>E.L.</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var job in Model.JobsList)
+                                        {
+                                            <tr>
+                                                <td>@job.job_name</td>
+                                                <td>@job.job_description</td>
+                                                <td>@job.salary</td>
+                                                <td>@job.vacancy/@job.employee_limit </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-warning btn-user btn-block updateButton" data-jobid="@job.job_id">Edit</button>
+                                                </td>
+                                            </tr>
+
+
+                                            <tr id="updateForm_@job.job_id" style="display:none">
+                                                @using (Html.BeginForm("JobUpdate", "Job", FormMethod.Post, new { @class = "user" }))
+                                                {
+                                                    @Html.HiddenFor(model => job.job_id, new { Name = "job_id" })
+                                                    @Html.HiddenFor(model => job.dep_id, new { Name = "dep_id" })
+                                                    @Html.HiddenFor(model => job.vacancy, new { Name = "vacancy" })
+                                                    <td>
+
+                                                        @Html.TextBoxFor(model => model.job_name, new { @class = "form-control form-control-user", maxlength = 50, @Value = job.job_name, required = "required" })
+                                                    </td>
+                                                    <td>
+                                                        @Html.TextBoxFor(model => model.job_description, new { @class = "form-control form-control-user", maxlength = 100, @Value = job.job_description, required = "required" })
+                                                    </td>
+                                                    <td>
+                                                        @Html.TextBoxFor(model => model.salary, new { @class = "form-control form-control-user", @Value = job.salary, required = "required" })
+                                                    </td>
+                                                    <td>
+                                                        @Html.TextBoxFor(model => model.employee_limit, new { @class = "form-control form-control-user", @Value = job.employee_limit, required = "required" })
+                                                        <button type="submit" class="btn btn-primary btn-user btn-block">Update</button>
+                                                    </td>
+
+                                                }
+                                                @using (Html.BeginForm("JobDelete", "Job", FormMethod.Post, new { @class = "user" }))
+                                                {
+                                                    <td>
+                                                        @Html.HiddenFor(model => job.job_id, new { Name = "job_id" })
+                                                        <button type="submit" class="btn btn-danger btn-user btn-block">Delete</button>
+                                                    </td>
+                                                }
+                                            </tr>
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <a class="small" href="@Url.Action("ManagerMainPage", "Manager")">Manager Main Page</a>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div id="errorMessage" style="color: red;">No Jobs Found.</div>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
 }
 else
 {<p>@ViewBag.ErrorMessage</p>
-<script>
-        setTimeout(function () {
-            window.location.href = '@Url.Action("ManagerLoginPage", "Manager")';
-        }, 3000);
-</script>
-}
-<a href="@Url.Action("ManagerMainPage", "Manager")">Manager Main Page</a>
 
+<script>
+    setTimeout(function () {
+        window.location.href = '@Url.Action("ManagerLoginPage","Manager")';
+    }, 3000);
+</script>
+
+}
 
 <script>
     document.getElementById('createButton').addEventListener('click', function () {
@@ -128,7 +152,7 @@ else
             var updateForm = document.getElementById('updateForm_' + jobId);
 
             if (updateForm.style.display === 'none') {
-                updateForm.style.display = 'block';
+                updateForm.style.display = 'table-row';
             } else {
                 updateForm.style.display = 'none';
             }

@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "My Applications";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutList.cshtml";
 }
 
 @if (Model != null)
@@ -19,49 +19,50 @@
                     <p>@ViewBag.SuccessMessage</p>
                 }
                 @if (Model.Any())
-                {<div class="container mt-4">
-    <div class="d-flex justify-content-center">
-        <table class="table">
-            <thead class="thead-light">
-                <tr>
-                    <th>Job Name</th>
-                    <th>Job Description</th>
-                    <th>Application Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var job in Model)
                 {
-                    <tr>
-                        <td>@job.job_name</td>
-                        <td>@job.job_description</td>
-                        <td>@job.app_status</td>
-                        <td class="d-flex align-items-center">
-                            @if (job.app_status == "Accepted")
-                            {
-                                using (Html.BeginForm("Employment", "Employee", FormMethod.Post))
-                                {
-                                    @Html.Hidden("jobId", job.job_id)
-                                    @Html.Hidden("tc", job.tc)
-                                    <div class="mr-2">
-                                        <button type="submit" class="btn btn-primary">Confirm</button>
-                                    </div>
-                                }
-                            }
-                            @using (Html.BeginForm("DeleteApplication", "Application", FormMethod.Post))
-                            {
-                                @Html.Hidden("applicationId", job.application_id)
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            }
-                        </td>
+                    <div class="container mt-4">
+                        <div class="d-flex justify-content-center">
+                            <table class="table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Job Name</th>
+                                        <th>Description</th>
+                                        <th>Application Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var job in Model)
+                                    {
+                                        <tr>
+                                            <td>@job.job_name</td>
+                                            <td>@job.job_description</td>
+                                            <td>@job.app_status</td>
+                                            <td class="d-flex align-items-center">
+                                                @if (job.app_status == "Accepted")
+                                                {
+                                                    using (Html.BeginForm("Employment", "Employee", FormMethod.Post))
+                                                    {
+                                                        @Html.Hidden("jobId", job.job_id)
+                                                        @Html.Hidden("tc", job.tc)
+                                                        <div class="mr-2">
+                                                            <button type="submit" class="btn btn-primary">Confirm</button>
+                                                        </div>
+                                                    }
+                                                }
+                                                @using (Html.BeginForm("DeleteApplication", "Application", FormMethod.Post))
+                                                {
+                                                    @Html.Hidden("applicationId", job.application_id)
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                }
+                                            </td>
 
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 }
                 else
                 {
