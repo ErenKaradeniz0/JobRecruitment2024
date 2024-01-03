@@ -1,4 +1,4 @@
-﻿@model List<JobRecruitment2024.Models.Applications>
+﻿@model List<JobRecruitment2024.Models.JobViewModel>
 
 @{
     ViewBag.Title = "Manage Applications";
@@ -16,79 +16,90 @@
                 </div>
                 @if (Model.Any())
                 {
-                    <div class="container mt-4">
-                        <div class="d-flex justify-content-center">
-                            <table class="table" id="pendingTable">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Application ID</th>
-                                        <th>Applicant TC</th>
-                                        <th>Job ID</th>
-                                        <th>Application Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var application in Model)
-                                    {
-                                        if (application.app_status == "Pending")
-                                        {
-                                            <tr>
-                                                <td>@application.application_id</td>
-                                                <td>@application.tc</td>
-                                                <td>@application.job_id</td>
-                                                <td>@application.app_status</td>
+                    var groupedJobsByName = Model.GroupBy(job => job.job_id);
 
-                                                <td>
-                                                    @using (Html.BeginForm("AcceptApplication", "Application", FormMethod.Post))
+                    foreach (var jobGroup in groupedJobsByName)
+                    {
+                        <div class="mt-4">
+                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#job@(jobGroup.Key)" aria-expanded="false" aria-controls="job@(jobGroup.Key)">
+                                @(jobGroup.FirstOrDefault()?.job_name) <!-- Accessing job_name -->
+                            </button>
+                            <div class="collapse" id="job@(jobGroup.Key)">
+                                <div class="card card-body">
+                                    <div class="d-flex justify-content-center">
+                                        @*warning*@
+                                        <div class="table-responsive">
+                                            <table class="table" id="pendingTable_@(jobGroup.Key)">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>Applicant Name</th>
+                                                        <th>Job Name</th>
+                                                        <th>Application Status</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var application in jobGroup)
                                                     {
-                                                        @Html.Hidden("application_id", application.application_id)
-                                                        <button type="submit" class="btn btn-success btn-user btn-block">Accept</button>
-                                                    }
+                                                        if (application.app_status == "Pending")
+                                                        {
+                                                            <tr>
+                                                                <td>@application.name @application.surname</td>
+                                                                <td>@application.job_name</td>
+                                                                <td>@application.app_status</td>
 
-                                                    @using (Html.BeginForm("RejectApplication", "Application", FormMethod.Post))
+                                                                <td>
+                                                                    @using (Html.BeginForm("AcceptApplication", "Application", FormMethod.Post))
+                                                                    {
+                                                                        @Html.Hidden("application_id", application.application_id)
+                                                                        <button type="submit" class="btn btn-success btn-user btn-block">Accept</button>
+                                                                    }
+
+                                                                    @using (Html.BeginForm("RejectApplication", "Application", FormMethod.Post))
+                                                                    {
+                                                                        @Html.Hidden("application_id", application.application_id)
+                                                                        <button type="submit" class="btn btn-danger btn-user btn-block">Reject</button>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            <table class="table" id="processedTable_@(jobGroup.Key)" style="display:none">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>Applicant Name</th>
+                                                        <th>Job Name</th>
+                                                        <th>Application Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var application in Model)
                                                     {
-                                                        @Html.Hidden("application_id", application.application_id)
-                                                        <button type="submit" class="btn btn-danger btn-user btn-block">Reject</button>
+                                                        if (application.app_status != "Pending")
+                                                        {
+                                                            <tr>
+                                                                <td>@application.name @application.surname</td>
+                                                                <td>@application.job_name</td>
+                                                                <td>@application.app_status</td>
+                                                            </tr>
+                                                        }
                                                     }
-                                                </td>
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-
-                            <table class="table" id="processedTable" style="display:none">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Application ID</th>
-                                        <th>Applicant TC</th>
-                                        <th>Job ID</th>
-                                        <th>Application Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var application in Model)
-                                    {
-                                        if (application.app_status != "Pending")
-                                        {
-                                            <tr>
-                                                <td>@application.application_id</td>
-                                                <td>@application.tc</td>
-                                                <td>@application.job_id</td>
-                                                <td>@application.app_status</td>
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>
-                            </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                            <button class="btn btn-primary btn-user btn-block toggleButton" id="toggleButton@(jobGroup.Key)" data-jobgroupid="@jobGroup.Key">Show Processed Applications</button>
+                                </div>
+                            </div>
                         </div>
-                        <button class="btn btn-primary btn-user btn-block" onclick="toggleTables()" id="toggleButton">Show Processed Applications</button>
-                    </div>
+                    }
                 }
+
                 else
                 {
-                    <p>You don't received any applications for your job postings</p>
+                    <p> You don't received any applications for your job postings</p>
                 }
                 <div class="text-center">
                     <a href="@Url.Action("ManagerMainPage", "Manager")">Manager Main Page</a>
@@ -110,20 +121,25 @@ else
 
 
 <script>
-    function toggleTables() {
-        var processedTable = document.getElementById('processedTable');
-        var pendingTable = document.getElementById('pendingTable');
 
+    var toggleButtons = document.getElementsByClassName('toggleButton');
+    for (var i = 0; i < toggleButtons.length; i++) {
+        toggleButtons[i].addEventListener('click', function () {
+            var jobgroupId = this.getAttribute('data-jobgroupid');
+            var processedTable = document.getElementById('processedTable_' + jobgroupId);
+            var pendingTable = document.getElementById('pendingTable_' + jobgroupId);
+            var clickedButton = document.getElementById('toggleButton' + jobgroupId);
 
-        if (processedTable.style.display === 'none') {
-            processedTable.style.display = 'table';
-            pendingTable.style.display = 'none';
-            toggleButton.textContent = 'Show Pending Applications';
-        } else {
-            processedTable.style.display = 'none';
-            pendingTable.style.display = 'table';
-            toggleButton.textContent = 'Show Processed Applications';
-        }
+            if (processedTable.style.display === 'none') {
+                processedTable.style.display = 'table';
+                pendingTable.style.display = 'none';
+                clickedButton.textContent = 'Show Pending Applications';
+            } else {
+                processedTable.style.display = 'none';
+                pendingTable.style.display = 'table';
+                clickedButton.textContent = 'Show Processed Applications';
+            }
+        });
     }
 
 </script>

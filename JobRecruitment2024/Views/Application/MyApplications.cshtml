@@ -16,53 +16,66 @@
 
                 @if (Model.Any())
                 {
-                    <div class="container mt-4">
-                        <div class="d-flex justify-content-center">
-                            <table class="table">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Job Name</th>
-                                        <th>Description</th>
-                                        <th>Application Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var job in Model)
-                                    {
-                                        <tr>
-                                            <td>@job.job_name</td>
-                                            <td>@job.job_description</td>
-                                            <td>@job.app_status</td>
-                                            <td class="d-flex align-items-center">
-                                                @if (job.app_status == "Accepted")
-                                                {
-                                                    using (Html.BeginForm("Employment", "Employee", FormMethod.Post))
-                                                    {
-                                                        @Html.Hidden("jobId", job.job_id)
-                                                        @Html.Hidden("tc", job.tc)
-                                                        <div class="mr-2">
-                                                            <button type="submit" class="btn btn-primary">Confirm</button>
-                                                        </div>
-                                                    }
-                                                }
-                                                @using (Html.BeginForm("DeleteApplication", "Application", FormMethod.Post))
-                                                {
-                                                    @Html.Hidden("applicationId", job.application_id)
-                                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                                }
-                                            </td>
+                    var groupedJobsByDepartment = Model.GroupBy(job => job.dep_id);
 
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+                    foreach (var departmentGroup in groupedJobsByDepartment)
+                    {
+                        <div class="mt-4">
+                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#department@(departmentGroup.Key)" aria-expanded="false" aria-controls="department@(departmentGroup.Key)">
+                                @(departmentGroup.FirstOrDefault()?.dep_name) Jobs <!-- Accessing dep_name -->
+                            </button>
+                            <div class="collapse" id="department@(departmentGroup.Key)">
+                                <div class="card card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Job Name</th>
+                                                    <th>Description</th>
+                                                    <th>E.L.</th>
+                                                    <th>Application Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var job in departmentGroup)
+                                                {
+                                                    <tr>
+                                                        <td>@job.job_name</td>
+                                                        <td>@job.job_description</td>
+                                                        <td>@job.vacancy/@job.employee_limit</td>
+                                                        <td>@job.app_status</td>
+                                                        <td class="d-flex align-items-center">
+                                                            @if (job.app_status == "Accepted")
+                                                            {
+                                                                using (Html.BeginForm("Employment", "Employee", FormMethod.Post))
+                                                                {
+                                                                    @Html.Hidden("jobId", job.job_id)
+                                                                    @Html.Hidden("tc", job.tc)
+                                                                    <div class="mr-2">
+                                                                        <button type="submit" class="btn btn-primary">Confirm</button>
+                                                                    </div>
+                                                                }
+                                                            }
+                                                            @using (Html.BeginForm("DeleteApplication", "Application", FormMethod.Post))
+                                                            {
+                                                                @Html.Hidden("applicationId", job.application_id)
+                                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    }
                 }
                 else
                 {
-                    <p>You don't applied any job</p>
+                <p>You don't applied any job</p>
                 }
                 <div class="text-center">
                     @if (ViewBag.SuccessMessage != null)

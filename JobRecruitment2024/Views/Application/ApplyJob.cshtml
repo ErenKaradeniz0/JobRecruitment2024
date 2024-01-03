@@ -1,8 +1,8 @@
-﻿@model List<JobRecruitment2024.Models.Jobs>
+﻿@model List<JobRecruitment2024.Models.JobViewModel>
 
 @{
     ViewBag.Title = "Apply Job";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutList.cshtml";
 }
 
 @if (Model != null)
@@ -22,39 +22,56 @@
                 </div>
                 @if (Model.Any())
                 {
-                    <div class="container mt-4">
-                        <table class="table">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Job Name</th>
-                                    <th>Job Description</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var job in Model)
-                                {
-                                    <tr>
-                                        <td>@job.job_name</td>
-                                        <td>@job.job_description</td>
-                                        <td>
-                                            <form method="post" action="@Url.Action("ApplyJob")">
-                                                @using (Html.BeginForm("ApplyJob", "Application", FormMethod.Post, new { @class = "user" }))
+                    var groupedJobsByDepartment = Model.GroupBy(job => job.dep_id);
+
+                    foreach (var departmentGroup in groupedJobsByDepartment)
+                    {
+                        <div class="mt-4">
+                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#department@(departmentGroup.Key)" aria-expanded="false" aria-controls="department@(departmentGroup.Key)">
+                                @(departmentGroup.FirstOrDefault()?.dep_name) Jobs <!-- Accessing dep_name -->
+                            </button>
+                            <div class="collapse" id="department@(departmentGroup.Key)">
+                                <div class="card card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Job Name</th>
+                                                    <th>Description</th>
+                                                    <th>E.L.</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var job in departmentGroup)
                                                 {
-                                                    @Html.Hidden("job_id_apply", job.job_id) <!-- Pass the JobId -->
-                                                    <input type="submit" class="btn btn-primary btn-user btn-block" value="Apply" />
+                                                    <tr>
+                                                        <td>@job.job_name</td>
+                                                        <td>@job.job_description</td>
+                                                        <td>@job.vacancy/@job.employee_limit</td>
+                                                        <td>
+                                                            <form method="post" action="@Url.Action("ApplyJob")">
+                                                                @using (Html.BeginForm("ApplyJob", "Application", FormMethod.Post, new { @class = "user" }))
+                                                                {
+                                                                    @Html.Hidden("job_id_apply", job.job_id) <!-- Pass the JobId -->
+                                                                    <input type="submit" class="btn btn-primary btn-user btn-block" value="Apply" />
+                                                                }
+                                                            </form>
+                                                        </td>
+                                                    </tr>
                                                 }
-                                            </form>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
                 }
                 else
                 {
-                    <p> No jobs available</p>
+                    <p>No jobs available</p>
                 }
                 <div class="text-center">
                     @if (ViewBag.SuccessMessage != null)
@@ -71,18 +88,18 @@ else
 {
     if (ViewBag.StatusMessage != null)
     {
-        <p style="color:green">@ViewBag.StatusMessage</p>
+        <p style = "color:green" > @ViewBag.StatusMessage </p>
     }
 
     if (ViewBag.ErrorMessage != null)
     {
 
-        <p style="color:red">@ViewBag.ErrorMessage</p>
+        <p style = "color:red"> @ViewBag.ErrorMessage </p>
 
         <script>
-            setTimeout(function () {
-                window.location.href = '@Url.Action("UserLoginPage", "User")';
-            }, 3000);
+        setTimeout(function() {
+        window.location.href = '@Url.Action("UserLoginPage", "User")';
+        }, 3000);
         </script>
     }
 

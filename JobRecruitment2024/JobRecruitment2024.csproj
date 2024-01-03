@@ -226,11 +226,8 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\img\Forgot_Password.jpg" />
-    <Content Include="Content\img\manager-main.jpg" />
     <Content Include="Content\img\Manager.jpg" />
     <Content Include="Content\img\register.jpg" />
-    <Content Include="Content\img\update-account.jpg" />
-    <Content Include="Content\img\user-main.png" />
     <Content Include="Content\img\User.jpg" />
     <Content Include="Content\sb-admin-2.min.css" />
     <Content Include="favicon.ico" />

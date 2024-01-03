@@ -48,8 +48,9 @@
 
                     @if (Model.JobsList.Any())
                     {
-                        <div class="container mt-4">
+                        <div class="mt-4">
                             <div class="d-flex justify-content-center">
+                                <div class="table-responsive">
                                 <table class="table">
                                     <thead class="thead-light">
                                         <tr>
@@ -108,8 +109,9 @@
                                         }
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
-                        </div>
+                            </div>
 
                         <div class="text-center">
                             <a class="small" href="@Url.Action("ManagerMainPage", "Manager")">Manager Main Page</a>

@@ -11022,13 +11022,13 @@ a:focus {
     }
 }
 
-.bg-manager-login-image {
+.bg-manager-image {
     background: url("img/Manager.jpg");
     background-position: center;
     background-size: cover
 }
 
-.bg-user-login-image {
+.bg-user-image {
     background: url("img/User.jpg");
     background-position: center;
     background-size: cover
@@ -11036,18 +11036,6 @@ a:focus {
 
 .bg-forgot-password-image {
     background: url("img/Forgot_Password.jpg");
-    background-position: center;
-    background-size: cover
-}
-
-.bg-user-main-image {
-    background: url("img/user-main.png");
-    background-position: center;
-    background-size: cover
-}
-
-.bg-manager-main-image {
-    background: url("img/manager-main.jpg");
     background-position: center;
     background-size: cover
 }

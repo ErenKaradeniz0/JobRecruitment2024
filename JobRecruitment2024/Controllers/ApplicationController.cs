@@ -30,16 +30,26 @@ namespace JobRecruitment2024.Controllers
                         ViewBag.StatusMessage = "You have been employed.";
                         return View();
                     }
-                    var appliedJobsForUser = _context.Applications
-                        .Where(a => a.tc == currentUser.tc)
-                        .Select(a => a.job_id)
-                        .ToList();
 
-                    var availableJobs = _context.Jobs
-                        .Where(j => !appliedJobsForUser.Contains(j.job_id) && j.vacancy > 0)
-                        .ToList();
+                    List<JobViewModel> jobsNotApplied = (from job in _context.Jobs
+                                                         join dep in _context.Departments on job.dep_id equals dep.dep_id
+                                                         where !_context.Applications.Any(app => app.job_id == job.job_id && app.tc == currentUser.tc)
+                                                            && job.vacancy > 0
+                                                         select new JobViewModel
+                                                         {
+                                                             job_id = job.job_id,
+                                                             job_name = job.job_name,
+                                                             job_description = job.job_description,
+                                                             employee_limit = job.employee_limit,
+                                                             vacancy = job.vacancy,
+                                                             dep_id = job.dep_id,
+                                                             dep_name=dep.dep_name,
+                                                             application_id = null, // No application ID for jobs not applied
+                                                             app_status = null,    // No application status for jobs not applied
+                                                             tc = null             // No user TC for jobs not applied
+                                                         }).ToList();
 
-                    return View(availableJobs);
+                    return View(jobsNotApplied);
 
                 }
                 else
@@ -99,6 +109,7 @@ namespace JobRecruitment2024.Controllers
                 {
                     List<JobViewModel> userApplications = (from app in _context.Applications
                                                             join job in _context.Jobs on app.job_id equals job.job_id
+                                                            join dep in _context.Departments on job.dep_id equals dep.dep_id
                                                             where app.tc == currentUser.tc && job.vacancy > 0
                                                             select new JobViewModel
                                                             {
@@ -108,6 +119,7 @@ namespace JobRecruitment2024.Controllers
                                                                 employee_limit = job.employee_limit,
                                                                 vacancy = job.vacancy,
                                                                 dep_id = job.dep_id,
+                                                                dep_name=dep.dep_name,
                                                                 application_id = app.application_id,
                                                                 app_status = app.app_status,
                                                                 tc = app.tc,
@@ -157,10 +169,24 @@ namespace JobRecruitment2024.Controllers
             if (manager != null)
             {
 
-                var applications = (from app in _context.Applications
-                                    join job in _context.Jobs on app.job_id equals job.job_id
-                                    where job.dep_id == manager.dep_id
-                                    select app).ToList();
+                List<JobViewModel> applications = (from app in _context.Applications
+                                                     join job in _context.Jobs on app.job_id equals job.job_id
+                                                     join user in _context.Users on app.tc equals user.tc
+                                                     where job.dep_id == manager.dep_id
+                                                     select new JobViewModel
+                                                     {
+                                                         application_id = app.application_id,
+                                                         job_id = job.job_id,
+                                                         name = user.name,
+                                                         surname = user.surname,
+                                                         job_name = job.job_name,
+                                                         app_status = app.app_status,
+                                                     }).ToList();
+
+                //var applications = (from app in _context.Applications
+                //                    join job in _context.Jobs on app.job_id equals job.job_id
+                //                    where job.dep_id == manager.dep_id
+                //                    select app).ToList();
 
                 return View(applications); // Pass the list of applications to the view
             }
