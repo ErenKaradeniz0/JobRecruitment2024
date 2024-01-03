@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
+using System.Security.Cryptography;
 
 namespace JobRecruitment2024.Controllers
 {
@@ -60,6 +61,7 @@ namespace JobRecruitment2024.Controllers
             string newPassword = GenerateRandomPassword();
             string encryptedPassword = PasswordEncrypt(newPassword);
             string userType = Session["userType"] as string;
+                
 
             if (userType == "Manager")
             {
@@ -88,13 +90,27 @@ namespace JobRecruitment2024.Controllers
         }
         private bool SendPasswordResetEmail(string email, string newPassword)
         {
+            string userType = Session["userType"] as string;
+
+
             try
             {
                 MailMessage mail = new MailMessage();
                 mail.From = new MailAddress("jobrecruitmenteren@gmail.com");
                 mail.To.Add(email);
                 mail.Subject = "Password Reset";
-                mail.Body = "Your new password: " + newPassword;
+
+                if (userType == "Manager")
+                {
+                    var client = _context.Managers.FirstOrDefault(m => m.email == email);
+                    mail.Body = "Hello" + client.name +" "+client.surname + ", Your new password: " + newPassword;
+                }
+                else if (userType == "User")
+                {
+                    var client = _context.Users.FirstOrDefault(u => u.email == email);
+                    mail.Body = "Hello " + client.name + " " + client.surname + "\nYour new password: " + newPassword;
+                }
+             
 
                 SmtpClient smtpClient = new SmtpClient("smtp.gmail.com");
                 smtpClient.Port = 587;
@@ -153,6 +169,17 @@ namespace JobRecruitment2024.Controllers
                 if (charMirror == 39)
                 {
                     charMirror = int.Parse("39" + charMirror);
+                }
+
+                // Escape double quotes in the password
+                if (charPassword == 34)
+                {
+                    charPassword = int.Parse("34" + charPassword);
+                }
+
+                if (charMirror == 34)
+                {
+                    charMirror = int.Parse("34" + charMirror);
                 }
 
                 crypto += (char)charPassword;

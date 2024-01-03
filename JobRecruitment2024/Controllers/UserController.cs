@@ -175,14 +175,17 @@ namespace JobRecruitment2024.Controllers
                 try
                 {
                     Users currentUser = _context.Users.FirstOrDefault(u => u.email == userEmail);
-                    string encryptedPassword = HomeController.PasswordEncrypt(updatedUser.password);
                     currentUser.name = updatedUser.name;
                     currentUser.surname = updatedUser.surname;
                     currentUser.email = updatedUser.email;
                     currentUser.phone_num = updatedUser.phone_num;
 
                     if (updatedUser.password != null)
+                    {
+                        string encryptedPassword = HomeController.PasswordEncrypt(updatedUser.password);
                         currentUser.password = encryptedPassword;
+
+                    }
 
 
                     _context.SaveChanges();
@@ -202,7 +205,6 @@ namespace JobRecruitment2024.Controllers
                 {
                     var errorMessage = error.ErrorMessage;
 
-                    // Log or debug these error messages to understand the validation failures
                 }
 
                 // Return to the view with the model to display the errors

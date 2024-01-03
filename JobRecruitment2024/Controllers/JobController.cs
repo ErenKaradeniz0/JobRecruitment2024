@@ -36,7 +36,7 @@ namespace JobRecruitment2024.Controllers
                 JobsList = jobs
             };
 
-            return View(jobViewModel); // Pass the 'jobViewModel' to the view
+            return View(jobViewModel);
         }
 
 
@@ -132,7 +132,7 @@ namespace JobRecruitment2024.Controllers
 
             _context.Jobs.Remove(job);
             _context.SaveChanges();
-
+            TempData["SuccessMessage"] = "Job posting deleted.";
             return RedirectToAction("ManageJobPosting", "Job");
         }
 
@@ -155,6 +155,7 @@ namespace JobRecruitment2024.Controllers
                 job.vacancy = job.employee_limit - diff;
 
                 _context.SaveChanges();
+                TempData["SuccessMessage"] = "Job posting updated.";
 
             }
             return RedirectToAction("ManageJobPosting", "Job");

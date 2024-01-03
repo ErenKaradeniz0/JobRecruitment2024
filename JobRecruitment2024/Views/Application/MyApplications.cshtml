@@ -14,10 +14,6 @@
                     <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
                 </div>
 
-                @if (ViewBag.SuccessMessage != null)
-                {
-                    <p>@ViewBag.SuccessMessage</p>
-                }
                 @if (Model.Any())
                 {
                     <div class="container mt-4">
@@ -69,6 +65,10 @@
                     <p>You don't applied any job</p>
                 }
                 <div class="text-center">
+                    @if (ViewBag.SuccessMessage != null)
+                    {
+                        <p style="color:green">@ViewBag.SuccessMessage</p>
+                    }
                     <a href="@Url.Action("UserMainPage", "User")">User Main Page</a>
                 </div>
 

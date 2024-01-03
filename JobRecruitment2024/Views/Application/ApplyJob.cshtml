@@ -7,16 +7,16 @@
 
 @if (Model != null)
 {
+    if (TempData["SuccessMessage"] != null)
+    {
+        ViewBag.SuccessMessage = TempData["SuccessMessage"];
+    }
     <div class="row">
         <div class="col-lg-">
             <div class="p-5">
                 <div class="text-center">
                     <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
                 </div>
-                @if (ViewBag.SuccessMessage != null)
-                {
-                    <p>@ViewBag.SuccessMessage</p>
-                }
                 <div class="text-center">
                     <h5 class="h5 text-gray-900 mb-4">Available Jobs</h5>
                 </div>
@@ -57,6 +57,10 @@
                     <p> No jobs available</p>
                 }
                 <div class="text-center">
+                    @if (ViewBag.SuccessMessage != null)
+                    {
+                        <p style="color:green">@ViewBag.SuccessMessage</p>
+                    }
                     <a href="@Url.Action("UserMainPage", "User")">User Main Page</a>
                 </div>
             </div>
@@ -67,13 +71,13 @@ else
 {
     if (ViewBag.StatusMessage != null)
     {
-        <p>@ViewBag.StatusMessage</p>
+        <p style="color:green">@ViewBag.StatusMessage</p>
     }
 
     if (ViewBag.ErrorMessage != null)
     {
 
-        <p>@ViewBag.ErrorMessage</p>
+        <p style="color:red">@ViewBag.ErrorMessage</p>
 
         <script>
             setTimeout(function () {
@@ -83,7 +87,3 @@ else
     }
 
 }
-
-
-
-

@@ -159,8 +159,6 @@ namespace JobRecruitment2024.Controllers
                 return View();
             }
         }
-
-
         [HttpPost]
         public ActionResult ManageEmployees(Managers manager)
         {

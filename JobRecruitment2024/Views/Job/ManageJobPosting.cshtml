@@ -8,6 +8,10 @@
 
 @if (Model != null && Model.JobsList != null)
 {
+    if (TempData["SuccessMessage"] != null)
+    {
+        ViewBag.SuccessMessage = TempData["SuccessMessage"];
+    }
     <div class="row">
         <div class="col-lg-12">
             <div class="p-5">
@@ -19,7 +23,7 @@
 
                 @if (ViewBag.SuccessMessage != null)
                 {
-                    <p>@ViewBag.SuccessMessage</p>
+                    <p style="color:green">@ViewBag.SuccessMessage</p>
                 }
 
                 <div id="Create" style="display:none">
@@ -122,7 +126,7 @@
     </div>
 }
 else
-{<p>@ViewBag.ErrorMessage</p>
+{<p style="color:red">@ViewBag.ErrorMessage</p>
 
 <script>
     setTimeout(function () {

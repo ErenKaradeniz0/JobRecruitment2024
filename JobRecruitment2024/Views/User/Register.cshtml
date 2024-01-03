@@ -8,57 +8,63 @@
 
 @if (ViewBag.SuccessMessage != null)
 {
-    <p>@ViewBag.SuccessMessage</p>
+    <p style="color:green">@ViewBag.SuccessMessage</p>
     <script>
         setTimeout(function () {
             window.location.href = '@Url.Action("UserLoginPage", "User")';
         }, 3000);
     </script>
 }
-@if (ViewBag.ErrorMessage != null)
+
+else
 {
-    <p>@ViewBag.ErrorMessage</p>
-}
-<div class="col-lg-6 d-none d-lg-block bg-register-image"></div>
-<div class="col-lg-6">
-    <div class="p-5">
+    <div class="col-lg-6 d-none d-lg-block bg-register-image"></div>
+    <div class="col-lg-6">
+        <div class="p-5">
 
-
-        <div class="text-center">
-            <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
-        </div>
-        @using (Html.BeginForm("Register", "User", FormMethod.Post, new { id = "registrationForm" }))
-        {
-            @Html.LabelFor(model => model.tc, "TC:")
-            @Html.TextBoxFor(model => model.tc, new { @class = "form-control form-control-user", maxlength = "11", required = "required" })
-
-            @Html.LabelFor(model => model.name, "Name:")
-            @Html.TextBoxFor(model => model.name, new { @class = "form-control form-control-user", maxlength = "15", required = "required" })
-
-            @Html.LabelFor(model => model.surname, "Surname:")
-            @Html.TextBoxFor(model => model.surname, new { @class = "form-control form-control-user", maxlength = "15", required = "required" })
-
-            @Html.LabelFor(model => model.email, "Email:")
-            @Html.TextBoxFor(model => model.email, new { @class = "form-control form-control-user", maxlength = "50", type = "email", required = "required" })
-
-            @Html.LabelFor(model => model.password, "Password:")
-            @Html.PasswordFor(model => model.password, new { @class = "form-control form-control-user", maxlength = "10", id = "Password", required = "required" })
-
-            @Html.Label("PasswordAgain", "Password Again:")
-            @Html.Password("PasswordAgain", null, new { @class = "form-control form-control-user", maxlength = "10", id = "PasswordAgain", required = "required" })
-
-            @Html.LabelFor(model => model.phone_num, "Phone Number:")
-            @Html.TextBoxFor(model => model.phone_num, new { @class = "form-control form-control-user", maxlength = "11", required = "required" })
-            <br />
-            <button type="submit" class="btn btn-primary btn-user btn-block" >Register</button>
             <div class="text-center">
-                <a href="@Url.Action("Index", "Home")">Main Page</a>
+                <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
             </div>
-            <div id="errorMessage" style="display: none; color: red;">Passwords do not match!</div>
-        }
+            @using (Html.BeginForm("Register", "User", FormMethod.Post, new { id = "registrationForm" }))
+            {
+                @Html.LabelFor(model => model.tc, "TC:")
+                @Html.TextBoxFor(model => model.tc, new { @class = "form-control form-control-user", maxlength = "11", required = "required" })
 
+                @Html.LabelFor(model => model.name, "Name:")
+                @Html.TextBoxFor(model => model.name, new { @class = "form-control form-control-user", maxlength = "15", required = "required" })
+
+                @Html.LabelFor(model => model.surname, "Surname:")
+                @Html.TextBoxFor(model => model.surname, new { @class = "form-control form-control-user", maxlength = "15", required = "required" })
+
+                @Html.LabelFor(model => model.email, "Email:")
+                @Html.TextBoxFor(model => model.email, new { @class = "form-control form-control-user", maxlength = "50", type = "email", required = "required" })
+
+                @Html.LabelFor(model => model.password, "Password:")
+                @Html.PasswordFor(model => model.password, new { @class = "form-control form-control-user", maxlength = "10", id = "Password", required = "required" })
+
+                @Html.Label("PasswordAgain", "Password Again:")
+                @Html.Password("PasswordAgain", null, new { @class = "form-control form-control-user", maxlength = "10", id = "PasswordAgain", required = "required" })
+
+                @Html.LabelFor(model => model.phone_num, "Phone Number:")
+                @Html.TextBoxFor(model => model.phone_num, new { @class = "form-control form-control-user", maxlength = "11", required = "required" })
+                <br />
+                <button type="submit" class="btn btn-primary btn-user btn-block">Register</button>
+
+                <div id="errorMessage" style="display: none; color: red;">Passwords do not match!</div>
+                if (ViewBag.ErrorMessage != null)
+                {
+                    <p style="color:red">@ViewBag.ErrorMessage</p>
+                }
+
+                <div class="text-center">
+                    <a href="@Url.Action("Index", "Home")">Main Page</a>
+                </div>
+            }
+
+        </div>
     </div>
-</div>
+}
+
 <script>
     document.getElementById('registrationForm').addEventListener('submit', function (event) {
         var password = document.getElementById('Password').value;

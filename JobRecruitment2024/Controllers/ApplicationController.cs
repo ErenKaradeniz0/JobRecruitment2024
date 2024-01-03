@@ -83,6 +83,7 @@ namespace JobRecruitment2024.Controllers
 
             _context.Applications.Add(application);
             _context.SaveChanges();
+            TempData["SuccessMessage"] = "You've applied selected job";
 
             return RedirectToAction("ApplyJob");
         }

@@ -3,23 +3,10 @@
     Layout = "~/Views/Shared/_LayoutWithImg.cshtml";
 }
 
-@if (TempData["SuccessMessage"] != null)
-{
-    ViewBag.SuccessMessage = TempData["SuccessMessage"];
-}
-else if (TempData["ErrorMessage"] != null)
-{
-    ViewBag.ErrorMessage = TempData["ErrorMessage"];
-}
-
-@if (ViewBag.SuccessMessage != null)
-{
-    <p> @ViewBag.SuccessMessage</p>
-}
 
 @if (ViewBag.ErrorMessage != null)
 {
-    <p>@ViewBag.ErrorMessage</p>
+    <p style="color:red">@ViewBag.ErrorMessage</p>
     <script>
         setTimeout(function () {
             window.location.href = '@Url.Action("UserLoginPage")';
@@ -28,6 +15,27 @@ else if (TempData["ErrorMessage"] != null)
 }
 else
 {
+
+    if (TempData["SuccessMessage"] != null)
+    {
+        ViewBag.SuccessMessage = TempData["SuccessMessage"];
+    }
+    else if (TempData["ErrorMessage"] != null)
+    {
+        ViewBag.ErrorMessage = TempData["ErrorMessage"];
+    }
+
+    <div class="text-center">
+        @if (ViewBag.SuccessMessage != null)
+        {
+        <p style="color:green"> @ViewBag.SuccessMessage</p>
+        }
+        else if (ViewBag.ErrorMessage != null)
+        {
+        <p style="color:red"> @ViewBag.ErrorMessage</p>
+        }
+    </div>
+
 
     <div class="col-lg-6 d-none d-lg-block bg-user-main-image"></div>
     <div class="col-lg-6">

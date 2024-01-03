@@ -5,24 +5,9 @@
 }
 @if (Model != null)
 {
-    <div id="errorMessage" style="display: none; color: red;">Passwords do not match!</div>
     <div class="row">
         <div class="col-lg-12">
             <div class="p-5">
-
-                @if (ViewBag.SuccessMessage != null)
-                {
-                    <p>@ViewBag.SuccessMessage</p>
-                    <script>
-                    setTimeout(function () {
-                        window.location.href = '@Url.Action("UserMainPage")';
-                    }, 3000);
-                    </script>
-                }
-                else if (ViewBag.ErrorMessage != null)
-                {
-                    <p>@ViewBag.ErrorMessage </p>
-                }
 
                 <div class="text-center">
                     <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
@@ -61,6 +46,20 @@
 
                     <br />
                     <button type="submit" class="btn btn-primary btn-user btn-block">Update Account</button>
+                    <div id="errorMessage" style="display: none; color: red;">Passwords do not match!</div>
+                    if (ViewBag.SuccessMessage != null)
+                    {
+                        <p style="color:green">@ViewBag.SuccessMessage</p>
+                        <script>
+                         setTimeout(function () {
+                             window.location.href = '@Url.Action("UserMainPage")';
+                         }, 3000);
+                        </script>
+                    }
+                    else if (ViewBag.ErrorMessage != null)
+                    {
+                        <p style="color:red">@ViewBag.ErrorMessage </p>
+                    }
                 }
                 <br />
                 @if (Model.job_id != null)
@@ -89,7 +88,7 @@
     </div>
 }
 else
-{<p>@ViewBag.ErrorMessage</p>
+{<p style="color:red">@ViewBag.ErrorMessage</p>
 <script>
     setTimeout(function () {
         window.location.href = '@Url.Action("UserLoginPage")';
