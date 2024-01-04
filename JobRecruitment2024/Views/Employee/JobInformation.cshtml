@@ -1,0 +1,65 @@
+﻿@model JobRecruitment2024.Models.UserViewModel
+@{
+    ViewBag.Title = "Job Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@if (Model != null)
+{<div class="row">
+        <div class="col-lg-12">
+            <div class="p-5">
+                <div class="text-center">
+                    <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
+                </div>
+                <div class="mt-4">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>Job</th>
+                                </tr>
+                                <tr>
+                                    <th>Job Title</th>
+                                    <td>@Model.job_name</td>
+                                </tr>
+                                <tr>
+                                    <th>Salary</th>
+                                    <td>@Model.salary</td>
+                                </tr>
+                            </tbody>
+                                <tr>
+                                    <th>Manager</th>
+                                </tr>
+                                <tr>
+                                    <th>Name Surname</th>
+                                    <td>@Model.name @Model.surname</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>@Model.email</td>
+                                </tr>
+                                <tr>
+                                    <th>Phone Number</th>
+                                    <td>@Model.phone_num</td>
+                                </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a href="@Url.Action("UserMainPage", "User")">User Main Page</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p style="color:red"> @ViewBag.ErrorMessage </p>
+    <script>
+    setTimeout(function() {
+    window.location.href = '@Url.Action("UserLoginPage", "User")';
+    }, 3000);
+    </script>
+
+}

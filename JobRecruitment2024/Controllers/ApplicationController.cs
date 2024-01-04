@@ -79,7 +79,7 @@ namespace JobRecruitment2024.Controllers
 
             if (existingApplication != null)
             {
-                ViewBag.ErrorMessage = "You've already applied for this job.";
+                ViewBag.ErrorMessage = "You have already applied for this job.";
                 return View();
             }
 
@@ -93,7 +93,7 @@ namespace JobRecruitment2024.Controllers
 
             _context.Applications.Add(application);
             _context.SaveChanges();
-            TempData["SuccessMessage"] = "You've applied selected job";
+            TempData["SuccessMessage"] = "You have applied selected job";
 
             return RedirectToAction("ApplyJob");
         }
@@ -155,7 +155,7 @@ namespace JobRecruitment2024.Controllers
 
             _context.Applications.Remove(application);
             _context.SaveChanges();
-            TempData["SuccessMessage"] = "You've deleted the selected job application.";
+            TempData["SuccessMessage"] = "You have deleted the selected job application.";
 
 
             // Redirect to the action that displays the updated application list

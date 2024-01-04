@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -69,32 +70,44 @@ namespace JobRecruitment2024.Controllers
         }
 
         [HttpGet]
-        public ActionResult YourManager()
+        public ActionResult JobInformation()
         {
             var employeeEmail = Session["UserEmail"] as string; // Assuming you store the employee's email in session
-
+            var currentUser = _context.Users.FirstOrDefault(u => u.email == employeeEmail);
             if (employeeEmail != null)
             {
                 var employee = _context.Users.FirstOrDefault(e => e.email == employeeEmail);
                 if (employee != null)
                 {
-                    var job = _context.Jobs.FirstOrDefault(j => j.job_id == employee.job_id);
-                    if (job != null)
+                    var job_ = _context.Jobs.FirstOrDefault(j => j.job_id == employee.job_id);
+                    if (job_ != null)
                     {
-                        var department = _context.Managers.FirstOrDefault(m => m.dep_id == job.dep_id);
+                        var department = _context.Managers.FirstOrDefault(m => m.dep_id == job_.dep_id);
                         if (department != null)
                         {
                             var managers = _context.Managers.FirstOrDefault(m => m.manager_id == department.manager_id);
                             if (managers != null)
                             {
-                                var managerInfo = new Managers
-                                {
-                                    email = managers.email,
-                                    phone_num = managers.phone_num,
-                                    name = managers.name,
-                                    surname = managers.surname
-                                };
-                                return View(managerInfo);
+
+                                UserViewModel userInfo = (from user in _context.Users
+                                                          join job in _context.Jobs on user.job_id equals job.job_id
+                                                          join dep in _context.Departments on job.dep_id equals dep.dep_id
+                                                          join manager in _context.Managers on dep.dep_id equals manager.dep_id
+                                                          where !_context.Applications.Any(app => app.job_id == job.job_id && app.tc == currentUser.tc)
+                                                              && job.vacancy > 0
+                                                          select new UserViewModel
+                                                          {
+                                                              job_name = job.job_name,
+                                                              salary = job.salary,
+                                                              name = manager.name,
+                                                              surname = manager.surname,
+                                                              email = manager.email,
+                                                              phone_num = manager.phone_num,
+
+                                                             
+                                                          }).FirstOrDefault();
+
+                                return View(userInfo);
                             }
                         }
                     }
@@ -118,28 +131,29 @@ namespace JobRecruitment2024.Controllers
 
                 if (manager != null)
                 {
-                    var employees = _context.Users
-                       .Join(
-                           _context.Jobs,
-                           user => user.job_id,
-                           job => job.job_id,
-                           (user, job) => new { User = user, Job = job }
-                       )
-                       .Where(joined => joined.User.job_id == joined.Job.job_id && joined.Job.dep_id == manager.dep_id)
-                       .Select(joined => joined.User)
-                       .ToList();
+
+                    List<UserViewModel> employees = (from user in _context.Users
+                                                         join job in _context.Jobs on user.job_id equals job.job_id
+                                                         where job.dep_id == manager.dep_id
+                                                         select new UserViewModel
+                                                         {
+                                                             name = user.name,
+                                                             surname = user.surname,
+                                                             email = user.email,
+                                                             phone_num = user.phone_num,
+                                                             insurance_num = user.insurance_num,
+                                                             salary = user.salary,
+                                                             job_id = job.job_id,
+                                                             job_name = job.job_name,
+                                                         }).ToList();
 
                     if (employees == null || !employees.Any())
                     {
                         ViewBag.ErrorMessage = "No Employees Found";
                     }
 
-                    var UserViewModel = new UserViewModel
-                    {
-                        UserList = employees
-                    };
 
-                    return View(UserViewModel);
+                    return View(employees);
                 }
                 else
                 {
@@ -235,7 +249,7 @@ namespace JobRecruitment2024.Controllers
                 employee.salary = 0;
                 job.vacancy += 1;
                 _context.SaveChanges();
-                TempData["SuccessMessage"] = "You Left your Job.";
+                TempData["SuccessMessage"] = "You left your Job.";
                 return RedirectToAction("UserMainPage", "User");
             }
             catch (Exception ex)

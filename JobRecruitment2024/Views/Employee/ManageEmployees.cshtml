@@ -1,4 +1,4 @@
-﻿@model JobRecruitment2024.Models.UserViewModel
+﻿@model List<JobRecruitment2024.Models.UserViewModel>
 @{
     ViewBag.Title = "Manage Employees";
     Layout = "~/Views/Shared/_LayoutList.cshtml";
@@ -14,7 +14,7 @@
                     <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
                 </div>
 
-                @if (Model.UserList.Any())
+                @if(Model.Any())
                 {
                     <div class="mt-4">
                         <div class="table-responsive">
@@ -25,33 +25,33 @@
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>Insurance Number</th>
+                                        <th>Job Title</th>
                                         <th>Salary</th>
-                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var employee in Model.UserList)
+                                    @foreach (var employee in Model)
                                     {
                                         <tr>
                                             <td>@employee.name @employee.surname</td>
                                             <td>@employee.email</td>
                                             <td>@employee.phone_num</td>
                                             <td>@employee.insurance_num</td>
+                                            <td>@employee.job_name</td>
                                             <td>@employee.salary</td>
-                                            <td>@employee.emp_status</td>
                                             <td><button type="button" class="btn btn-warning btn-user btn-block updateButton" data-jobid="@employee.job_id">Edit</button></td>
                                         </tr>
                                         <tr id="updateForm_@employee.job_id" style="display:none">
                                             @using (Html.BeginForm("EmployeeUpdate", "Employee", FormMethod.Post, new { @class = "user", @style = "display:none;" }))
                                             {
-                                                @Html.HiddenFor(model => model.tc, new { @Value = employee.tc, Name = "tc" })
+                                                @Html.HiddenFor(model => employee.tc, new { @Value = employee.tc, Name = "tc" })
                                                 <td>
-                                                    @Html.LabelFor(model => model.salary, "Salary:")
+                                                    @Html.LabelFor(model => employee.salary, "Salary:")
                                                 </td>
 
                                                 <td>
-                                                    @Html.TextBoxFor(model => model.salary, new { @class = "form-control form-control-user", @Value = employee.salary, required = "required" })
+                                                    @Html.TextBoxFor(model => employee.salary, new { @class = "form-control form-control-user", @Value = employee.salary, required = "required" })
                                                 </td>
 
                                                 <td>
@@ -60,7 +60,7 @@
                                             }
                                             @using (Html.BeginForm("FireEmployee", "Employee", FormMethod.Post, new { @class = "user" }))
                                             {
-                                                @Html.HiddenFor(model => model.tc, new { @Value = employee.tc, Name = "tc" })
+                                                @Html.HiddenFor(model => employee.tc, new { @Value = employee.tc, Name = "tc" })
 
                                                 <td>
                                                     <button type="submit" class="btn btn-danger btn-user btn-block">Fire</button>

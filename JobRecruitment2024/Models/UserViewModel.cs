@@ -10,5 +10,7 @@ namespace JobRecruitment2024.Models
     public class UserViewModel:Users
     {
         public IEnumerable<Users> UserList { get; set; }
+
+        public string job_name {  get; set; }
     }
 }

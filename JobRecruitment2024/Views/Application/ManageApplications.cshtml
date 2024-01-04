@@ -16,9 +16,9 @@
                 </div>
                 @if (Model.Any())
                 {
-                    var groupedJobsByName = Model.GroupBy(job => job.job_id);
+                    var groupedJobsById = Model.GroupBy(job => job.job_id);
 
-                    foreach (var jobGroup in groupedJobsByName)
+                    foreach (var jobGroup in groupedJobsById)
                     {
                         <div class="mt-4">
                             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#job@(jobGroup.Key)" aria-expanded="false" aria-controls="job@(jobGroup.Key)">

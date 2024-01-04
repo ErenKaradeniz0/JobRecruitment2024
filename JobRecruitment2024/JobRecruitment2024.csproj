@@ -298,7 +298,7 @@
     <Content Include="Views\Application\ApplyJob.cshtml" />
     <Content Include="Views\Application\MyApplications.cshtml" />
     <Content Include="Views\Job\ManageJobPosting.cshtml" />
-    <Content Include="Views\Employee\YourManager.cshtml" />
+    <Content Include="Views\Employee\JobInformation.cshtml" />
     <Content Include="Views\Shared\_LayoutWithImg.cshtml" />
     <Content Include="Views\Shared\_LayoutList.cshtml" />
   </ItemGroup>
