@@ -90,7 +90,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                            <button class="btn btn-primary btn-user btn-block toggleButton" id="toggleButton@(jobGroup.Key)" data-jobgroupid="@jobGroup.Key">Show Processed Applications</button>
+                                    <button class="btn btn-primary btn-user btn-block toggleButton" id="toggleButton@(jobGroup.Key)" data-jobgroupid="@jobGroup.Key">Show Processed Applications</button>
                                 </div>
                             </div>
                         </div>
@@ -110,12 +110,15 @@
 
 }
 else
-{<p style="color:red">@ViewBag.ErrorMessage</p>
-<script>
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
+    <script>
         setTimeout(function () {
             window.location.href = '@Url.Action("ManagerLoginPage", "Manager")';
         }, 3000);
-</script>
+    </script>
 }
 
 

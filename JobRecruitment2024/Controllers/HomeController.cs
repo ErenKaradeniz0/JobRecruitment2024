@@ -7,6 +7,7 @@ using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using System.Security.Cryptography;
+using Microsoft.AspNet.Identity;
 
 namespace JobRecruitment2024.Controllers
 {
@@ -24,14 +25,14 @@ namespace JobRecruitment2024.Controllers
             try
             {
                 Debug.WriteLine(PasswordEncrypt("a"));
-                var users = _context.Managers.ToList();
-                ViewBag.Message = "Connection successful!!";
+                var managers = _context.Managers.ToList();
+                ViewBag.Message = "Database connection successful!";
             }
             catch (Exception ex)
             {
                 while (ex != null)
                 {
-                    ViewBag.Message = "Connection unsuccessful! " + ex.Message;
+                    ViewBag.Message = "Database Connection unsuccessful! " + ex.Message;
                     Console.WriteLine(ex.Message);
                     ex = ex.InnerException;
                 }
@@ -61,29 +62,47 @@ namespace JobRecruitment2024.Controllers
             string newPassword = GenerateRandomPassword();
             string encryptedPassword = PasswordEncrypt(newPassword);
             string userType = Session["userType"] as string;
-                
+            IUserType client = null;
 
             if (userType == "Manager")
             {
-                var client = _context.Managers.FirstOrDefault(m => m.email == email);
-                client.password = encryptedPassword;
+                client = _context.Managers.FirstOrDefault(m => m.email == email);
+                if (client != null)
+                {
+                    if (client is Managers manager)
+                    {
+                        manager.password = encryptedPassword;
+                    }
+                }
             }
             else if (userType == "User")
             {
-                var client = _context.Users.FirstOrDefault(u => u.email == email);
-                client.password = encryptedPassword;
+                client = _context.Users.FirstOrDefault(u => u.email == email);
+                if (client != null)
+                {
+                    if (client is Users user)
+                    {
+                        user.password = encryptedPassword;
+                    }
+                }
             }
-             
-     
-            if (SendPasswordResetEmail(email, newPassword))
+            if (client != null)
             {
-                ViewBag.SuccessMessage = "A new password has been sent to your email.";
-                _context.SaveChanges();
+                if (SendPasswordResetEmail(email, newPassword))
+                {
+                    ViewBag.SuccessMessage = "A new password has been sent to your email.";
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Failed to send the new password. Please try again.";
+                }
             }
             else
             {
-                ViewBag.ErrorMessage = "Failed to send the new password. Please try again.";
+                ViewBag.ErrorMessage = "You do not have an account.";
             }
+
 
             return View();
 
@@ -103,7 +122,7 @@ namespace JobRecruitment2024.Controllers
                 if (userType == "Manager")
                 {
                     var client = _context.Managers.FirstOrDefault(m => m.email == email);
-                    mail.Body = "Hello" + client.name +" "+client.surname + ", Your new password: " + newPassword;
+                    mail.Body = "Hello " + client.name +" "+client.surname + ", Your new password: " + newPassword;
                 }
                 else if (userType == "User")
                 {

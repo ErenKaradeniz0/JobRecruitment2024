@@ -49,7 +49,9 @@
                     <div id="errorMessage" style="display: none; color: red;">Passwords do not match!</div>
                     if (ViewBag.SuccessMessage != null)
                     {
-                        <p style="color:green">@ViewBag.SuccessMessage</p>
+                        <div class="alert alert-success" role="alert">
+                            @ViewBag.SuccessMessage
+                        </div>
                         <script>
                          setTimeout(function () {
                              window.location.href = '@Url.Action("UserMainPage")';
@@ -58,7 +60,9 @@
                     }
                     else if (ViewBag.ErrorMessage != null)
                     {
-                        <p style="color:red">@ViewBag.ErrorMessage </p>
+                        <div class="alert alert-danger" role="alert">
+                            @ViewBag.ErrorMessage
+                        </div>
                     }
                 }
                 <br />
@@ -88,12 +92,14 @@
     </div>
 }
 else
-{<p style="color:red">@ViewBag.ErrorMessage</p>
-<script>
+{ <div class="alert alert-danger" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
+    <script>
     setTimeout(function () {
         window.location.href = '@Url.Action("UserLoginPage")';
     }, 3000);
-</script>
+    </script>
 }
 
 

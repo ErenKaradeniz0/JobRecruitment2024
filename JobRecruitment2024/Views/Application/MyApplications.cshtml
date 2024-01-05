@@ -75,12 +75,14 @@
                 }
                 else
                 {
-                <p>You don't applied any job</p>
+                    <p>You don't applied any job</p>
                 }
                 <div class="text-center">
                     @if (ViewBag.SuccessMessage != null)
                     {
-                        <p style="color:green">@ViewBag.SuccessMessage</p>
+                        <div class="alert alert-success" role="alert">
+                            @ViewBag.SuccessMessage
+                        </div>
                     }
                     <a href="@Url.Action("UserMainPage", "User")">User Main Page</a>
                 </div>
@@ -91,7 +93,9 @@
 }
 else
 {
-    <p> @ViewBag.ErrorMessage </p>
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
     <script>
         setTimeout(function() {
                         window.location.href = '@Url.Action("UserLoginPage","User")';

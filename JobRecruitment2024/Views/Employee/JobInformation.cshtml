@@ -28,21 +28,21 @@
                                     <td>@Model.salary</td>
                                 </tr>
                             </tbody>
-                                <tr>
-                                    <th>Manager</th>
-                                </tr>
-                                <tr>
-                                    <th>Name Surname</th>
-                                    <td>@Model.name @Model.surname</td>
-                                </tr>
-                                <tr>
-                                    <th>Email</th>
-                                    <td>@Model.email</td>
-                                </tr>
-                                <tr>
-                                    <th>Phone Number</th>
-                                    <td>@Model.phone_num</td>
-                                </tr>
+                            <tr>
+                                <th>Manager</th>
+                            </tr>
+                            <tr>
+                                <th>Name Surname</th>
+                                <td>@Model.name @Model.surname</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>@Model.email</td>
+                            </tr>
+                            <tr>
+                                <th>Phone Number</th>
+                                <td>@Model.phone_num</td>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -55,7 +55,9 @@
 }
 else
 {
-    <p style="color:red"> @ViewBag.ErrorMessage </p>
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
     <script>
     setTimeout(function() {
     window.location.href = '@Url.Action("UserLoginPage", "User")';

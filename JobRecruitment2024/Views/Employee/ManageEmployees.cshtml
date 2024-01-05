@@ -14,7 +14,7 @@
                     <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
                 </div>
 
-                @if(Model.Any())
+                @if (Model.Any())
                 {
                     <div class="mt-4">
                         <div class="table-responsive">
@@ -90,13 +90,16 @@
     </div>
 }
 else
-{<p style="color:red">@ViewBag.ErrorMessage</p>
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
 
-<script>
+    <script>
     setTimeout(function () {
         window.location.href = '@Url.Action("ManagerLoginPage","Manager")';
     }, 3000);
-</script>
+    </script>
 
 }
 <script>

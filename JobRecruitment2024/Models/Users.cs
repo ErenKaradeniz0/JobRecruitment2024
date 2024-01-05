@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace JobRecruitment2024.Models
 {
-    public class Users
+    public class Users : IUserType
     {
         [Key]
         public string tc { get; set; }

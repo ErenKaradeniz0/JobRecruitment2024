@@ -5,7 +5,9 @@
 
 @if (ViewBag.ErrorMessage != null)
 {
-    <p style="color:red">@ViewBag.ErrorMessage</p>
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
     <script>
         setTimeout(function () {
             window.location.href = '@Url.Action("ManagerLoginPage")';

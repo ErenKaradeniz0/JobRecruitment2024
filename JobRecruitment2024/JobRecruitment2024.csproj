@@ -201,6 +201,7 @@
     <Compile Include="Models\DbContextViewModel.cs" />
     <Compile Include="Models\Departments.cs" />
     <Compile Include="Models\Histories.cs" />
+    <Compile Include="Models\IUserType.cs" />
     <Compile Include="Models\Jobs.cs" />
     <Compile Include="Models\JobViewModel.cs" />
     <Compile Include="Models\Users.cs" />

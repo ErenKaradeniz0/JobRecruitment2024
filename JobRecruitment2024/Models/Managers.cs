@@ -6,7 +6,7 @@ using System.Web;
 
 namespace JobRecruitment2024.Models
 {
-    public class Managers
+    public class Managers : IUserType
     {
         [Key]
         public int manager_id { get; set; }

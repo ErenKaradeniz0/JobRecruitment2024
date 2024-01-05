@@ -6,7 +6,9 @@
 @if (TempData["SuccessMessage"] != null)
 {
     ViewBag.SuccessMessage = TempData["SuccessMessage"];
-    <p> @ViewBag.SuccessMessage</p>
+    <div class="alert alert-success" role="alert">
+        @ViewBag.SuccessMessage
+    </div>
 }
 
 <div class="col-lg-6 d-none d-lg-block bg-user-image"></div>

@@ -76,7 +76,9 @@
                 <div class="text-center">
                     @if (ViewBag.SuccessMessage != null)
                     {
-                        <p style="color:green">@ViewBag.SuccessMessage</p>
+                        <div class="alert alert-success" role="alert">
+                            @ViewBag.SuccessMessage
+                        </div>
                     }
                     <a href="@Url.Action("UserMainPage", "User")">User Main Page</a>
                 </div>
@@ -88,13 +90,17 @@ else
 {
     if (ViewBag.StatusMessage != null)
     {
-        <p style = "color:green" > @ViewBag.StatusMessage </p>
+        <div class="alert alert-success" role="alert">
+           <p> @ViewBag.StatusMessage </p>
+        </div>
     }
 
     if (ViewBag.ErrorMessage != null)
     {
 
-        <p style = "color:red"> @ViewBag.ErrorMessage </p>
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.ErrorMessage
+        </div>
 
         <script>
         setTimeout(function() {
