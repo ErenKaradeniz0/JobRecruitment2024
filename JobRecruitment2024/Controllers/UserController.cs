@@ -1,18 +1,8 @@
 ﻿using JobRecruitment2024.Models;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity; //entity framework
-using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNet.Identity;
-using System.Web.Helpers;
 using System.Data.Entity.Infrastructure;
-using static System.Net.Mime.MediaTypeNames;
-using System.Reflection;
-using System.Runtime.ConstrainedExecution;
 
 namespace JobRecruitment2024.Controllers
 {

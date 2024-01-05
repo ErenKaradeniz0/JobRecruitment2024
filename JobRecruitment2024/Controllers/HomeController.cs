@@ -1,13 +1,9 @@
 ﻿using JobRecruitment2024.Models;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Mail;
-using System.Web;
 using System.Web.Mvc;
-using System.Security.Cryptography;
-using Microsoft.AspNet.Identity;
 
 namespace JobRecruitment2024.Controllers
 {
