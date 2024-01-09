@@ -45,10 +45,11 @@
                                             <tbody>
                                                 @foreach (var job in departmentGroup)
                                                 {
+                                                    int quota = @job.employee_limit - @job.vacancy;
                                                     <tr>
                                                         <td>@job.job_name</td>
                                                         <td>@job.job_description</td>
-                                                        <td>@job.vacancy/@job.employee_limit</td>
+                                                        <td>@quota/@job.employee_limit</td>
                                                         <td>
                                                             <form method="post" action="@Url.Action("ApplyJob")">
                                                                 @using (Html.BeginForm("ApplyJob", "Application", FormMethod.Post, new { @class = "user" }))

@@ -1,4 +1,4 @@
-﻿@model List<JobRecruitment2024.Models.UserViewModel>
+﻿@model  JobRecruitment2024.Models.UserViewModel
 @{
     ViewBag.Title = "Manage Employees";
     Layout = "~/Views/Shared/_LayoutList.cshtml";
@@ -14,7 +14,7 @@
                     <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
                 </div>
 
-                @if (Model.Any())
+                @if (Model.UserList.Any())
                 {
                     <div class="mt-4">
                         <div class="table-responsive">
@@ -31,7 +31,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var employee in Model)
+                                    @foreach (var employee in Model.UserList)
                                     {
                                         <tr>
                                             <td>@employee.name @employee.surname</td>
@@ -45,24 +45,36 @@
                                         <tr id="updateForm_@employee.job_id" style="display:none">
                                             @using (Html.BeginForm("EmployeeUpdate", "Employee", FormMethod.Post, new { @class = "user", @style = "display:none;" }))
                                             {
-                                                @Html.HiddenFor(model => employee.tc, new { @Value = employee.tc, Name = "tc" })
+                                                @Html.HiddenFor(model => model.tc, new { @Value = employee.tc, Name = "tc" })
                                                 <td>
-                                                    @Html.LabelFor(model => employee.salary, "Salary:")
+                                                    @Html.LabelFor(model => model.name, "Name:")
+                                                    @Html.TextBoxFor(model => model.name, new { @class = "form-control form-control-user", @Value = employee.name, required = "required" })
+                                                    @Html.LabelFor(model => model.surname, "Surname:")
+                                                    @Html.TextBoxFor(model => model.surname, new { @class = "form-control form-control-user", @Value = employee.surname, required = "required" })
                                                 </td>
-
                                                 <td>
-                                                    @Html.TextBoxFor(model => employee.salary, new { @class = "form-control form-control-user", @Value = employee.salary, required = "required" })
+                                                    @Html.LabelFor(model => model.email, "email:")
+                                                    @Html.TextBoxFor(model => model.email, new { @class = "form-control form-control-user", @Value = employee.email, required = "required" })
+                                                    @Html.LabelFor(model => model.phone_num, "Phone:")
+                                                    @Html.TextBoxFor(model => model.phone_num, new { @type = "text", @class = "form-control form-control-user", @Value = employee.phone_num, maxlength = 11, pattern = "[0-9]*", title = "Please enter only numbers", required = "required" })
+
                                                 </td>
-
                                                 <td>
+                                                    @Html.LabelFor(model => model.salary, "Salary:")
+                                                    @Html.TextBoxFor(model => model.salary, new { @type = "text", @class = "form-control form-control-user", @Value = employee.salary, maxlength = 10, pattern = "[0-9]*", title = "Please enter only numbers", required = "required" })
+                                                    @Html.Label("Update", "Update:", new { style = "visibility:hidden;" })
                                                     <button type="submit" class="btn btn-primary btn-user btn-block">Update</button>
                                                 </td>
+
                                             }
                                             @using (Html.BeginForm("FireEmployee", "Employee", FormMethod.Post, new { @class = "user" }))
                                             {
                                                 @Html.HiddenFor(model => employee.tc, new { @Value = employee.tc, Name = "tc" })
 
-                                                <td>
+                                                <td colspan="1">
+                                                    <br />
+                                                    <br />
+                                                    <br />
                                                     <button type="submit" class="btn btn-danger btn-user btn-block">Fire</button>
                                                 </td>
 
@@ -102,6 +114,7 @@ else
     </script>
 
 }
+
 <script>
     var updateButtons = document.getElementsByClassName('updateButton');
     for (var i = 0; i < updateButtons.length; i++) {

@@ -28,29 +28,36 @@ namespace JobRecruitment2024.Controllers
                     // Delete other applications for the user
                     _context.Applications.RemoveRange(_context.Applications.Where(app => app.tc == currentUser.tc));
                     var job = _context.Jobs.FirstOrDefault(u => u.job_id == jobId);
-                    // Update user's employment status to "employee"
-                    currentUser.emp_status = "employee";
-                    currentUser.job_id = job.job_id;
-                    currentUser.salary = job.salary;
-                    currentUser.insurance_num = currentUser.tc;
-                    job.vacancy -= 1;
-                    _context.SaveChanges();
-
-                    string dateString = DateTime.Today.ToString("yyyy-MM-dd");
-
-                    var newHistoryEntry = new Histories
+                    if(job.vacancy > 0)
                     {
-                        recruitment_date = dateString, // Assuming this is the recruitment date
-                        dismissal_date = null, // Assuming this is null when the user is employed
-                        job_id = job.job_id,
-                        tc = currentUser.tc
-                        // You might need to populate other fields based on your table structure
-                    };
-                    _context.Histories.Add(newHistoryEntry);
-                    _context.SaveChanges();
+                        // Update user's employment status to "employee"
+                        currentUser.emp_status = "employee";
+                        currentUser.job_id = job.job_id;
+                        currentUser.salary = job.salary;
+                        currentUser.insurance_num = currentUser.tc;
+                        job.vacancy -= 1;
+                        _context.SaveChanges();
+
+                        string dateString = DateTime.Today.ToString("yyyy-MM-dd");
+
+                        var newHistoryEntry = new Histories
+                        {
+                            recruitment_date = dateString, // Assuming this is the recruitment date
+                            dismissal_date = null, // Assuming this is null when the user is employed
+                            job_id = job.job_id,
+                            tc = currentUser.tc
+                            // You might need to populate other fields based on your table structure
+                        };
+                        _context.Histories.Add(newHistoryEntry);
+                        _context.SaveChanges();
 
 
-                    TempData["SuccessMessage"] = "Job confirmed. Your other applications deleted.";
+                        TempData["SuccessMessage"] = "Job confirmed. Your other applications deleted.";
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "There is no vacany.";
+                    }
                 }
                 else
                 {
@@ -69,52 +76,47 @@ namespace JobRecruitment2024.Controllers
         [HttpGet]
         public ActionResult JobInformation()
         {
-            var employeeEmail = Session["UserEmail"] as string; // Assuming you store the employee's email in session
+            string employeeEmail = Session["UserEmail"] as string;
+
+            if (employeeEmail == null)
+            {
+                ViewBag.ErrorMessage = "User not found. Redirecting to Login Page...";
+                return RedirectToAction("UserLoginPage", "User");
+            }
+
             var currentUser = _context.Users.FirstOrDefault(u => u.email == employeeEmail);
-            if (employeeEmail != null)
+
+            if (currentUser == null)
             {
-                var employee = _context.Users.FirstOrDefault(e => e.email == employeeEmail);
-                if (employee != null)
-                {
-                    var job_ = _context.Jobs.FirstOrDefault(j => j.job_id == employee.job_id);
-                    if (job_ != null)
-                    {
-                        var department = _context.Managers.FirstOrDefault(m => m.dep_id == job_.dep_id);
-                        if (department != null)
-                        {
-                            var managers = _context.Managers.FirstOrDefault(m => m.manager_id == department.manager_id);
-                            if (managers != null)
+                ViewBag.ErrorMessage = "User not found.";
+                return View();
+            }
+
+            var userInfo = (from user in _context.Users
+                            join job in _context.Jobs on user.job_id equals job.job_id
+                            join dep in _context.Departments on job.dep_id equals dep.dep_id
+                            join manager in _context.Managers on dep.dep_id equals manager.dep_id // Assuming manager_id is the correct foreign key in Departments referencing Managers
+                            where job.job_id == currentUser.job_id
+                            select new UserViewModel
                             {
+                                job_name = job.job_name,
+                                salary = job.salary,
+                                name = manager.name,
+                                surname = manager.surname,
+                                email = manager.email,
+                                phone_num = manager.phone_num,
+                            }).FirstOrDefault();
 
-                                UserViewModel userInfo = (from user in _context.Users
-                                                          join job in _context.Jobs on user.job_id equals job.job_id
-                                                          join dep in _context.Departments on job.dep_id equals dep.dep_id
-                                                          join manager in _context.Managers on dep.dep_id equals manager.dep_id
-                                                          where !_context.Applications.Any(app => app.job_id == job.job_id && app.tc == currentUser.tc)
-                                                              && job.vacancy > 0
-                                                          select new UserViewModel
-                                                          {
-                                                              job_name = job.job_name,
-                                                              salary = job.salary,
-                                                              name = manager.name,
-                                                              surname = manager.surname,
-                                                              email = manager.email,
-                                                              phone_num = manager.phone_num,
 
-                                                             
-                                                          }).FirstOrDefault();
 
-                                return View(userInfo);
-                            }
-                        }
-                    }
-                }
-            }
-            else
+
+            if (userInfo == null)
             {
-                ViewBag.ErrorMessage = "User not found. Redirecting Login Page...";
+                ViewBag.ErrorMessage = "User information not found.";
+                return View();
             }
-            return View();
+
+            return View(userInfo);
         }
 
         [HttpGet]
@@ -134,6 +136,7 @@ namespace JobRecruitment2024.Controllers
                                                          where job.dep_id == manager.dep_id
                                                          select new UserViewModel
                                                          {
+                                                             tc = user.tc,
                                                              name = user.name,
                                                              surname = user.surname,
                                                              email = user.email,
@@ -144,13 +147,18 @@ namespace JobRecruitment2024.Controllers
                                                              job_name = job.job_name,
                                                          }).ToList();
 
+
                     if (employees == null || !employees.Any())
                     {
                         ViewBag.ErrorMessage = "No Employees Found";
                     }
 
+                    UserViewModel employeesModel = new UserViewModel
+                    {
+                        UserList = employees
+                    };
 
-                    return View(employees);
+                    return View(employeesModel);
                 }
                 else
                 {
@@ -171,9 +179,10 @@ namespace JobRecruitment2024.Controllers
             }
         }
         [HttpPost]
-        public ActionResult ManageEmployees(Managers manager)
+        public ActionResult ManageEmployees(List<UserViewModel> employees)
         {
-            return View();
+            //ManageEmployees
+            return View(employees);
         }
 
         [HttpPost]
@@ -182,9 +191,12 @@ namespace JobRecruitment2024.Controllers
 
             var employee = _context.Users.Find(model.tc);
 
-            if (employee != null && ModelState.IsValid)
+            if (employee != null)
             {
-
+                employee.name = model.name;
+                employee.surname = model.surname;
+                employee.email = model.email;
+                employee.phone_num = model.phone_num;
                 employee.salary = model.salary;
                 _context.SaveChanges();
 
@@ -194,42 +206,14 @@ namespace JobRecruitment2024.Controllers
         [HttpPost]
         public ActionResult FireEmployee(string tc)
         {
-            var employee = _context.Users.Find(tc);
-            var job = _context.Jobs.FirstOrDefault(u => u.job_id == employee.job_id);
-            if (employee == null)
-            {
-                return HttpNotFound();
-            }
-
-            var latestHistoryEntry = _context.Histories
-                 .Where(h => h.job_id == job.job_id && h.tc == employee.tc)
-                 .OrderByDescending(h => h.history_id)
-                 .FirstOrDefault();
-            string dateString = DateTime.Today.ToString("yyyy-MM-dd");
-            if (latestHistoryEntry != null)
-            {
-                latestHistoryEntry.dismissal_date = dateString;
-                _context.SaveChanges();
-            }
-
-            employee.job_id = null;
-            employee.emp_status = null;
-            employee.salary = 0;
-            job.vacancy += 1;
-            _context.SaveChanges();
-
-            return RedirectToAction("ManageEmployees", "Employee");
-        }
-
-        [HttpPost]
-
-        public ActionResult LeaveJob(string tc)
-        {
-
             try
             {
                 var employee = _context.Users.Find(tc);
                 var job = _context.Jobs.FirstOrDefault(u => u.job_id == employee.job_id);
+                if (employee == null || job == null)
+                {
+                    return HttpNotFound();
+                }
 
                 var latestHistoryEntry = _context.Histories
                      .Where(h => h.job_id == job.job_id && h.tc == employee.tc)
@@ -241,6 +225,53 @@ namespace JobRecruitment2024.Controllers
                     latestHistoryEntry.dismissal_date = dateString;
                     _context.SaveChanges();
                 }
+
+                employee.job_id = null;
+                employee.emp_status = null;
+                employee.salary = 0;
+                job.vacancy += 1;
+                _context.SaveChanges();
+                TempData["SuccessMessage"] = "You fired selected Employee.";
+                return RedirectToAction("ManageEmployees", "Employee");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "An error occurred while processing your request.";
+
+                if (ex.InnerException != null)
+                {
+                    ViewBag.InnerErrorMessage = ex.InnerException.Message;
+                }
+
+                return View("Index", "Home");
+            }
+        }
+
+        [HttpPost]
+
+        public ActionResult LeaveJob(string tc)
+        {
+
+            try
+            {
+                var employee = _context.Users.Find(tc);
+                var job = _context.Jobs.FirstOrDefault(u => u.job_id == employee.job_id);
+                if (employee == null || job == null)
+                {
+                    return HttpNotFound();
+                }
+                
+                var latestHistoryEntry = _context.Histories
+                     .Where(h => h.job_id == job.job_id && h.tc == employee.tc)
+                     .OrderByDescending(h => h.history_id)
+                     .FirstOrDefault();
+                string dateString = DateTime.Today.ToString("yyyy-MM-dd");
+                if (latestHistoryEntry != null)
+                {
+                    latestHistoryEntry.dismissal_date = dateString;
+                    _context.SaveChanges();
+                }
+
                 employee.job_id = null;
                 employee.emp_status = null;
                 employee.salary = 0;

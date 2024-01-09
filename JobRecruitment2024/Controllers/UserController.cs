@@ -15,6 +15,9 @@ namespace JobRecruitment2024.Controllers
             _context = new DbContextViewModel();
         }
 
+        /*
+         User Login Page
+         */
         [HttpGet]
         public ActionResult UserLoginPage()
         {
@@ -39,6 +42,9 @@ namespace JobRecruitment2024.Controllers
             return View();
         }
 
+        /*User Register
+        Add user to Database
+        */
         [HttpGet]
         public ActionResult Register()
         {
@@ -98,6 +104,9 @@ namespace JobRecruitment2024.Controllers
             return View(model);
         }
 
+        /* User Main Page
+         Check user is registered
+        */
         [HttpGet]
         public ActionResult UserMainPage()
         {
@@ -118,6 +127,9 @@ namespace JobRecruitment2024.Controllers
             return View();
         }
 
+        /*Logout
+        Remove Current Email From Session
+        */
         [HttpGet]
         public ActionResult Logout()
         {
@@ -125,6 +137,9 @@ namespace JobRecruitment2024.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        /*User Update Account
+         Update Current User Account
+         */
         [HttpGet]
         public ActionResult UserUpdateAccount()
         {
@@ -204,6 +219,9 @@ namespace JobRecruitment2024.Controllers
             return View(updatedUser);
         }
 
+        /*
+         Delete Current User
+         */
         public ActionResult UserDeleteAccount()
         {
             string userEmail = Session["UserEmail"] as string;

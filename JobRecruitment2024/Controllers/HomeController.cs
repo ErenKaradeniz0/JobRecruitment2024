@@ -16,6 +16,10 @@ namespace JobRecruitment2024.Controllers
         {
             _context = new DbContextViewModel();
         }
+        /*Main page
+        Check database connection
+        Select Account Type
+         */
         public ActionResult Index()
         {
             try
@@ -36,6 +40,11 @@ namespace JobRecruitment2024.Controllers
             return View();
         }
 
+        /* Forgot Password
+        Reset password of current account via email
+        Select Account Type
+        Save new Encyrpted Password to Database
+        */
         [HttpGet]
         public ActionResult Forgot_Password()
         {
@@ -103,6 +112,9 @@ namespace JobRecruitment2024.Controllers
             return View();
 
         }
+        /* Send Password Reset Email
+         Send new Password to email
+         */
         private bool SendPasswordResetEmail(string email, string newPassword)
         {
             string userType = Session["userType"] as string;
@@ -145,6 +157,9 @@ namespace JobRecruitment2024.Controllers
             }
         }
 
+        /* Generate Random Password
+        Generate Random Password
+        */
         private string GenerateRandomPassword()
         {
             Random random = new Random();
@@ -152,6 +167,9 @@ namespace JobRecruitment2024.Controllers
             return new string(Enumerable.Repeat(chars, 8).Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
+        /* Password Encrypt
+         Encrypt Password
+         */
         public static string PasswordEncrypt(string password)
         {
             int minAsciiVal = 32;

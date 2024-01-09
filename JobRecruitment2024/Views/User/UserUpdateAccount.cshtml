@@ -24,6 +24,8 @@
                     @Html.LabelFor(model => model.email, "Email:")
                     @Html.TextBoxFor(model => model.email, new { @class = "form-control form-control-user", maxlength = 50, type = "email" })
 
+                    @Html.LabelFor(model => model.phone_num, "Phone:")
+                    @Html.TextBoxFor(model => model.phone_num, new { @type = "text", @class = "form-control form-control-user", maxlength = "11", pattern = "[0-9]*", title = "Please enter only numbers", required = "required" })
                     <div class="custom-control custom-checkbox small">
                         <input type="checkbox" class="custom-control-input" id="changePasswordCheckbox">
                         <label class="custom-control-label" for="changePasswordCheckbox">
@@ -40,9 +42,6 @@
                         @Html.Label("newPasswordAgain", "New Password Again:")
                         @Html.Password("newPasswordAgain", null, new { @class = "form-control form-control-user", maxlength = 10 })
                     </div>
-
-                    @Html.LabelFor(model => model.phone_num, "Phone:")
-                    @Html.TextBoxFor(model => model.phone_num, new { @class = "form-control form-control-user", maxlength = 11, required = "required" })
 
                     <br />
                     <button type="submit" class="btn btn-primary btn-user btn-block">Update Account</button>

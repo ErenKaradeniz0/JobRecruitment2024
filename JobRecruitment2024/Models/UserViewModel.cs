@@ -9,7 +9,7 @@ namespace JobRecruitment2024.Models
     [NotMapped]
     public class UserViewModel:Users
     {
-        public IEnumerable<Users> UserList { get; set; }
+        public IEnumerable<UserViewModel> UserList { get; set; }
 
         public string job_name {  get; set; }
     }
