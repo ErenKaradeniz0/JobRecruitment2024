@@ -47,23 +47,23 @@ else
     <div class="col-lg-6">
         <div class="p-5">
             <div class="text-center">
-                <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
+                <h4 class="h4 text-gray-900 mb-4 font-weight-bold">@ViewBag.Title</h4>
             </div>
 
-            <a href="@Url.Action("UserUpdateAccount")" class="btn btn-primary btn-user btn-block">Update Account Information</a>
+            <a href="@Url.Action("UserUpdateAccount")" class="btn btn-primary btn-user btn-block font-weight-bold">Update Account Information</a>
             @if (ViewBag.StatusMessage != null)
             {
-                <a href="@Url.Action("JobInformation", "Employee")" class="btn btn-primary btn-user btn-block">Job Information</a>
+                <a href="@Url.Action("JobInformation", "Employee")" class="btn btn-primary btn-user btn-block font-weight-bold">Job Information</a>
             }
             else
             {
 
-                <a href="@Url.Action("ApplyJob", "Application")" class="btn btn-primary btn-user btn-block">Apply jobs</a>
-                <a href="@Url.Action("MyApplications", "Application")" class="btn btn-primary btn-user btn-block">My Applications</a>
+                <a href="@Url.Action("ApplyJob", "Application")" class="btn btn-primary btn-user btn-block font-weight-bold">Apply jobs</a>
+                <a href="@Url.Action("MyApplications", "Application")" class="btn btn-primary btn-user btn-block font-weight-bold">My Applications</a>
             }
 
             <div class="text-center">
-                <a class="small" href="@Url.Action("Logout", "User")">Log Out</a>
+                <a class="small font-weight-bold" href="@Url.Action("Logout", "User")">Log Out</a>
             </div>
         </div>
     </div>

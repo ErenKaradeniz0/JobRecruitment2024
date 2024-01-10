@@ -17,26 +17,26 @@
         @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "user" }))
         {
             <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">User Login</h1>
+                <h1 class="h4 text-gray-900 mb-4 font-weight-bold">@ViewBag.Title</h1>
             </div>
             <div class="form-group">
-                @Html.TextBox("email", null, new { @class = "form-control form-control-user", maxlength = "50", @placeholder = "Email", required = "required", })
+                @Html.TextBox("email", null, new { @class = "form-control form-control-user", maxlength = "50", @placeholder = "Email", required = "required", type = "email", title = "Please enter email." })
             </div>
             <div class="form-group">
                 @Html.Password("password", null, new { @class = "form-control form-control-user", maxlength = "10", @placeholder = "Password", required = "required" })
             </div>
-            <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>
+            <button type="submit" class="btn btn-primary btn-user btn-block font-weight-bold">Login</button>
         }
 
         <hr>
         <div class="text-center">
-            <a href="@Url.Action("Register", "User")">Create an Account!</a>
+            <a class="font-weight-bold" href="@Url.Action("Register", "User")">Create an Account!</a>
         </div>
         <div class="text-center">
-            <a class="small" href="@Url.Action("Forgot_Password", "Home")">Forgot Password?</a>
+            <a class="small font-weight-bold" href="@Url.Action("Forgot_Password", "Home")">Forgot Password?</a>
         </div>
         <div class="text-center">
-            <a class="small" href="@Url.Action("Index", "Home")">Go Main Page</a>
+            <a class="small font-weight-bold" href="@Url.Action("Index", "Home")">Go Main Page</a>
         </div>
         @Html.Partial("_ErrorMessage")
     </div>

@@ -15,10 +15,10 @@
         <div class="col-lg-">
             <div class="p-5">
                 <div class="text-center">
-                    <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
+                    <h4 class="h4 text-gray-900 mb-4 font-weight-bold">@ViewBag.Title</h4>
                 </div>
                 <div class="text-center">
-                    <h5 class="h5 text-gray-900 mb-4">Available Jobs</h5>
+                    <h5 class="h5 text-gray-900 mb-4 font-weight-bold">Available Jobs</h5>
                 </div>
                 @if (Model.Any())
                 {
@@ -27,7 +27,7 @@
                     foreach (var departmentGroup in groupedJobsByDepartment)
                     {
                         <div class="mt-4">
-                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#department@(departmentGroup.Key)" aria-expanded="false" aria-controls="department@(departmentGroup.Key)">
+                            <button class="btn btn-primary font-weight-bold" type="button" data-toggle="collapse" data-target="#department@(departmentGroup.Key)" aria-expanded="false" aria-controls="department@(departmentGroup.Key)">
                                 @(departmentGroup.FirstOrDefault()?.dep_name) Jobs <!-- Accessing dep_name -->
                             </button>
                             <div class="collapse" id="department@(departmentGroup.Key)">
@@ -47,7 +47,7 @@
                                                 {
                                                     int quota = @job.employee_limit - @job.vacancy;
                                                     <tr>
-                                                        <td>@job.job_name</td>
+                                                        <td class="font-weight-bold">@job.job_name</td>
                                                         <td>@job.job_description</td>
                                                         <td>@quota/@job.employee_limit</td>
                                                         <td>
@@ -81,7 +81,7 @@
                             @ViewBag.SuccessMessage
                         </div>
                     }
-                    <a href="@Url.Action("UserMainPage", "User")">User Main Page</a>
+                    <a class="small font-weight-bold" href="@Url.Action("UserMainPage", "User")">User Main Page</a>
                 </div>
             </div>
         </div>

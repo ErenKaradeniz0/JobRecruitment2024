@@ -56,7 +56,6 @@ namespace JobRecruitment2024.Controllers
                     dep_id = currentManager.dep_id,
                 };
                 model.JobsList = JobCreate(job);
-                ViewBag.SuccessMessage = "Job created successfully.";
                 return View("ManageJobPosting", model);
             }
             catch (Exception ex)
@@ -70,22 +69,23 @@ namespace JobRecruitment2024.Controllers
         [HttpPost]
         public List<Jobs> JobCreate(Jobs job)
         {
+            string ManagerUsername = Session["ManagerUsername"] as string;
+            Managers currentManager = _context.Managers.FirstOrDefault(m => m.username == ManagerUsername);
+            int managerDepartmentId = currentManager.dep_id;
             if (ModelState.IsValid)
             {
                 _context.Jobs.Add(job);
                 _context.SaveChanges();
-
-                string ManagerUsername = Session["ManagerUsername"] as string;
-                Managers currentManager = _context.Managers.FirstOrDefault(m => m.username == ManagerUsername);
-
-                int managerDepartmentId = currentManager.dep_id;
-                var jobs = _context.Jobs
-                           .Where(related_jobs => related_jobs.dep_id == managerDepartmentId) // Changed to related_jobs.dep_id
-                           .ToList();
-                return jobs;
+                ViewBag.SuccessMessage = "Job created successfully.";
             }
             else
-                return null;
+            {
+            ViewBag.ErrorMessage = "Job information invalid";
+            }
+            var jobs = _context.Jobs
+                       .Where(related_jobs => related_jobs.dep_id == managerDepartmentId) // Changed to related_jobs.dep_id
+                       .ToList();
+            return jobs;
         }
 
         [HttpPost]

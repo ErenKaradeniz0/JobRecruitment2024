@@ -10,25 +10,25 @@
             <div class="p-5">
 
                 <div class="text-center">
-                    <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
+                    <h4 class="h4 text-gray-900 mb-4 font-weight-bold">@ViewBag.Title</h4>
                 </div>
 
                 @using (Html.BeginForm("UserUpdateAccount", "User", FormMethod.Post, new { @class = "user", id = "updateForm" }))
                 {
-                    @Html.LabelFor(model => model.name, "Name:")
-                    @Html.TextBoxFor(model => model.name, new { @class = "form-control form-control-user", maxlength = 15, required = "required" })
+                    @Html.LabelFor(model => model.name, "Name:", new {@class = "font-weight-bold" })
+                    @Html.TextBoxFor(model => model.name, new { @class = "form-control form-control-user", pattern = "^[A-Za-z\\s]+$", title = "Please enter only letters", maxlength = 15, required = "required" })
 
-                    @Html.LabelFor(model => model.surname, "Surname:")
-                    @Html.TextBoxFor(model => model.surname, new { @class = "form-control form-control-user", maxlength = 15, required = "required" })
+                    @Html.LabelFor(model => model.surname, "Surname:", new {@class = "font-weight-bold" })
+                    @Html.TextBoxFor(model => model.surname, new { @class = "form-control form-control-user", pattern = "^[A-Za-z\\s]+$", title = "Please enter only letters", maxlength = 15, required = "required" })
 
-                    @Html.LabelFor(model => model.email, "Email:")
-                    @Html.TextBoxFor(model => model.email, new { @class = "form-control form-control-user", maxlength = 50, type = "email" })
+                    @Html.LabelFor(model => model.email, "Email:", new { @class = "font-weight-bold" })
+                    @Html.TextBoxFor(model => model.email, new { @class = "form-control form-control-user", maxlength = 50, type = "email", title = "Please enter email" })
 
-                    @Html.LabelFor(model => model.phone_num, "Phone:")
+                    @Html.LabelFor(model => model.phone_num, "Phone:", new { @class = "font-weight-bold" })
                     @Html.TextBoxFor(model => model.phone_num, new { @type = "text", @class = "form-control form-control-user", maxlength = "11", pattern = "[0-9]*", title = "Please enter only numbers", required = "required" })
                     <div class="custom-control custom-checkbox small">
                         <input type="checkbox" class="custom-control-input" id="changePasswordCheckbox">
-                        <label class="custom-control-label" for="changePasswordCheckbox">
+                        <label class="custom-control-label font-weight-bold" for="changePasswordCheckbox">
                             Change
                             Password
                         </label>
@@ -36,16 +36,16 @@
 
 
                     <div id="passwordField" style="display: none;">
-                        @Html.LabelFor(model => model.password, "New Password:")
+                        @Html.LabelFor(model => model.password, "New Password:", new { @class = "font-weight-bold" })
                         @Html.PasswordFor(model => model.password, new { @class = "form-control form-control-user", maxlength = 10, id = "newPassword" })
 
-                        @Html.Label("newPasswordAgain", "New Password Again:")
+                        @Html.Label("newPasswordAgain", "New Password Again:", new { @class = "font-weight-bold" })
                         @Html.Password("newPasswordAgain", null, new { @class = "form-control form-control-user", maxlength = 10 })
                     </div>
 
                     <br />
-                    <button type="submit" class="btn btn-primary btn-user btn-block">Update Account</button>
-                    <div id="errorMessage" style="display: none; color: red;">Passwords do not match!</div>
+                    <button type="submit" class="btn btn-primary btn-user btn-block font-weight-bold">Update Account</button>
+                    <div id="errorMessage" style="display: none; color: red;" class="font-weight-bold">Passwords do not match!</div>
                     if (ViewBag.SuccessMessage != null)
                     {
                         <div class="alert alert-success" role="alert">
@@ -70,7 +70,7 @@
                     using (Html.BeginForm("LeaveJob", "Employee", FormMethod.Post, new { @class = "user" }))
                     {
                         @Html.Hidden("tc", Model.tc)
-                        <button type="submit" class="btn btn-primary btn-user btn-block">Leave Job</button>
+                        <button type="submit" class="btn btn-primary btn-user btn-block font-weight-bold">Leave Job</button>
                     }
                 }
                 else
@@ -79,12 +79,12 @@
                     {
                         {
                             @Html.Hidden("tc", Model.tc)
-                            <button type="submit" class="btn btn-primary btn-user btn-block">Delete Account</button>
+                            <button type="submit" class="btn btn-primary btn-user btn-block font-weight-bold">Delete Account</button>
                         }
                     }
                 }
                 <div class="text-center">
-                    <a class="small" href="UserMainPage">User Main Page</a>
+                    <a class="small font-weight-bold" href="UserMainPage">User Main Page</a>
                 </div>
             </div>
         </div>

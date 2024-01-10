@@ -21,15 +21,15 @@ else
     <div class="col-lg-6">
         <div class="p-5">
             <div class="text-center">
-                <h4 class="h4 text-gray-900 mb-4">Manager Main Page</h4>
+                <h4 class="h4 text-gray-900 mb-4 font-weight-bold">@ViewBag.Title</h4>
             </div>
-            <a href="ManagerUpdateAccount" class="btn btn-primary btn-user btn-block">Update Account Information</a>
-            <a href="@Url.Action("ManageJobPosting", "Job")" class="btn btn-primary btn-user btn-block">Manage Job Posting</a>
-            <a href="@Url.Action("ManageEmployees", "Employee")" class="btn btn-primary btn-user btn-block">Manage Employees</a>
-            <a href="@Url.Action("ManageApplications", "Application")" class="btn btn-primary btn-user btn-block">Manage Received Applications</a>
+            <a href="ManagerUpdateAccount" class="btn btn-primary btn-user btn-block font-weight-bold">Update Account Information</a>
+            <a href="@Url.Action("ManageJobPosting", "Job")" class="btn btn-primary btn-user btn-block font-weight-bold">Manage Job Posting</a>
+            <a href="@Url.Action("ManageEmployees", "Employee")" class="btn btn-primary btn-user btn-block font-weight-bold">Manage Employees</a>
+            <a href="@Url.Action("ManageApplications", "Application")" class="btn btn-primary btn-user btn-block font-weight-bold">Manage Received Applications</a>
 
             <div class="text-center">
-                <a class="small" href="@Url.Action("Logout", "Manager")">Log Out</a>
+                <a class="small font-weight-bold" href="@Url.Action("Logout", "Manager")">Log Out</a>
 
             </div>
         </div>

@@ -12,7 +12,7 @@
         <div class="col-lg-">
             <div class="p-5">
                 <div class="text-center">
-                    <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
+                    <h4 class="h4 text-gray-900 mb-4 font-weight-bold">@ViewBag.Title</h4>
                 </div>
                 @if (Model.Any())
                 {
@@ -21,7 +21,7 @@
                     foreach (var jobGroup in groupedJobsById)
                     {
                         <div class="mt-4">
-                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#job@(jobGroup.Key)" aria-expanded="false" aria-controls="job@(jobGroup.Key)">
+                            <button class="btn btn-primary font-weight-bold" type="button" data-toggle="collapse" data-target="#job@(jobGroup.Key)" aria-expanded="false" aria-controls="job@(jobGroup.Key)">
                                 @(jobGroup.FirstOrDefault()?.job_name) <!-- Accessing job_name -->
                             </button>
                             <div class="collapse" id="job@(jobGroup.Key)">
@@ -50,13 +50,13 @@
                                                                     @using (Html.BeginForm("AcceptApplication", "Application", FormMethod.Post))
                                                                     {
                                                                         @Html.Hidden("application_id", application.application_id)
-                                                                        <button type="submit" class="btn btn-success btn-user btn-block">Accept</button>
+                                                                        <button type="submit" class="btn btn-success btn-user btn-block font-weight-bold">Accept</button>
                                                                     }
 
                                                                     @using (Html.BeginForm("RejectApplication", "Application", FormMethod.Post))
                                                                     {
                                                                         @Html.Hidden("application_id", application.application_id)
-                                                                        <button type="submit" class="btn btn-danger btn-user btn-block">Reject</button>
+                                                                        <button type="submit" class="btn btn-danger btn-user btn-block font-weight-bold">Reject</button>
                                                                     }
                                                                 </td>
                                                             </tr>
@@ -86,7 +86,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary btn-user btn-block toggleButton" id="toggleButton@(jobGroup.Key)" data-jobgroupid="@jobGroup.Key">Show Processed Applications</button>
+                                    <button class="btn btn-primary btn-user btn-block toggleButton font-weight-bold" id="toggleButton@(jobGroup.Key)" data-jobgroupid="@jobGroup.Key">Show Processed Applications</button>
                                 </div>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
                     <p> You don't received any applications for your job postings</p>
                 }
                 <div class="text-center">
-                    <a href="@Url.Action("ManagerMainPage", "Manager")">Manager Main Page</a>
+                    <a class="font-weight-bold small" href="@Url.Action("ManagerMainPage", "Manager")">Manager Main Page</a>
                 </div>
             </div>
         </div>

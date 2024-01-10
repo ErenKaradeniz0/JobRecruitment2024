@@ -11,7 +11,7 @@
         <div class="col-lg-12">
             <div class="p-5">
                 <div class="text-center">
-                    <h4 class="h4 text-gray-900 mb-4">@ViewBag.Title</h4>
+                    <h4 class="h4 text-gray-900 mb-4 font-weight-bold">@ViewBag.Title</h4>
                 </div>
 
                 @if (Model.Any())
@@ -21,7 +21,7 @@
                     foreach (var departmentGroup in groupedJobsByDepartment)
                     {
                         <div class="mt-4">
-                            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#department@(departmentGroup.Key)" aria-expanded="false" aria-controls="department@(departmentGroup.Key)">
+                            <button class="btn btn-primary font-weight-bold" type="button" data-toggle="collapse" data-target="#department@(departmentGroup.Key)" aria-expanded="false" aria-controls="department@(departmentGroup.Key)">
                                 @(departmentGroup.FirstOrDefault()?.dep_name) Jobs <!-- Accessing dep_name -->
                             </button>
                             <div class="collapse" id="department@(departmentGroup.Key)">
@@ -40,10 +40,11 @@
                                             <tbody>
                                                 @foreach (var job in departmentGroup)
                                                 {
+                                                    int quota = @job.employee_limit - @job.vacancy;
                                                     <tr>
-                                                        <td>@job.job_name</td>
+                                                        <td class="font-weight-bold">@job.job_name</td>
                                                         <td>@job.job_description</td>
-                                                        <td>@job.vacancy/@job.employee_limit</td>
+                                                        <td>@quota/@job.employee_limit</td>
                                                         <td>@job.app_status</td>
                                                         <td class="d-flex align-items-center">
                                                             @if (job.app_status == "Accepted")
@@ -53,14 +54,14 @@
                                                                     @Html.Hidden("jobId", job.job_id)
                                                                     @Html.Hidden("tc", job.tc)
                                                                     <div class="mr-2">
-                                                                        <button type="submit" class="btn btn-primary">Confirm</button>
+                                                                        <button type="submit" class="btn btn-primary font-weight-bold">Confirm</button>
                                                                     </div>
                                                                 }
                                                             }
                                                             @using (Html.BeginForm("DeleteApplication", "Application", FormMethod.Post))
                                                             {
                                                                 @Html.Hidden("applicationId", job.application_id)
-                                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                                                <button type="submit" class="btn btn-danger font-weight-bold">Delete</button>
                                                             }
                                                         </td>
                                                     </tr>
@@ -84,7 +85,7 @@
                             @ViewBag.SuccessMessage
                         </div>
                     }
-                    <a href="@Url.Action("UserMainPage", "User")">User Main Page</a>
+                    <a  class="small font-weight-bold" href="@Url.Action("UserMainPage", "User")">User Main Page</a>
                 </div>
 
             </div>
