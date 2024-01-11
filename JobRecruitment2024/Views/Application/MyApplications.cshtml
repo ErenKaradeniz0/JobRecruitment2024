@@ -21,7 +21,7 @@
                     foreach (var departmentGroup in groupedJobsByDepartment)
                     {
                         <div class="mt-4">
-                            <button class="btn btn-primary font-weight-bold" type="button" data-toggle="collapse" data-target="#department@(departmentGroup.Key)" aria-expanded="false" aria-controls="department@(departmentGroup.Key)">
+                            <button class="btn btn-primary font-weight-bold btn-block" type="button" data-toggle="collapse" data-target="#department@(departmentGroup.Key)" aria-expanded="false" aria-controls="department@(departmentGroup.Key)">
                                 @(departmentGroup.FirstOrDefault()?.dep_name) Jobs <!-- Accessing dep_name -->
                             </button>
                             <div class="collapse" id="department@(departmentGroup.Key)">
@@ -46,22 +46,20 @@
                                                         <td>@job.job_description</td>
                                                         <td>@quota/@job.employee_limit</td>
                                                         <td>@job.app_status</td>
-                                                        <td class="d-flex align-items-center">
+                                                        <td class="text-center">
                                                             @if (job.app_status == "Accepted")
                                                             {
-                                                                using (Html.BeginForm("Employment", "Employee", FormMethod.Post))
+                                                                using (Html.BeginForm("Employment", "Employee", FormMethod.Post, new { @class = "mb-2" }))
                                                                 {
                                                                     @Html.Hidden("jobId", job.job_id)
                                                                     @Html.Hidden("tc", job.tc)
-                                                                    <div class="mr-2">
-                                                                        <button type="submit" class="btn btn-primary font-weight-bold">Confirm</button>
-                                                                    </div>
+                                                                    <button type="submit" class="btn btn-primary font-weight-bold btn-block">Confirm</button>
                                                                 }
                                                             }
                                                             @using (Html.BeginForm("DeleteApplication", "Application", FormMethod.Post))
                                                             {
                                                                 @Html.Hidden("applicationId", job.application_id)
-                                                                <button type="submit" class="btn btn-danger font-weight-bold">Delete</button>
+                                                                <button type="submit" class="btn btn-danger font-weight-bold btn-block">Delete</button>
                                                             }
                                                         </td>
                                                     </tr>
@@ -76,16 +74,17 @@
                 }
                 else
                 {
-                    <p>You don't applied any job</p>
+            <div class="alert alert-warning  text-center font-weight-bold" role="alert"> You do not have application</div>
                 }
+                <br />
                 <div class="text-center">
                     @if (ViewBag.SuccessMessage != null)
                     {
-                        <div class="alert alert-success" role="alert">
+                        <div class="alert alert-success font-weight-bold" role="alert">
                             @ViewBag.SuccessMessage
                         </div>
                     }
-                    <a  class="small font-weight-bold" href="@Url.Action("UserMainPage", "User")">User Main Page</a>
+                    <a class="small font-weight-bold" href="@Url.Action("UserMainPage", "User")">User Main Page</a>
                 </div>
 
             </div>
@@ -94,7 +93,7 @@
 }
 else
 {
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger font-weight-bold mb-0" role="alert">
         @ViewBag.ErrorMessage
     </div>
     <script>

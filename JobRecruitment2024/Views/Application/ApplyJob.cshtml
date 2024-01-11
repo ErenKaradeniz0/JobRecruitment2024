@@ -11,8 +11,9 @@
     {
         ViewBag.SuccessMessage = TempData["SuccessMessage"];
     }
+
     <div class="row">
-        <div class="col-lg-">
+        <div class="col-lg-12">
             <div class="p-5">
                 <div class="text-center">
                     <h4 class="h4 text-gray-900 mb-4 font-weight-bold">@ViewBag.Title</h4>
@@ -27,7 +28,7 @@
                     foreach (var departmentGroup in groupedJobsByDepartment)
                     {
                         <div class="mt-4">
-                            <button class="btn btn-primary font-weight-bold" type="button" data-toggle="collapse" data-target="#department@(departmentGroup.Key)" aria-expanded="false" aria-controls="department@(departmentGroup.Key)">
+                            <button class="btn btn-primary font-weight-bold btn-block" type="button" data-toggle="collapse" data-target="#department@(departmentGroup.Key)" aria-expanded="false" aria-controls="department@(departmentGroup.Key)">
                                 @(departmentGroup.FirstOrDefault()?.dep_name) Jobs <!-- Accessing dep_name -->
                             </button>
                             <div class="collapse" id="department@(departmentGroup.Key)">
@@ -45,13 +46,13 @@
                                             <tbody>
                                                 @foreach (var job in departmentGroup)
                                                 {
-                                                    int quota = @job.employee_limit - @job.vacancy;
+                                                    int quota = job.employee_limit - job.vacancy;
                                                     <tr>
                                                         <td class="font-weight-bold">@job.job_name</td>
                                                         <td>@job.job_description</td>
                                                         <td>@quota/@job.employee_limit</td>
                                                         <td>
-                                                            <form method="post" action="@Url.Action("ApplyJob")">
+                                                            <form method="post" action="@Url.Action("ApplyJob", "Application")">
                                                                 @using (Html.BeginForm("ApplyJob", "Application", FormMethod.Post, new { @class = "user" }))
                                                                 {
                                                                     @Html.Hidden("job_id_apply", job.job_id) <!-- Pass the JobId -->
@@ -65,19 +66,19 @@
                                         </table>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     }
                 }
                 else
                 {
-                    <p>No jobs available</p>
+            <div class="alert alert-warning  text-center font-weight-bold" role="alert">No jobs available for apply</div>
                 }
+                <br />
                 <div class="text-center">
                     @if (ViewBag.SuccessMessage != null)
                     {
-                        <div class="alert alert-success" role="alert">
+                        <div class="alert alert-success font-weight-bold" role="alert">
                             @ViewBag.SuccessMessage
                         </div>
                     }
@@ -91,23 +92,21 @@ else
 {
     if (ViewBag.StatusMessage != null)
     {
-        <div class="alert alert-success" role="alert">
-           <p> @ViewBag.StatusMessage </p>
+        <div class="alert alert-success font-weight-bold" role="alert">
+            <p> @ViewBag.StatusMessage </p>
         </div>
     }
 
     if (ViewBag.ErrorMessage != null)
     {
-
-        <div class="alert alert-danger" role="alert">
+        <div class="alert alert-danger font-weight-bold mb-0" role="alert">
             @ViewBag.ErrorMessage
         </div>
 
         <script>
-        setTimeout(function() {
-        window.location.href = '@Url.Action("UserLoginPage", "User")';
-        }, 3000);
+            setTimeout(function() {
+                window.location.href = '@Url.Action("UserLoginPage", "User")';
+            }, 3000);
         </script>
     }
-
 }

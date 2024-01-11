@@ -56,6 +56,7 @@ namespace JobRecruitment2024.Controllers
                     dep_id = currentManager.dep_id,
                 };
                 model.JobsList = JobCreate(job);
+
                 return View("ManageJobPosting", model);
             }
             catch (Exception ex)
@@ -72,20 +73,35 @@ namespace JobRecruitment2024.Controllers
             string ManagerUsername = Session["ManagerUsername"] as string;
             Managers currentManager = _context.Managers.FirstOrDefault(m => m.username == ManagerUsername);
             int managerDepartmentId = currentManager.dep_id;
-            if (ModelState.IsValid)
+
+            try
             {
-                _context.Jobs.Add(job);
-                _context.SaveChanges();
-                ViewBag.SuccessMessage = "Job created successfully.";
+                if (ModelState.IsValid)
+                {
+                    _context.Jobs.Add(job);
+                    _context.SaveChanges();
+                    ViewBag.SuccessMessage = "Job created successfully.";
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Job information invalid.";
+                }
+
+                var jobs = _context.Jobs
+                               .Where(related_jobs => related_jobs.dep_id == managerDepartmentId)
+                               .ToList();
+
+                return jobs;
             }
-            else
+            catch (Exception ex)
             {
-            ViewBag.ErrorMessage = "Job information invalid";
+                // Log the exception or handle it appropriately based on your application's requirements.
+                ViewBag.ErrorMessage = "An error occurred while creating the job.";
+                // You may want to log the exception for further investigation.
+                Console.WriteLine(ex.Message);
+                return null; // or return an empty list or handle the error in a way that fits your application.
             }
-            var jobs = _context.Jobs
-                       .Where(related_jobs => related_jobs.dep_id == managerDepartmentId) // Changed to related_jobs.dep_id
-                       .ToList();
-            return jobs;
+
         }
 
         [HttpPost]

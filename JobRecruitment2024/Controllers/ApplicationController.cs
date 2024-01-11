@@ -92,7 +92,7 @@ namespace JobRecruitment2024.Controllers
 
             _context.Applications.Add(application);
             _context.SaveChanges();
-            TempData["SuccessMessage"] = "You have applied selected job";
+            TempData["SuccessMessage"] = "You have successfully applied for the selected job";
 
             return RedirectToAction("ApplyJob");
         }
@@ -182,10 +182,6 @@ namespace JobRecruitment2024.Controllers
                                                          app_status = app.app_status,
                                                      }).ToList();
 
-                //var applications = (from app in _context.Applications
-                //                    join job in _context.Jobs on app.job_id equals job.job_id
-                //                    where job.dep_id == manager.dep_id
-                //                    select app).ToList();
 
                 return View(applications); // Pass the list of applications to the view
             }
@@ -197,26 +193,64 @@ namespace JobRecruitment2024.Controllers
         // Action method to accept an application
         [HttpPost]
         public ActionResult AcceptApplication(int application_id)
-        {   
-            var application = _context.Applications.FirstOrDefault(a => a.application_id == application_id);
-            if (application != null)
+        {
+            try
             {
-                application.app_status = "Accepted";
-                _context.SaveChanges();
+                var application = _context.Applications.FirstOrDefault(a => a.application_id == application_id);
+
+                if (application != null)
+                {
+                    application.app_status = "Accepted";
+                    _context.SaveChanges();
+
+                    // Set success message
+                    TempData["SuccessMessage"] = "Application accepted successfully!";
+                }
+                else
+                {
+                    // Set error message if the application is not found
+                    TempData["ErrorMessage"] = "An error occurred. Application not found.";
+                }
             }
+            catch (Exception ex)
+            {
+                // Set error message if an exception occurs during the update
+                TempData["ErrorMessage"] = "An error occurred while accepting the application." + ex;
+            }
+
             return RedirectToAction("ManageApplications");
         }
+
 
         [HttpPost]
         public ActionResult RejectApplication(int application_id)
         {
-            var application = _context.Applications.Find(application_id);
-            if (application != null)
+            try
             {
-                application.app_status = "Rejected";
-                _context.SaveChanges();
+                var application = _context.Applications.Find(application_id);
+
+                if (application != null)
+                {
+                    application.app_status = "Rejected";
+                    _context.SaveChanges();
+
+                    // Set success message
+                    TempData["SuccessMessage"] = "Application rejected successfully!";
+                }
+                else
+                {
+                    // Set error message if the application is not found
+                    TempData["ErrorMessage"] = "An error occurred. Application not found.";
+                }
             }
+            catch (Exception ex)
+            {
+                // Set error message if an exception occurs during the update
+                TempData["ErrorMessage"] = "An error occurred while rejecting the application."+ex;
+            }
+
             return RedirectToAction("ManageApplications");
         }
+
     }
 }

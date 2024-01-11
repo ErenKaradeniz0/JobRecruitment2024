@@ -99,12 +99,15 @@ namespace JobRecruitment2024.Controllers
                             where job.job_id == currentUser.job_id
                             select new UserViewModel
                             {
+                                tc = user.tc,
+                                job_id = job.job_id,
                                 job_name = job.job_name,
                                 salary = job.salary,
                                 name = manager.name,
                                 surname = manager.surname,
                                 email = manager.email,
                                 phone_num = manager.phone_num,
+                                dep_name = dep.dep_name,
                             }).FirstOrDefault();
 
 
@@ -193,12 +196,22 @@ namespace JobRecruitment2024.Controllers
 
             if (employee != null)
             {
-                employee.name = model.name;
+                try
+                {
+                    employee.name = model.name;
                 employee.surname = model.surname;
                 employee.email = model.email;
                 employee.phone_num = model.phone_num;
                 employee.salary = model.salary;
+             
                 _context.SaveChanges();
+                 TempData["SuccessMessage"] = "Employee updated successfully!";
+                }
+                catch (Exception e)
+                {
+                    // Set error message
+                TempData["ErrorMessage"] = "An error occurred while updating the employee." +e;
+                }
 
             }
             return RedirectToAction("ManageEmployees", "Employee");
@@ -236,7 +249,7 @@ namespace JobRecruitment2024.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = "An error occurred while processing your request.";
+                TempData["ErrorMessage"] = "An error occurred while firing the employee."+ex;
 
                 if (ex.InnerException != null)
                 {

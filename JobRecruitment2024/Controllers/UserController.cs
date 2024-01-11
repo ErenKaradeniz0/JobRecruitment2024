@@ -154,7 +154,7 @@ namespace JobRecruitment2024.Controllers
                 }
                 else
                 {
-                    ViewBag.ErrorMessage = "User not found. Redirecting Main Page";
+                    ViewBag.ErrorMessage = "User not found. Redirecting Log in...";
                     return View();
                 }
             }
@@ -226,10 +226,13 @@ namespace JobRecruitment2024.Controllers
         {
             string userEmail = Session["UserEmail"] as string;
             Users user = _context.Users.FirstOrDefault(u => u.email == userEmail);
-            // Delete applications associated with the user's tc
+            // Delete applications and histories associated with the user's tc
 
             var userApplications = _context.Applications.Where(a => a.tc == user.tc);
                 _context.Applications.RemoveRange(userApplications);
+            
+            var userHistories = _context.Histories.Where(h => h.tc == user.tc);
+                _context.Histories.RemoveRange(userHistories);
 
                 // Delete the user with the specified tc
                 var userToDelete = _context.Users.SingleOrDefault(u => u.tc == user.tc);

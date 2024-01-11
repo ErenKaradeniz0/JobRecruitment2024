@@ -110,7 +110,7 @@ namespace JobRecruitment2024.Controllers
 
 
                     _context.SaveChanges();
-
+                    Session["ManagerUsername"] = currentManager.username;
                     ViewBag.SuccessMessage = "Account information updated successfully. Redirecting mainpage...";
                 }
                 catch (Exception ex)

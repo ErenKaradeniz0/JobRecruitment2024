@@ -21,7 +21,7 @@
                     foreach (var jobGroup in groupedJobsById)
                     {
                         <div class="mt-4">
-                            <button class="btn btn-primary font-weight-bold" type="button" data-toggle="collapse" data-target="#job@(jobGroup.Key)" aria-expanded="false" aria-controls="job@(jobGroup.Key)">
+                            <button class="btn btn-primary font-weight-bold btn-block" type="button" data-toggle="collapse" data-target="#job@(jobGroup.Key)" aria-expanded="false" aria-controls="job@(jobGroup.Key)">
                                 @(jobGroup.FirstOrDefault()?.job_name) <!-- Accessing job_name -->
                             </button>
                             <div class="collapse" id="job@(jobGroup.Key)">
@@ -97,9 +97,24 @@
                 {
                     <p> You don't received any applications for your job postings</p>
                 }
-                <div class="text-center">
-                    <a class="font-weight-bold small" href="@Url.Action("ManagerMainPage", "Manager")">Manager Main Page</a>
-                </div>
+            <div class="text-center">
+                <br />
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    ViewBag.SuccessMessage = TempData["SuccessMessage"];
+                    <div class="alert alert-success text-center font-weight-bold" role="alert">
+                        @ViewBag.SuccessMessage
+                    </div>
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    ViewBag.SuccessMessage = TempData["SuccessMessage"];
+                    <div class="alert alert-success text-center font-weight-bold" role="alert">
+                        @ViewBag.SuccessMessage
+                    </div>
+                }
+                <a class="font-weight-bold small" href="@Url.Action("ManagerMainPage", "Manager")">Manager Main Page</a>
+            </div>
             </div>
         </div>
     </div>
@@ -107,7 +122,7 @@
 }
 else
 {
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger font-weight-bold mb-0" role="alert">
         @ViewBag.ErrorMessage
     </div>
     <script>

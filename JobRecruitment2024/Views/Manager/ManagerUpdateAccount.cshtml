@@ -14,7 +14,7 @@
                 </div>
                 @using (Html.BeginForm("ManagerUpdateAccount", "Manager", FormMethod.Post, new { @class = "user", id = "updateForm" }))
                 {
-                    @Html.LabelFor(model => model.username, "Username:", new {@class = "font-weight-bold" })
+                    @Html.LabelFor(model => model.username, "Username:", new { @class = "font-weight-bold" })
                     @Html.TextBoxFor(model => model.username, new { @class = "form-control form-control-user", maxlength = 15, required = "required" })
 
                     @Html.LabelFor(model => model.name, "Name:", new { @class = "font-weight-bold" })
@@ -27,7 +27,7 @@
                     @Html.TextBoxFor(model => model.email, new { @class = "form-control form-control-user", maxlength = 50, type = "email", title = "Please enter email" })
 
                     @Html.LabelFor(model => model.phone_num, "Phone:", new { @class = "font-weight-bold" })
-                    @Html.TextBoxFor(model => model.phone_num, new { @type = "text", @class = "form-control form-control-user", maxlength = "11", pattern = "[0-9]*", title = "Please enter only numbers", required = "required" })
+                    @Html.TextBoxFor(model => model.phone_num, new { @type = "text", @class = "form-control form-control-user", title = "Please enter only numbers", maxlength = 11, pattern = "[0-9]*", required = "required" })
 
                     <div class="custom-control custom-checkbox small">
                         <input type="checkbox" class="custom-control-input" id="changePasswordCheckbox">
@@ -46,11 +46,12 @@
                     </div>
 
                     <br />
-                    <div id="errorMessage" style="display: none; color: red;">Passwords do not match!</div>
+                    <div id="errorMessage" class="alert alert-danger font-weight-bold" role="alert" style="display: none;">Passwords do not match!</div>
                     <button type="submit" class="btn btn-primary btn-user btn-block font-weight-bold">Update Account</button>
+                    <br />
                     if (ViewBag.SuccessMessage != null)
                     {
-                        <div class="alert alert-success" role="alert">
+                        <div class="alert alert-success font-weight-bold" role="alert">
                             @ViewBag.SuccessMessage
                         </div>
                         <script>
@@ -59,9 +60,9 @@
                         }, 3000);
                         </script>
                     }
-                    else if (ViewBag.ErrorMessage != null)
+                    if (ViewBag.ErrorMessage != null)
                     {
-                        <div class="alert alert-danger" role="alert">
+                        <div class="alert alert-danger font-weight-bold" role="alert">
                             @ViewBag.ErrorMessage
                         </div>
                     }
@@ -75,7 +76,7 @@
 }
 else
 {
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger font-weight-bold mb-0" role="alert">
         @ViewBag.ErrorMessage
     </div>
 
