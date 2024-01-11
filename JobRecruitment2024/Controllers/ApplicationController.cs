@@ -168,19 +168,37 @@ namespace JobRecruitment2024.Controllers
             if (manager != null)
             {
 
-                List<JobViewModel> applications = (from app in _context.Applications
-                                                     join job in _context.Jobs on app.job_id equals job.job_id
-                                                     join user in _context.Users on app.tc equals user.tc
-                                                     where job.dep_id == manager.dep_id
-                                                     select new JobViewModel
-                                                     {
-                                                         application_id = app.application_id,
-                                                         job_id = job.job_id,
-                                                         name = user.name,
-                                                         surname = user.surname,
-                                                         job_name = job.job_name,
-                                                         app_status = app.app_status,
-                                                     }).ToList();
+                List<JobViewModel> applications = (
+                    from app in _context.Applications
+                    join user in _context.Users on app.tc equals user.tc
+                    join job in _context.Jobs on app.job_id equals job.job_id
+                    join history in _context.Histories on user.tc equals history.tc
+                    where job.dep_id == manager.dep_id
+                    group history by new
+                    {
+                        user.tc,
+                        app.application_id,
+                        job.job_id,
+                        user.name,
+                        user.surname,
+                        job.job_name,
+                        app.app_status,
+                    } into historyGroup
+                    select new JobViewModel
+                    {
+                        tc = historyGroup.Key.tc,
+                        application_id = historyGroup.Key.application_id,
+                        job_id = historyGroup.Key.job_id,
+                        name = historyGroup.Key.name,
+                        surname = historyGroup.Key.surname,
+                        job_name = historyGroup.Key.job_name,
+                        app_status = historyGroup.Key.app_status,
+                        HistoriesList = historyGroup.ToList(),
+                    }).ToList();
+
+
+
+
 
 
                 return View(applications); // Pass the list of applications to the view

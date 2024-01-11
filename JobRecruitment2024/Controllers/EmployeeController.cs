@@ -95,7 +95,7 @@ namespace JobRecruitment2024.Controllers
             var userInfo = (from user in _context.Users
                             join job in _context.Jobs on user.job_id equals job.job_id
                             join dep in _context.Departments on job.dep_id equals dep.dep_id
-                            join manager in _context.Managers on dep.dep_id equals manager.dep_id // Assuming manager_id is the correct foreign key in Departments referencing Managers
+                            join manager in _context.Managers on dep.dep_id equals manager.dep_id
                             where job.job_id == currentUser.job_id
                             select new UserViewModel
                             {
@@ -110,12 +110,9 @@ namespace JobRecruitment2024.Controllers
                                 dep_name = dep.dep_name,
                             }).FirstOrDefault();
 
-
-
-
             if (userInfo == null)
             {
-                ViewBag.ErrorMessage = "User information not found.";
+                ViewBag.ErrorMessage = "You are not currently working.";
                 return View();
             }
 

@@ -6,64 +6,66 @@
 
 
 @if (Model != null)
-{<div class="row">
-        <div class="col-lg-12">
-            <div class="p-5">
-                <div class="text-center">
-                    <h4 class="h4 text-gray-900 mb-4 font-weight-bold">@ViewBag.Title</h4>
-                </div>
-                <div class="mt-4">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <th><h3><strong>Job Information</strong></h3></th>
-                                </tr>
-                                <tr>
-                                    <th>Department</th>
-                                    <td>@Model.dep_name</td>
-                                </tr>
-                                <tr>
-                                    <th>Job Title</th>
-                                    <td>@Model.job_name</td>
-                                </tr>
-                                <tr>
-                                    <th>Salary</th>
-                                    <td>@Model.salary</td>
-                                </tr>
-                            </tbody>
-                            <tr>
-                                <th><h3><strong>Your Manager</strong></h3></th>
-                            </tr>
-                            <tr>
-                                <th>Name Surname</th>
-                                <td>@Model.name @Model.surname</td>
-                            </tr>
-                            <tr>
-                                <th>Email</th>
-                                <td>@Model.email</td>
-                            </tr>
-                            <tr>
-                                <th>Phone Number</th>
-                                <td>@Model.phone_num</td>
-                            </tr>
-                        </table>
+{
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="p-5">
+                    <div class="text-center">
+                        <h4 class="h4 text-gray-900 mb-4 font-weight-bold">@ViewBag.Title</h4>
                     </div>
-                </div>
-                @if (Model.job_id != null)
-                {
-                    using (Html.BeginForm("LeaveJob", "Employee", FormMethod.Post, new { @class = "user" }))
+                    <div class="mt-4">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <th><h3><strong>Job Information</strong></h3></th>
+                                    </tr>
+                                    <tr>
+                                        <th>Department</th>
+                                        <td>@Model.dep_name</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Job Title</th>
+                                        <td>@Model.job_name</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Salary</th>
+                                        <td>@Model.salary</td>
+                                    </tr>
+                                </tbody>
+                                <tr>
+                                    <th><h3><strong>Your Manager</strong></h3></th>
+                                </tr>
+                                <tr>
+                                    <th>Name Surname</th>
+                                    <td>@Model.name @Model.surname</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>@Model.email</td>
+                                </tr>
+                                <tr>
+                                    <th>Phone Number</th>
+                                    <td>@Model.phone_num</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    @if (Model.job_id != null)
                     {
-                        @Html.Hidden("tc", Model.tc)
-                        <button type="submit" class="btn btn-primary btn-user btn-block font-weight-bold">Leave Job</button>
+                        using (Html.BeginForm("LeaveJob", "Employee", FormMethod.Post, new { @class = "user" }))
+                        {
+                            @Html.Hidden("tc", Model.tc)
+                            <button type="submit" class="btn btn-primary btn-user btn-block font-weight-bold">Leave Job</button>
+                        }
                     }
-                }
-                <div class="text-center">
-                    <a href="@Url.Action("UserMainPage", "User")">User Main Page</a>
+                    <div class="text-center">
+                        <a href="@Url.Action("UserMainPage", "User")">User Main Page</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
 }
 else
 {
