@@ -53,7 +53,7 @@ namespace JobRecruitment2024.Controllers
                 }
                 else
                 {
-                    ViewBag.ErrorMessage = "User not found. Redirecting Log in...";
+                    ViewBag.ErrorMessage = "User not found. Redirecting Log in Page";
                     return View();
                 }
             }
@@ -170,7 +170,8 @@ namespace JobRecruitment2024.Controllers
                     from app in _context.Applications
                     join user in _context.Users on app.tc equals user.tc
                     join job in _context.Jobs on app.job_id equals job.job_id
-                    join history in _context.Histories on user.tc equals history.tc
+                    join history in _context.Histories on user.tc equals history.tc into historyGroup
+                    from history in historyGroup.DefaultIfEmpty() // Left join
                     where job.dep_id == manager.dep_id
                     group history by new
                     {
@@ -181,18 +182,19 @@ namespace JobRecruitment2024.Controllers
                         user.surname,
                         job.job_name,
                         app.app_status,
-                    } into historyGroup
+                    } into grouped
                     select new JobViewModel
                     {
-                        tc = historyGroup.Key.tc,
-                        application_id = historyGroup.Key.application_id,
-                        job_id = historyGroup.Key.job_id,
-                        name = historyGroup.Key.name,
-                        surname = historyGroup.Key.surname,
-                        job_name = historyGroup.Key.job_name,
-                        app_status = historyGroup.Key.app_status,
-                        HistoriesList = historyGroup.ToList(),
+                        tc = grouped.Key.tc,
+                        application_id = grouped.Key.application_id,
+                        job_id = grouped.Key.job_id,
+                        name = grouped.Key.name,
+                        surname = grouped.Key.surname,
+                        job_name = grouped.Key.job_name,
+                        app_status = grouped.Key.app_status,
+                        HistoriesList = grouped.ToList(),
                     }).ToList();
+
 
 
 
@@ -201,7 +203,7 @@ namespace JobRecruitment2024.Controllers
 
                 return View(applications);
             }
-            ViewBag.ErrorMessage = "Manager not found. Redirecting Main Page...";
+            ViewBag.ErrorMessage = "Manager not found. Redirecting Login Page...";
 
             return View();
         }

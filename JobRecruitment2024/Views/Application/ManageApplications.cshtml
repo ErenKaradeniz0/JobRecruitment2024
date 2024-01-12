@@ -71,7 +71,7 @@
                                                     }
                                                 </tbody>
                                             </table>
-                                            
+
                                             <table class="table" id="historyTable_@(jobGroup.Key)" style="display:none">
                                                 <thead>
                                                     <tr>
@@ -83,19 +83,27 @@
                                                 <tbody>
                                                     @foreach (var application in jobGroup)
                                                     {
-                                                        foreach (var histories in application.HistoriesList)
+                                                        if (application.app_status == "Pending")
                                                         {
-                                                        var matchingJob = Model.FirstOrDefault(j => j.job_id == histories.job_id);
-                                                            <tr>
-                                                                <td colspan="2">@(matchingJob != null ? matchingJob.job_name : "N/A")</td>
-                                                                <td>@histories.recruitment_date</td>
-                                                                <td>@histories.dismissal_date</td>
-                                                            </tr>
+                                                            foreach (var histories in application.HistoriesList)
+                                                            {
+                                                                var matchingJob = Model.FirstOrDefault(j => j.job_id == histories.job_id);
+
+                                                                <tr>
+                                                                    @if (matchingJob != null)
+                                                                    {
+                                                                        <td colspan="2">@(matchingJob != null ? matchingJob.job_name : "N/A")</td>
+                                                                        <td>@histories.recruitment_date</td>
+                                                                        <td>@histories.dismissal_date</td>
+                                                                    }
+
+                                                                </tr>
+                                                            }
                                                         }
                                                     }
                                                 </tbody>
                                             </table>
-                                            
+
 
                                             <table class="table" id="processedTable_@(jobGroup.Key)" style="display:none">
                                                 <thead class="thead-light">
