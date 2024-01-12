@@ -212,7 +212,6 @@ namespace JobRecruitment2024.Controllers
 
                 }
 
-                // Return to the view with the model to display the errors
                 ViewBag.ErrorMessage = "Invalid data. Please check your inputs.";
             }
 
@@ -226,6 +225,7 @@ namespace JobRecruitment2024.Controllers
         {
             string userEmail = Session["UserEmail"] as string;
             Users user = _context.Users.FirstOrDefault(u => u.email == userEmail);
+
             // Delete applications and histories associated with the user's tc
 
             var userApplications = _context.Applications.Where(a => a.tc == user.tc);

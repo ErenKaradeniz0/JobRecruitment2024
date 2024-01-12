@@ -31,7 +31,6 @@ namespace JobRecruitment2024.Controllers
 
             if (manager != null)
             {
-                // Redirect to the main page if authentication is successful
                 return RedirectToAction("ManagerMainPage");
             }
 
@@ -125,10 +124,8 @@ namespace JobRecruitment2024.Controllers
                 {
                     var errorMessage = error.ErrorMessage;
 
-                    // Log or debug these error messages to understand the validation failures
                 }
 
-                // Return to the view with the model to display the errors
                 ViewBag.ErrorMessage = "Invalid data. Please check your inputs.";
             }
 

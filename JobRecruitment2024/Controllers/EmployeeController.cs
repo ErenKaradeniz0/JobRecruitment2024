@@ -42,11 +42,10 @@ namespace JobRecruitment2024.Controllers
 
                         var newHistoryEntry = new Histories
                         {
-                            recruitment_date = dateString, // Assuming this is the recruitment date
-                            dismissal_date = null, // Assuming this is null when the user is employed
+                            recruitment_date = dateString,
+                            dismissal_date = null,
                             job_id = job.job_id,
                             tc = currentUser.tc
-                            // You might need to populate other fields based on your table structure
                         };
                         _context.Histories.Add(newHistoryEntry);
                         _context.SaveChanges();
@@ -181,7 +180,6 @@ namespace JobRecruitment2024.Controllers
         [HttpPost]
         public ActionResult ManageEmployees(List<UserViewModel> employees)
         {
-            //ManageEmployees
             return View(employees);
         }
 
@@ -206,7 +204,6 @@ namespace JobRecruitment2024.Controllers
                 }
                 catch (Exception e)
                 {
-                    // Set error message
                 TempData["ErrorMessage"] = "An error occurred while updating the employee." +e;
                 }
 

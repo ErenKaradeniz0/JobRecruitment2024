@@ -149,15 +149,13 @@ namespace JobRecruitment2024.Controllers
             var application = _context.Applications.Find(applicationId);
             if (application == null)
             {
-                return HttpNotFound(); // Handle not found
+                return HttpNotFound();
             }
 
             _context.Applications.Remove(application);
             _context.SaveChanges();
             TempData["SuccessMessage"] = "You have deleted the selected job application.";
 
-
-            // Redirect to the action that displays the updated application list
             return RedirectToAction("MyApplications");
         }
         [HttpGet]
@@ -201,14 +199,13 @@ namespace JobRecruitment2024.Controllers
 
 
 
-                return View(applications); // Pass the list of applications to the view
+                return View(applications);
             }
             ViewBag.ErrorMessage = "Manager not found. Redirecting Main Page...";
 
             return View();
         }
 
-        // Action method to accept an application
         [HttpPost]
         public ActionResult AcceptApplication(int application_id)
         {
@@ -221,18 +218,15 @@ namespace JobRecruitment2024.Controllers
                     application.app_status = "Accepted";
                     _context.SaveChanges();
 
-                    // Set success message
                     TempData["SuccessMessage"] = "Application accepted successfully!";
                 }
                 else
                 {
-                    // Set error message if the application is not found
                     TempData["ErrorMessage"] = "An error occurred. Application not found.";
                 }
             }
             catch (Exception ex)
             {
-                // Set error message if an exception occurs during the update
                 TempData["ErrorMessage"] = "An error occurred while accepting the application." + ex;
             }
 
@@ -252,18 +246,15 @@ namespace JobRecruitment2024.Controllers
                     application.app_status = "Rejected";
                     _context.SaveChanges();
 
-                    // Set success message
                     TempData["SuccessMessage"] = "Application rejected successfully!";
                 }
                 else
                 {
-                    // Set error message if the application is not found
                     TempData["ErrorMessage"] = "An error occurred. Application not found.";
                 }
             }
             catch (Exception ex)
             {
-                // Set error message if an exception occurs during the update
                 TempData["ErrorMessage"] = "An error occurred while rejecting the application."+ex;
             }
 

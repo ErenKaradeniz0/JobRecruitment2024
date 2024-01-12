@@ -95,11 +95,9 @@ namespace JobRecruitment2024.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it appropriately based on your application's requirements.
                 ViewBag.ErrorMessage = "An error occurred while creating the job.";
-                // You may want to log the exception for further investigation.
                 Console.WriteLine(ex.Message);
-                return null; // or return an empty list or handle the error in a way that fits your application.
+                return null;
             }
 
         }

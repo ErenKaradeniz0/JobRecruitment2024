@@ -14,6 +14,5 @@ namespace JobRecruitment2024.Models
         public string dismissal_date { get; set; }
         public int job_id { get; set; }
         public string tc { get; set; }
-        //make
     }
 }
